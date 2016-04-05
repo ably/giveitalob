@@ -50,12 +50,12 @@ class LobApp < Sinatra::Base
     erb :leaderboard, locals: { leaderboard: Leaderboard.best_this_month, past: '30 days' }
   end
 
-  get '/new-flight/force' do
+  get '/lob/force' do
     cookies['channel_sha'] = 'invalidate'
-    redirect '/new-flight'
+    redirect '/lob'
   end
 
-  get '/new-flight' do
+  get '/lob' do
     query_params = ''
     channel_name = if cookies['channel_name'] && (channel_sha(cookies['channel_name']) == cookies['channel_sha'])
       cookies['channel_name']
@@ -64,10 +64,10 @@ class LobApp < Sinatra::Base
         query_params = "?cs=#{channel_sha(channel_name)}"
       end
     end
-    redirect "/flyer/#{channel_name}#{query_params}"
+    redirect "/lob/#{channel_name}#{query_params}"
   end
 
-  get '/flyer/:channel_name' do
+  get '/lob/:channel_name' do
     channel_name = params[:channel_name].strip.upcase
     channel_sha = (request.GET['cs'] || cookies['channel_sha']).to_s.strip
     if channel_sha(channel_name) != channel_sha
@@ -80,7 +80,7 @@ class LobApp < Sinatra::Base
     end
   end
 
-  get '/flyer/:channel_name/token' do
+  get '/lob/:channel_name/token' do
     channel_name = params[:channel_name].strip.upcase
     if !channel_name
       status 400
@@ -97,7 +97,7 @@ class LobApp < Sinatra::Base
     end
   end
 
-  get '/track-flight' do
+  get '/track' do
     channel_name = request.GET['channel-name'].to_s.strip.upcase
     if channel_name == ''
       status 400

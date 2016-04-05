@@ -6,7 +6,7 @@
 <main class="home width-limited">
   <div class="mobile-ready">
     <p><b>Ready?</b> Press 'start flight' and throw your phone into the air. Remember to catch it!</p>
-    <form class="panel" action="/new-flight" method="get">
+    <form class="panel" action="/lob" method="get">
       <button type="submit" name="button">Start Flight</button>
     </form>
   </div>
@@ -17,7 +17,7 @@
 
   <h2 name="watch">Watch a phone get lobbed in real time</h2>
   <p>All phones lobbed stream their movement in realtime to our servers. Enter the unique live Lob code shown on yours or a friend's phone to view their live stream.</p>
-  <form class="track-flight panel" action="/track-flight" method="get">
+  <form class="track-flight panel" action="/track" method="get">
     <label>
       <input type="text" name="channel-name" placeholder="Enter a live Lob code" required>
       <button type="submit">Watch live lob</button>

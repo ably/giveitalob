@@ -40,12 +40,12 @@ class AppTest < MiniTest::Test
   end
 
   def test_posting_new_flight_redirects_with_token_and_channel
-    get '/new-flight'
-    assert_match(/flyer\/[A-Z0-9]{5}\?cs=[a-z0-9{19}]/, last_response.location)
+    get '/lob'
+    assert_match(/lob\/[A-Z0-9]{5}\?cs=[a-z0-9{19}]/, last_response.location)
   end
 
   def test_request_tracking_a_flight_should_redirect_with_token_and_channel
-    get '/track-flight', { 'channel-name' => 'QWERT' }
+    get '/track', { 'channel-name' => 'QWERT' }
     assert_match(/track\/QWERT/, last_response.location)
   end
 
