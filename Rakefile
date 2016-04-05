@@ -1,3 +1,4 @@
+require File.expand_path('../server/boot', __FILE__)
 require 'rake/testtask'
 
 test_tasks = Dir['server/test/*/'].map { |d| File.basename(d) }
@@ -15,13 +16,8 @@ Rake::TestTask.new("test") do |test|
   test.verbose = true
 end
 
-# setup as development enviroment unless otherwise specified
-RACK_ENV = ENV['RACK_ENV'] ||= 'development' unless defined?(RACK_ENV)
-
 namespace :db do
-  require "sequel"
   # DEBT make server/config/database
-  require File.expand_path('../server/boot', __FILE__)
   Sequel.extension :migration
 
   namespace :migrate do

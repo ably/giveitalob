@@ -41,5 +41,5 @@ rake db:migrate:up
 Run all the tests through rake and npm.
 
 ```
-rake test && npm test
+rake test
 ```

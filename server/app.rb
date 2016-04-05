@@ -13,7 +13,7 @@ class LobApp < Sinatra::Base
   helpers Sinatra::Cookies
   helpers Sinatra::ContentFor
 
-  use Rollbar::Middleware::Sinatra
+  use Rollbar::Middleware::Sinatra if defined?(Rollbar)
 
   # Avoid ambiguous characters and letters
   # 31 characters ** 5 = 28m options, never goint to have a clash in reality

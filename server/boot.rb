@@ -8,7 +8,7 @@ rescue LoadError
 end
 
 # setup as development enviroment unless otherwise specified
-RACK_ENV = ENV['RACK_ENV'] ||= 'development' unless defined?(RACK_ENV)
+RACK_ENV = ENV['RACK_ENV'] || 'development' unless defined?(RACK_ENV)
 
 require 'sequel'
 # Thread safe loading?
@@ -19,12 +19,14 @@ DATABASE_URL = ENV.fetch('DATABASE_URL') { "postgres://localhost/lob_#{RACK_ENV}
 Sequel::Model.plugin(:schema)
 DB = Sequel.connect(DATABASE_URL)
 
-require 'rollbar'
-Rollbar.configure do |config|
-  config.access_token = ENV['ROLLBAR_ACCESS_TOKEN']
-  config.exception_level_filters.merge!({
-    'Sinatra::NotFound' => 'warning'
-  })
-end
+unless %w(test development).include?(RACK_ENV)
+  require 'rollbar'
+  Rollbar.configure do |config|
+    config.access_token = ENV['ROLLBAR_ACCESS_TOKEN']
+    config.exception_level_filters.merge!({
+      'Sinatra::NotFound' => 'warning'
+    })
+  end
 
-require 'newrelic_rpm'
+  require 'newrelic_rpm'
+end

@@ -40,39 +40,27 @@ class AppTest < MiniTest::Test
   end
 
   def test_posting_new_flight_redirects_with_token_and_channel
-    # DEBT start flight
     get '/new-flight'
-    assert_match(/flyer\?channel-name=[A-Z0-9]{4}&token=/, last_response.location)
-  end
-
-  def test_page_for_new_flyer_is_available
-    # DEBT should check for channel name and token
-    get '/flyer'
-    assert last_response.ok?
+    assert_match(/flyer\/[A-Z0-9]{5}\?cs=[a-z0-9{19}]/, last_response.location)
   end
 
   def test_request_tracking_a_flight_should_redirect_with_token_and_channel
-    get '/track-flight', {'channel-name': 'QWER'}
-    # DEBT might make sense to redirect to /tracker/:channel-name
-    assert_match(/tracker\?channel-name=QWER&token=/, last_response.location)
+    get '/track-flight', { 'channel-name' => 'QWERT' }
+    assert_match(/track\/QWERT/, last_response.location)
   end
 
   def test_link_to_track_a_flight_should_redirect_with_token_and_channel
-    get '/track/QWER'
-    # DEBT might make sense to redirect to /tracker/:channel-name
-    assert_match(/tracker\?channel-name=QWER&token=/, last_response.location)
-  end
-
-  def test_page_for_new_tracker_is_available
-    # DEBT should check for channel name and token
-    get '/tracker'
+    get '/track/QWERT'
     assert last_response.ok?
   end
 
   def test_submitting_a_record_flight_record_should_add_it_leaderboard
     leaderboard = Leaderboard.new
-    post '/submit-flight', {'max-altitude': 12.10, username: 'my iPhone'}
+    post '/submit-flight', { 'max-altitude': 12.10, nickname: 'Matt', 'max-flight-time': 10, 'device': 'iPad' }
     assert_equal Leaderboard.best_today.first.max_altitude, 12.10
+    assert_equal Leaderboard.best_today.first.username, 'Matt'
+    assert_equal Leaderboard.best_today.first.max_flight_time, 10
+    assert_equal Leaderboard.best_today.first.device, 'iPad'
     assert last_response.ok?
   end
 
