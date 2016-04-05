@@ -70,7 +70,7 @@ var Lob = (function () { 'use strict';
     var channelName = options.channelName.toString();
 
     // TODO: Remove clientId when https://github.com/ably/ably-js/issues/252 resolved
-    var client = new Ably.Realtime({ authUrl: '/flyer/' + channelName + '/token', clientId: channelName.toString() });
+    var client = new Ably.Realtime({ authUrl: '/lob/' + channelName + '/token', clientId: channelName.toString() });
     var channel = client.channels.get(channelName);
 
     /* Flights namespace is configured to persist messages */
