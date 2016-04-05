@@ -14,6 +14,7 @@ GEM
     backports (3.6.7)
     builder (3.2.2)
     cookiejar (0.3.2)
+    dotenv (2.0.2)
     em-http-request (1.1.2)
       addressable (>= 2.3.4)
       cookiejar
@@ -22,6 +23,7 @@ GEM
       http_parser.rb (>= 0.6.0)
     em-socksify (0.3.1)
       eventmachine (>= 1.0.0.beta.4)
+    erubis (2.7.0)
     eventmachine (1.0.8)
     faraday (0.9.2)
       multipart-post (>= 1.2, < 3)
@@ -36,6 +38,7 @@ GEM
     msgpack (0.7.1)
     multi_json (1.11.2)
     multipart-post (2.0.0)
+    newrelic_rpm (3.14.1.311)
     pg (0.18.4)
     puma (2.15.3)
     rack (1.6.4)
@@ -43,6 +46,8 @@ GEM
       rack
     rack-test (0.6.3)
       rack (>= 1.0)
+    rollbar (2.8.3)
+      multi_json
     ruby-progressbar (1.7.5)
     sequel (4.30.0)
     sinatra (1.4.6)
@@ -67,11 +72,15 @@ PLATFORMS
 
 DEPENDENCIES
   ably
+  dotenv
+  erubis
   minitest
   minitest-reporters
+  newrelic_rpm
   pg
   puma
   rack-test
+  rollbar (~> 2.8.3)
   sequel
   sinatra
   sinatra-contrib

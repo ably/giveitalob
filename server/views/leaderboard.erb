@@ -1,33 +1,43 @@
-<main class="width-limited">
+<main class="leaderboard width-limited">
+  <h3>
+    Last <%= past %> Leaderboard
+  </h3>
   <p>
-    See the results for the last:
-    <ul>
-      <li>
-        <a href="/leaderboard">day</a>
-      </li>
-      <li>
-        <a href="/leaderboard/week">week</a>
-      </li>
-      <li>
-        <a href="/leaderboard/month">month</a>.
-      </li>
-    </ul>
+    See results for last
+    <%= case past
+        when '24 hrs'
+          '<a href="/leaderboard/week">week</a> or <a href="/leaderboard/month">month</a>.'
+        when '7 days'
+          '<a href="/leaderboard">day</a> or <a href="/leaderboard/month">month</a>.'
+        else
+          '<a href="/leaderboard">day</a> or <a href="/leaderboard/week">week</a>.'
+        end %>
   </p>
   <hr>
   <% if leaderboard.empty? %>
   <p>
     <i>
-      No data from the last <%= past %>. Try another leaderboard.
+      There are no entries for the last <%= past %>. Try another leaderboard.
     </i>
   </p>
   <% else %>
-  <p>
-    These are the best results from the past <%= past %>.
-  </p>
-  <ol>
-    <% leaderboard.each do |flight| %>
-    <li><%= flight.username %>: <%= flight.max_altitude %>m</li>
+  <table>
+    <tr>
+      <th>#</th>
+      <th>Name</th>
+      <th>Height</th>
+      <th>Airborne</th>
+      <th>Device</th>
+    </tr>
+    <% leaderboard.each_with_index do |flight, index| %>
+      <tr>
+        <td><%= index+1 %></td>
+        <td><%= flight.username %></td>
+        <td><%= flight.max_altitude %>m</td>
+        <td><%= flight.max_flight_time %>s</td>
+        <td><%= flight.device %>s</td>
+      </tr>
     <% end %>
-  </ol>
+  </table>
   <% end %>
 </main>

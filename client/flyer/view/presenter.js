@@ -12,37 +12,37 @@ function Presenter(projection){
 
   Object.defineProperty(this, "maxFlightTime", {
     get: function(){
-      return projection.maxFlightTime + " s";
+      return projection.maxFlightTime + "s";
+    }
+  });
+
+  Object.defineProperty(this, "rawMaxFlightTime", {
+    get: function(){
+      return projection.maxFlightTime;
+    }
+  });
+
+  Object.defineProperty(this, "lastFlightTime", {
+    get: function(){
+      return projection.lastFlightTime + "s";
     }
   });
 
   Object.defineProperty(this, "maxAltitude", {
     get: function(){
-      return projection.maxAltitude + " m";
+      return projection.maxAltitude + "m";
     }
   });
 
-  Object.defineProperty(this, "currentReadout", {
+  Object.defineProperty(this, "rawMaxAltitude", {
     get: function(){
-      // DEBT replace with reading toString method
-      if (!projection.latestReading) {
-        return "Waiting.";
-      }
-      var acceleration = projection.latestReading;
-      var x = acceleration.x;
-      var y = acceleration.y;
-      var z = acceleration.z;
-      return "[" + [format(x), format(y), format(z)].join(", ") + "]";
+      return projection.maxAltitude;
     }
   });
 
-  Object.defineProperty(this, "instruction", {
+  Object.defineProperty(this, "lastAltitude", {
     get: function(){
-      console.log(this)
-      if (!this.hasThrow) {
-        return "Lob phone to get started";
-      }
-      return "OK! can you lob any higher";
+      return projection.lastAltitude + "m";
     }
   });
 
@@ -52,19 +52,27 @@ function Presenter(projection){
     }
   });
 
+  Object.defineProperty(this, "hasOneThrow", {
+    get: function(){
+      return projection.hasOneThrow;
+    }
+  });
+
+  Object.defineProperty(this, "lastHigherThanBefore", {
+    get: function(){
+      return projection.lastAltitude == projection.maxAltitude;
+    }
+  });
+
   Object.defineProperty(this, "uplinkStatus", {
     get: function(){
       return projection.uplinkStatus.toLowerCase();
     }
   });
+
   Object.defineProperty(this, "channelName", {
     get: function(){
       return projection.channelName;
-    }
-  });
-  Object.defineProperty(this, "identity", {
-    get: function(){
-      return projection.identity;
     }
   });
 }

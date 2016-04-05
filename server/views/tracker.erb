@@ -1,21 +1,39 @@
-<main class="width-limited">
-  <form>
-    <button type="button" data-display="uplink-status-message">Connecting to Ably</button>
-  </form>
-  <form class="button" data-display="tracker-following-flight" onclick="Lob.followLive()">
-    <button type="button">Watching live, click to lock</button>
-  </form>
-  <form class="button" data-display="tracker-holding-snapshot" onclick="Lob.followFlight()" style="display:none;">
-    <button type="button">Showing snapshot, click to return to live feed</button>
-  </form>
-  <form class="button" data-display="tracker-following-live" onclick="Lob.followFlight()" style="display:none;">
-    <button type="button">Locked to live tracking, click to allow pausing</button>
-  </form>
-  <div id="tracker-graph" data-display="tracker-graph">
-    <span>Tracking Chromium on channel "TODO"</span>
-    <canvas width="760" height="640"></canvas>
+<% content_for :body_class do %>small-header<% end %>
+
+<% content_for :head do %>
+  <link rel="stylesheet" href="/phone-model.css<%=cache_invalidator_param%>" media="screen" title="Phone styling" charset="utf-8">
+  <script type="text/javascript" src="/vendor-chart.js<%=cache_invalidator_param%>"></script>
+  <script type="text/javascript" src="/vendor.js<%=cache_invalidator_param%>"></script>
+  <script type="text/javascript" src="/tracker.js<%=cache_invalidator_param%>"></script>
+<% end %>
+
+<main class="tracker">
+  <div class="uplink-status-message">Connecting to Ably</div>
+
+  <div class="graph-and-phone">
+    <div id="tracker-wrapper">
+      <div id="tracker-graph"><canvas></canvas></div>
+      <p class="pause-button"><span class="icon pause"></span></p>
+      <p class="play-button"><span class="icon play"></span></p>
+    </div>
+    <%= erb :_phone %>
+  </div>
+
+  <div class="connecting-loader">
+    <%= erb :_loader %>
+    <div class="back">
+      <a href="/">&laquo; cancel</a>
+    </div>
+  </div>
+
+  <div class="flight-history">
+    <h3>Lob history</h3>
+    <table>
+      <tr>
+        <th>Height</th>
+        <th>Time airborne</th>
+        <th>Lobbed at</th>
+      </tr>
+    </table>
   </div>
 </main>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>
-<script type="text/javascript" src="/tracker.js"></script>
-<!-- https://github.com/CrowdHailer/lob/blob/2c5de6322d4800553ca80a9d34341b4866e5f918/assets/scripts/boot.ts -->

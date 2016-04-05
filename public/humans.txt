@@ -1,0 +1,5 @@
+Hello human
+
+Lob is a fun labs project demonstration of the amazing realtime capabilities of the modern web.
+
+The realtime messaging is powered by Ably (https://www.ably.io) and built jointly as a labs project by Workshop14.io (http://workshop14.io) and Ably (https://www.ably.io).

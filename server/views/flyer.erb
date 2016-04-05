@@ -1,53 +1,61 @@
-<main class="width-limited" data-interface="avionics" data-display="data-logger">
-  <p class="center" data-display="instruction">
-    Lob phone to get started
-  </p>
-  <p>
-    <span class="right">Flight time:</span><span class="left" data-hook="flight-time"></span>
-  </p>
-  <p>
-    <span class="right">Max height:</span><span class="left" data-hook="max-altitude"></span>
-  </p>
-  <p class="readout" data-hook="current-reading">
-    starting
-  </p>
-  <label style="    border: 1px solid;
-    border-radius: 2px;
-    background: #F5F7CB;
-    padding: 0.1em 0.5em;
-    width: 100%;
-    max-width: 560px;
-    margin: 0 auto;
-    display: block;">
-    <span>
+<% content_for :body_class do %>small-header<% end %>
 
-    Name:
-    </span>
-    <input type="text" name="username" autofocus value="" onkeyup="Lob.updateIdentity(this.value)" data-display="identity" required placeholder="Enter name">
-  </label>
-  <div id="uplink" class="unknown" data-display="uplink">
-    <form id="starting-uplink" class="button" action="#" method="post">
-      <button type="button" data-display="status">Looking for connection</button>
-    </form>
-    <form id="uplink-available" class="button" onclick="Lob.startTransmitting()">
-      <button type="button">Click to share flight</button>
-    </form>
-    <form id="uplink-transmitting" class="button" action="#" method="post">
-      <button type="button" >
-        <a href="<%= twitter_link %>" target="_blank"><svg class="icon icon-twitter"><use xlink:href="#icon-twitter"></use></svg></a><span data-display="channel"> Watch on channel '????'</span></button>
-    </form>
-    <form id="uplink-failed" class="button">
-      <button type="button">Could not start uplink. Try again later.</button>
-    </form>
+<% content_for :head do %>
+  <link rel="stylesheet" href="/phone-model.css<%=cache_invalidator_param%>" media="screen" charset="utf-8">
+  <script type="text/javascript" src="/vendor.js<%=cache_invalidator_param%>"></script>
+  <script type="text/javascript" src="/flyer.js<%=cache_invalidator_param%>"></script>
+<% end %>
+
+<main class="flyer">
+  <div class="uplink-status">Hold on, just getting ready...</div>
+
+  <div class="connecting-loader">
+    <%= erb :_loader %>
+    <div class="back">
+      <a href="/">&laquo; cancel</a>
+    </div>
   </div>
-  <form class="button" action="/submit-flight" method="post">
-    <input type="hidden" name="max-altitude" data-display="submitted-max-altitude" value="0">
-    <input type="hidden" name="username" data-display="submitted-identity">
-    <button type="submit" data-display="submit-flight" disabled>Submit flight to leaderboard</button>
-  </form>
-  <form onclick="Lob.resetReadings()" class="button">
-    <button type="button">Reset</button>
-  </form>
+
+  <div class="connection-active">
+    <div class="phone-reading-panels">
+      <div class="guage-widget">
+        <ul class="labels">
+          <li>0%</li>
+          <li>25%</li>
+          <li>50%</li>
+          <li>75%</li>
+          <li>100%</li>
+        </ul>
+        <div class="guage">
+          <div class="inner"></div>
+        </div>
+        <div class="needle"></div>
+        <div class="caption">
+          LobForce™
+        </div>
+      </div>
+
+      <div class="phone">
+        <%= erb :_phone %>
+      </div>
+    </div>
+
+    <p class="message"></p>
+
+    <div class="leaderboard panel">
+      <div class="submit-panel">
+        <form class="panel" action="/submit-flight" method="post">
+          <h3>Submit your <span class="max-altitude-message"></span> Lob to our leaderboard</h3>
+          <input type="text" name="nickname" placeholder="Enter a nickname" required><button type="submit">Submit</button>
+          <input type="hidden" name="max-altitude" value="0">
+          <input type="hidden" name="max-flight-time" value="0">
+        </form>
+      </div>
+      <div class="submitted-panel">
+        <h3>You're in our leaderboard</h3>
+        <p>Your height of <span class="max-altitude-message-submitted"></span> was submitted to the leaderboard.</p>
+      </div>
+      <a href="/leaderboard">View the leaderboard &raquo;</a>
+  </div>
 </main>
-<script type="text/javascript" src="/ua-parse.js"></script>
-<script type="text/javascript" src="/flyer.js"></script>
+

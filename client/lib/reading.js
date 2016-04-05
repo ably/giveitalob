@@ -1,14 +1,14 @@
 /* jshint esnext: true */
-function isRational(x, other) {
-  if (typeof x !== "number"){
-    return false;
-  }
-  if (!isFinite(x)){
-    return false;
-  }
-  var rest = Array.prototype.slice.call(arguments, 1);
-  if (rest.length > 0) {
-    return isRational.apply(this, rest);
+
+function isRational() {
+  for (var i = 0; i < arguments.length; i++) {
+    var val = arguments[i];
+    if (typeof val !== "number"){
+      return false;
+    }
+    if (!isFinite(val)) {
+      return false;
+    }
   }
   return true;
 }
@@ -35,3 +35,10 @@ Object.defineProperty(Reading.prototype, "magnitude", {
     return roundtoFour(Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z));
   }
 });
+
+Reading.prototype.asJson = function() {
+  return {
+    timestamp: this.timestamp,
+    magnitude: this.magnitude
+  }
+};

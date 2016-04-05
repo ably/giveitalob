@@ -1,16 +1,33 @@
-<main class="width-limited">
+<% content_for :head do %>
+  <script type="text/javascript" src="/vendor.js<%=cache_invalidator_param%>"></script>
+  <script type="text/javascript" src="/home.js<%=cache_invalidator_param%>"></script>
+<% end %>
 
-  <h2>How high can you throw? Use Lob to find out.</h2>
-  <!-- and get onto the Lob leaderboard. -->
-  <p><b>Ready?</b> Press 'start flight' and throw your phone into the air. Remember to catch it again.</p>
-  <form class="button" action="/new-flight" method="post">
-    <button type="submit" name="button">Start Flight</button>
-  </form>
-  <p><b>Want to watch?</b> Once a flight has started click 'share'. On a second device enter the channel given and click 'track flight'. This will show a live feed of the acceleration data from your device.</p>
-  <form class="button" action="/track-flight" method="post">
+<main class="home width-limited">
+  <div class="mobile-ready">
+    <p><b>Ready?</b> Press 'start flight' and throw your phone into the air. Remember to catch it!</p>
+    <form class="panel" action="/new-flight" method="get">
+      <button type="submit" name="button">Start Flight</button>
+    </form>
+  </div>
+
+  <div class="mobile-not-ready">
+    Looks like you're using a device that doesn't have an accelerometer. Try this site on a phone that supports <a href="http://caniuse.com/#feat=deviceorientation">orientation and movement</a>, or view someone else's lob below.
+  </div>
+
+  <h2 name="watch">Watch a phone get lobbed in real time</h2>
+  <p>All phones lobbed stream their movement in realtime to our servers. Enter the unique live Lob code shown on yours or a friend's phone to view their live stream.</p>
+  <form class="track-flight panel" action="/track-flight" method="get">
     <label>
-      <input type="text" name="channel-name" required placeholder="Enter channel">
-      <button type="submit">Track Flight</button>
+      <input type="text" name="channel-name" placeholder="Enter a live Lob code" required>
+      <button type="submit">Watch live lob</button>
     </label>
   </form>
+  <div class="recent-lobs">
+    Recent lobs: <ul class="lob-history"></ul>
+  </div>
+
+  <h2>Leaderboard</h2>
+  <p>Throw your phone to the sky and have your name etched in our leaderboard forever</p>
+  <a href="/leaderboard">View the leaderboard</a>
 </main>

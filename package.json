@@ -6,11 +6,14 @@
   "scripts": {
     "test": "karma start",
     "test:run": "karma start",
-    "build": "npm run -s build:scripts && npm run -s build:styles && cp assets/header-refreshed.svg public/header.svg",
-    "build:styles": "node-sass assets/styles/lob.scss > public/lob.css",
-    "build:scripts": "npm run build:scripts:flyer && npm run build:scripts:tracker",
+    "build": "npm run -s build:scripts && npm run -s build:styles && npm run -s build:assets",
+    "build:assets": "rm -rf public/images && cp -R assets/images public",
+    "build:styles": "node-sass assets/styles/lob.scss > public/lob.css && node-sass assets/styles/phone-model.scss > public/phone-model.css",
+    "build:scripts": "npm run build:scripts:flyer && npm run build:scripts:tracker && npm run build:scripts:home && npm run build:scripts:vendor",
     "build:scripts:tracker": "rollup -c --input ./client/tracker.js --output public/tracker.js",
     "build:scripts:flyer": "rollup -c --input ./client/flyer.boot.js --output public/flyer.js",
+    "build:scripts:home": "rollup -c --input ./client/home.js --output public/home.js",
+    "build:scripts:vendor": "cat assets/javascript/vendor/*.js > public/vendor.js && cat assets/javascript/vendor/chart/*.js > public/vendor-chart.js",
     "fetch": "npm run fetch:scut -s",
     "fetch:scut": "curl https://raw.githubusercontent.com/davidtheclark/scut/master/dist/_scut.scss > ./assets/styles/vendor/_scut.scss"
   },
@@ -29,6 +32,8 @@
     "url": "https://github.com/CrowdHailer/lob/issues"
   },
   "devDependencies": {
+    "bourbon": "~4.2.6",
+    "carbide": "git://github.com/CrowdHailer/carbide.js#e0776a8cc0da658886b4da6955ad65c4f567ce6c",
     "chokidar-cli": "~1.1.1",
     "jasmine": "^2.3.2",
     "karma": "~0.13.15",
@@ -43,6 +48,7 @@
     "rollup-plugin-commonjs": "^2.1.0",
     "rollup-plugin-npm": "^1.2.0",
     "rollup-plugin-typescript": "^0.2.1",
-    "tsd": "^0.6.5"
+    "tsd": "^0.6.5",
+    "scut": "^1.3.1"
   }
 }

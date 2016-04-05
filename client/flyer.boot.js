@@ -5,40 +5,30 @@ import Router from "./router";
 import FlyerView from "./flyer/view";
 import FlyerUplink from './flyer/uplink';
 
-import { readingPublishLimit } from './config';
-
-var lobIdentity = localStorage.getItem('lobIdentity');
-if (!lobIdentity) {
-  var parser = new UAParser();
-  var result = parser.getResult();
-  lobIdentity = result.device.model || result.browser.name;
-  try {
-    localStorage.setItem('lobIdentity', lobIdentity);
-  } catch (err) {
-    console.warn('set local storage failed');
-  }
-}
-
 var router = Router(window.location);
 
 var uplink = FlyerUplink({
-  token: router.state.token,
-  channelName: router.state.channelName,
-  rateLimit: readingPublishLimit
+  channelName: router.state.channelName
 }, window.console);
 
-var flyer = Flyer({
-  identity: lobIdentity
-});
-
+var flyer = Flyer();
 
 flyer.logger = window.console;
 flyer.view = new FlyerView
 flyer.uplink = uplink;
 
 function AccelerometerController(global, flyer){
-  global.addEventListener('devicemotion', function(deviceMotionEvent){
-    flyer.newReading(deviceMotionEvent.accelerationIncludingGravity);
+  var gn = new GyroNorm();
+  var logger = function(data) {
+    console.warn("Gyro log:", data);
+  }
+  gn.init({ frequency: 10, decimalCounts: 3, logger: logger }).then(function() {
+    gn.start(function(data) {
+      flyer.newReading(data);
+    });
+  }).catch(function(e) {
+    /* DeviceOrientation or DeviceMotion is not supported by the browser or device */
+    flyer.accelerometerNotSupported();
   });
 }
 
@@ -46,10 +36,13 @@ var accelerometerController = new AccelerometerController(window, flyer);
 
 function UplinkController(uplink, application){
   uplink.onconnected = function(){
-    application.uplinkAvailable({token: uplink.token, channelName: uplink.channelName});
+    application.uplinkAvailable({ channelName: uplink.channelName });
   }
   uplink.onconnectionFailed = function(){
     application.uplinkFailed();
+  }
+  uplink.onconnectionDisconnected = function(){
+    application.uplinkDisconnected({ channelName: uplink.channelName });
   }
 }
 var uplinkController = new UplinkController(uplink, flyer);

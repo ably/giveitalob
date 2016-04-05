@@ -1,0 +1,390 @@
+/* Shared CSS components */
+
+/* Panel that typically includes 0+ form elements and one button */
+
+form.panel {
+  display: block;
+  font-size: 120%;
+  width: 100%;
+  text-align: center;
+  margin: 1rem auto;
+  border: none;
+
+  input[type=text] {
+    padding: 9px;
+    border: none;
+    border-bottom: solid 2px #D08200;
+    transition: border 0.3s;
+    margin: 10px;
+
+    &:focus {
+      border-bottom: solid 2px #000000;
+      outline: none;
+    }
+  }
+
+  button {
+    border: 1px solid #D08200;
+    position: relative;
+    top: -2px;
+    @include background(linear-gradient(to bottom, #fff200, #f0d000));
+    border-radius: 28px;
+    font-family: Arial;
+    color: #000000;
+    font-size: 20px;
+    padding: 11px 20px 11px 20px;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  button:hover {
+    @include background(linear-gradient(to bottom, #f5e90e, #d4bb15));
+    text-decoration: none;
+  }
+
+  button[disabled] {
+    @include background(linear-gradient(to bottom, #bdbdbd, #999999));
+    text-decoration: none;
+    text-shadow: none;
+    color: #333;
+  }
+}
+
+a.button {
+  @include background(linear-gradient(to top, #fc0, #FFE788));
+  font-size: 120%;
+  text-align: center;
+  border: 2px solid;
+  display: block;
+  padding: 0.5em;
+  border-radius: 4px;
+  margin: 1rem auto;
+  max-width: 560px;
+  text-decoration: none;
+  color: black;
+}
+
+/* CSS loader courtesy of http://codepen.io/martinvd/pen/vEQeWR */
+
+.loader {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  transform: perspective( 128px ) rotateX( 30deg );
+
+  .inner {
+    position: absolute;
+    box-sizing: border-box;
+    width: 16px;
+    height: 16px;
+    background-color: #860000;
+    border-radius: 50%;
+  }
+
+  .inner.one {
+    left: 0%;
+    top: 0%;
+    animation: loader-move-right 1s ease-out infinite;
+  }
+
+  .inner.two {
+    right: 0%;
+    top: 0%;
+    animation: loader-move-down 1s ease-in-out infinite;
+  }
+
+  .inner.three {
+    right: 0%;
+    bottom: 0%;
+    animation: loader-move-left 1s ease-in-out infinite;
+  }
+
+  .inner.four {
+    left: 0%;
+    bottom: 0%;
+    animation: loader-move-up 1s ease-out infinite;
+  }
+}
+
+@keyframes loader-move-right {
+  0% {
+    @include transform(translateX(0));
+  }
+  100% {
+    @include transform(translateX(32px));
+  }
+}
+
+@keyframes loader-move-down {
+  0% {
+    @include transform(translateY());
+  }
+  100% {
+    @include transform(translateY(32px));
+  }
+}
+
+@keyframes loader-move-left {
+  0% {
+    @include transform(translateX(0));
+  }
+  100% {
+    @include transform(translateX(-32px));
+  }
+}
+
+@keyframes loader-move-up {
+  0% {
+    @include transform(translateY(0));
+  }
+  100% {
+    @include transform(translateY(-32px));
+  }
+}
+
+/* Guage widge - courtesy of http://codepen.io/frexuz/pen/dKpxo */
+
+.guage-widget {
+  margin-top: 30px;
+  width: 180px;
+  height: 90px;
+  position: absolute;
+
+  ul.labels {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: -10%;
+
+    li {
+      position: absolute;
+      padding: 3px 5px;
+      list-style: none;
+      font-size: 18px;
+
+      &:nth-child(1) {
+        top: 100%;
+        left: 0;
+        @include transform(translateX(-100%) translateY(-100%));
+      }
+      &:nth-child(2) {
+        top: 0;
+        left: 5%;
+        @include transform(translateX(-50%));
+      }
+      &:nth-child(3) {
+        top: -12%;
+        left: 50%;
+        @include transform(translateX(-50%) translateY(-100%));
+      }
+      &:nth-child(4) {
+        top: 0;
+        right: 5%;
+        @include transform(translateX(50%));
+      }
+      &:nth-child(5) {
+        top: 100%;
+        right: 0;
+        @include transform(translateX(100%) translateY(-100%));
+      }
+    }
+  }
+
+  .guage {
+    overflow: hidden;
+    height: 100%;
+    .inner {
+      width: 100%;
+      height: 200%;
+      background: #FFF6CE;
+      border-radius: 50%;
+    }
+  }
+
+  .needle {
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    background: red;
+    position: absolute;
+    left: 50%;
+    top: 100%;
+    @include transform(translateX(-50%) translateY(-50%) rotate(-90deg));
+    @include transition(all 0.05s ease);
+    &:after {
+      content: "";
+      position: absolute;
+      border-style: solid;
+      border-color: transparent transparent #f00 transparent;
+      border-width: 50px 6px;
+      bottom: 100%;
+      height: 0;
+      width: 0;
+      left: 50%;
+      margin-left: -6px;
+      margin-bottom: -2px;
+    }
+  }
+}
+
+/* Courtesy of http://codepen.io/marianarlt/pen/aIzvx */
+$baseColor: #999;
+$hoverColor: #000;
+$backColor: #FFF;
+
+// Sizes that work more or less well without heavy distortions (depends on browser):
+// 16, 18, 21, 25, 28, 32, 35, 40+
+// They look really nice on big sizes, try 50px or 100px
+$iconSize: 18px;
+$iconBorderWidth: $iconSize / 8;
+$iconInnerLines: $iconSize / 8;
+
+// All Icons
+.icon {
+  height: $iconSize;
+  width: $iconSize;
+  display: inline-block;
+  position: relative;
+  vertical-align: middle;
+  margin-top: -0.2em;
+  @include transition(all 0.3s);
+  &:before, &:after {
+    content: "";
+    position: absolute;
+    display: block;
+    @include transition(all 0.3s);
+  }
+  &:hover {
+    border-color: $hoverColor;
+    cursor: pointer;
+    &:before, &:after {
+      background: $hoverColor;
+    }
+  }
+}
+
+p:hover, .icon:hover, p:hover > .icon {
+  border-color: $hoverColor;
+  cursor: pointer;
+  color: $hoverColor;
+}
+
+// Add Icon
+.add {
+  border-radius: $iconSize;
+  border: $iconBorderWidth solid $baseColor;
+  width: $iconSize;
+  height: $iconSize;
+  &:before, &:after {
+    border-radius: $iconSize;
+    background: $baseColor;
+    height: $iconInnerLines;
+    top: 50%;
+    left: 50%;
+    margin-left: -$iconSize / 4;
+    @if $iconSize == 18px {
+      width: $iconSize / 2 - 1;
+      margin-top: -$iconInnerLines / 2;
+      @-moz-document url-prefix() {
+        height: $iconInnerLines - 0.1;
+        margin-left: -$iconSize / 4 + 1;
+      }
+    }
+    @else if $iconSize == 16 {
+      width: $iconSize / 2;
+      margin-top: -$iconInnerLines / 2;
+    }
+    @else if $iconSize >= 25 and $iconSize <= 27 {
+      width: $iconSize / 2;
+      margin-top: -$iconInnerLines / 2;
+    }
+    @else if $iconSize == 32 {
+      width: $iconSize / 2;
+      margin-top: -$iconInnerLines / 2;
+    }
+    @else {
+      width: $iconSize / 2;
+      margin-top: -$iconInnerLines / 2;
+    }
+  }
+  &:after {
+    width: $iconInnerLines;
+    top: 50%;
+    margin-top: -$iconSize / 4;
+    left: 50%;
+    margin-left: -$iconInnerLines / 2;
+    @if $iconSize == 18px {
+      height: $iconSize / 2 - 1;
+      @-moz-document url-prefix() {
+        margin-top: -$iconSize / 4 + 1;
+      }
+    }
+    @else if $iconSize >= 25 and $iconSize <= 27 {
+      height: $iconSize / 2;
+      margin-left: -$iconInnerLines / 2 + 1;
+    }
+    @else {
+      height: $iconSize / 2;
+    }
+  }
+}
+
+/* Pause Icon */
+.pause {
+  @extend .add;
+  &:before {
+    @if $iconSize == 18px {
+      height: $iconSize / 2 - 1;
+      @-moz-document url-prefix() {
+        margin-top: -$iconSize / 4 + 1;
+      }
+    }
+    @else {
+      height: $iconSize / 2;
+    }
+    width: $iconInnerLines;
+    margin-top: -$iconSize / 4;
+    @if $iconSize == 16px {
+      margin-left: -$iconInnerLines / 2 + $iconSize / 9;
+    }
+    @else {
+      margin-left: -$iconInnerLines / 2 + $iconSize / 9;
+    }
+  }
+  &:after {
+    margin-left: -$iconInnerLines / 2 - $iconSize / 9;
+  }
+}
+
+/* Play Icon */
+.play {
+  @extend .add;
+  &:before {
+    height: 0;
+  }
+  &:after {
+    border-radius: 0;
+    background: transparent;
+    border: $iconSize / 4 solid transparent;
+    border-width: $iconSize / 4 $iconSize / 4 + $iconInnerLines;
+    border-left-color: $baseColor;
+    height: 0;
+    width: 0;
+    left: 50%;
+    margin-left: -$iconSize / 8;
+    top: 50%;
+    @if $iconSize == 18 {
+      @-moz-document url-prefix() {
+        margin-left: -$iconSize / 8 + 1;
+      }
+    }
+    @else if $iconSize == 21 {
+      margin-left: -$iconSize / 8 + 1;
+    }
+  }
+  &:hover:after {
+    background: transparent;
+    border-color: transparent;
+    border-left-color: $hoverColor;
+  }
+}

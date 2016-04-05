@@ -1,0 +1,164 @@
+/* Shared layout styling such as headers, footers */
+
+/* Generic content area */
+main {
+  margin: 0 auto 2.5em auto;
+  padding: 0 1em;
+  box-sizing: border-box;
+
+  /* Generic style to ensure content does not get too wide */
+  &.width-limited {
+    max-width: $tablet-width;
+  }
+}
+
+/*
+  Page header: logo + strapline
+*/
+
+header {
+  margin: 0 auto 20px 0;
+  position: relative;
+  text-align: center;
+
+  h1 { display: none; }
+  h2 { display: none; }
+
+  img.heading {
+    margin-top: 90px;
+    max-width: 702px;
+  }
+
+  img.phone-rocket {
+    position: absolute;
+    z-index: -1;
+    margin-left: -350px;
+    margin-top: 10px;
+    max-width: 282px;
+  }
+
+  @mixin header-tablet {
+    img.heading {
+      max-width: 480px;
+      margin-top: 60px;
+    }
+
+    img.phone-rocket {
+      margin-left: -245px;
+      max-width: 182px;
+    }
+  }
+
+  @mixin header-mobile {
+    img.heading {
+      max-width: 300px;
+      margin-top: 40px;
+    }
+
+    img.phone-rocket {
+      margin-left: -150px;
+      max-width: 122px;
+    }
+  }
+
+  @mixin header-mobile-tiny {
+    img.heading {
+      max-width: 210px;
+      margin-top: 35px;
+    }
+
+    img.phone-rocket {
+      margin-left: -115px;
+      max-width: 90px;
+    }
+  }
+
+  body.small-header & {
+    @include header-tablet;
+
+    @media screen and (max-width: $tablet-width) {
+      @include header-mobile;
+    }
+
+    @media screen and (max-width: $mobile-width) {
+      @include header-mobile-tiny;
+    }
+  }
+
+  @media screen and (max-width: $tablet-width) {
+    @include header-tablet;
+  }
+
+  @media screen and (max-width: $mobile-width) {
+    @include header-mobile;
+  }
+}
+
+/* Footer */
+
+footer {
+  background-color: black;
+  color: white;
+  text-align: center;
+  font-size: 90%;
+
+  a {
+    color: #FC0;
+    &:hover {
+      color: #FC0;
+    }
+  }
+
+  ul {
+    margin: 0;
+    list-style: none;
+    overflow: hidden;
+    li {
+      display: inline-block;
+      padding: 10px 25px 10px 20px;
+      border-right: 1px solid #EEE;
+      &:last-child {
+        border: none;
+      }
+    }
+  }
+
+  @media screen and (max-width: $tablet-width) {
+    ul {
+      li {
+        padding: 10px 15px 10px 10px;
+        font-size: 85%;
+      }
+    }
+  }
+
+  @media screen and (max-width: $tablet-width) {
+    ul {
+      padding: 0 0 5px 0;
+      li {
+        padding: 5px 10px 5px 10px;
+        border: none;
+        clear: left;
+        display: block;
+        border-bottom: 1px solid #333;
+        box-sizing: border-box;
+
+        &:last-child {
+          border-bottom: none
+        }
+
+        &.nav {
+          width: 50%;
+          display: block;
+          box-sizing: border-box;
+          clear: none;
+          float: left;
+          border-left: 1px solid #333;
+          &:first-child {
+            border-left: none;
+          }
+        }
+      }
+    }
+  }
+}

@@ -4,6 +4,7 @@
   height: 0;
   padding: 0 1em;
   overflow: hidden;
+  z-index: 10;
 
   transition: background-color 1s, height 0s 1s;
   background-color: rgba(255,255,255,0);
@@ -27,13 +28,13 @@
       text-align: right;
     }
   }
-}
 
-.notices.active {
-  height: 100%;
-  transition: background-color 1s 0s, height 0s 0s;
-  background-color: rgba(255,255,255,0.5);
-  section {
-    transform: translateY(0%);
+  &.active {
+    height: 100%;
+    transition: background-color 1s 0s, height 0s 0s;
+    background-color: rgba(255,255,255,0.5);
+    section {
+      transform: translateY(0%);
+    }
   }
 }

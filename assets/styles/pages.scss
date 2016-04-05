@@ -1,0 +1,323 @@
+/* Home page */
+
+.home {
+  /* Assume visitor does not have an accelerometer unless we detect one */
+  .mobile-ready {
+    display: none;
+  }
+
+  h2 {
+    border-top: 1px dashed #CA920D;
+    margin-top: 1.5em;
+    padding-top: 1.5em;
+  }
+
+  div.recent-lobs {
+    display: none;
+  }
+
+  ul.lob-history {
+    display: inline;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    li {
+      display: inline;
+      &::after {
+        content: ", ";
+      }
+    }
+    li:last-child {
+      &::after {
+        content: "...";
+      }
+    }
+  }
+}
+
+@mixin preloader {
+  padding-top: 2em;
+
+  .loader {
+    left: calc(50% - 24px);
+    position: relative;
+  }
+
+  .back {
+    padding-top: 2em;
+  }
+}
+
+/* Throw your phone flying page */
+
+.flyer {
+  max-width: $max-width;
+  text-align: center;
+
+  .connection-active {
+    display: none;
+  }
+
+  .phone-reading-panels {
+    position: relative;
+    min-height: 175px;
+    overflow: hidden;
+
+    .guage-widget {
+      transform: scale(0.66);
+      position: absolute;
+      left: calc(25% - 90px);
+      z-index: -1;
+
+      .caption {
+        padding: 20px;
+        font-weight: bold;
+        font-size: 110%;
+      }
+    }
+
+    .phone {
+      transform: scale(0.66);
+      position: absolute;
+      position: absolute;
+      left: calc(75% - 115px);
+      top: -30px;
+
+      #tridiv {
+        width: 350px;
+        height: 350px;
+        font-size: 37.5%;
+        margin: 0;
+        position: absolute;
+      }
+    }
+  }
+
+  .uplink-status {
+    font-size: 80%;
+    margin-bottom: 1em;
+
+    p.title-with-hint {
+      margin-bottom: 0;
+    }
+    p.hint {
+      margin: 0;
+      font-size: 80%;
+      color: #4A3B00;
+    }
+  }
+
+  .connecting-loader {
+    @include preloader;
+  }
+
+  .leaderboard {
+    display: none;
+    font-size: 85%;
+    border-top: 1px solid #ca920d;
+
+    h3 {
+      font-size: 100%;
+    }
+
+    form {
+      input[type=text] {
+        min-width: 280px;
+      }
+    }
+
+    .submitted-panel {
+      display: none;
+    }
+  }
+
+  .message {
+    margin: 0 0 1em 0;
+    font-size: 90%;
+    p {
+      margin: 0.5em 0;
+    }
+  }
+}
+
+/* Track another phone page */
+
+.tracker {
+  text-align: center;
+  width: $max-width;
+  margin: 0 auto;
+
+  .graph-and-phone {
+    overflow: hidden;
+    display: none;
+
+    #tracker-wrapper {
+      background-color: #FFF;
+      border: 1px solid #AAA;
+      float: left;
+      margin: 25px 0;
+      border-radius: 8px;
+      padding: 5px;
+      width: 570px;
+      position: relative;
+    }
+
+    #tracker-graph {
+      width: 555px;
+      height: 270px;
+    }
+
+    #tridiv {
+      float: right;
+      position: relative;
+      width: 350px;
+      height: 350px;
+      font-size: 37.5%;
+    }
+
+    .pause-button, .play-button {
+      position: absolute;
+      top: 5px;
+      right: 7px;
+      margin: 0;
+    }
+    .play-button {
+      display: none
+    }
+  }
+
+  @media screen and (max-width: $tablet-width) {
+    width: initial;
+    .graph-and-phone {
+      #tracker-wrapper {
+        width: 100%;
+      }
+
+      #tracker-graph {
+        float: none;
+        width: 100%;
+        height: 250px;
+      }
+      #tridiv {
+        float: none;
+        margin: 0 auto;
+        clear: left;
+      }
+    }
+  }
+
+  @media screen and (max-width: $mobile-width) {
+    .graph-and-phone {
+      padding-bottom: 200px;
+      position: relative;
+
+      #tracker-wrapper {
+        width: 100%;
+      }
+
+      #tracker-graph {
+        float: none;
+        width: 100%;
+        height: 160px;
+      }
+
+      #tridiv {
+        width: 100%;
+        height: 350px;
+        font-size: 37.5%;
+        transform: scale(0.6, 0.6);
+        position: absolute;
+        top: 160px;
+      }
+    }
+  }
+
+  .lock-unlock {
+    clear: both;
+  }
+
+  .connecting-loader {
+    @include preloader;
+  }
+
+  .flight-history {
+    display: none;
+    margin-bottom: 2em;
+
+    table {
+      margin: 0 auto;
+      th {
+        background-color: #B80201;
+        color: white;
+        padding: 10px 20px;
+        border-right: 1px solid #FC0;
+        font-weight: bold;
+        font-size: 80%;
+      }
+      tr:nth-child(odd) {
+        td {
+          background: #FFF1BA;
+        }
+      }
+      tr:nth-child(even) {
+        td {
+          background: #FFFFFF;
+        }
+      }
+      td {
+        padding: 10px 20px;
+        border-right: 1px solid #FC0;
+        font-weight: normal;
+        font-size: 80%;
+      }
+    }
+  }
+}
+
+/* Leaderboard page */
+.leaderboard {
+  table {
+    margin: 0 auto;
+    th {
+      background-color: #B80201;
+      color: white;
+      padding: 10px 20px;
+      border-right: 1px solid #FC0;
+      font-weight: bold;
+      font-size: 80%;
+    }
+    tr:nth-child(odd) {
+      td {
+        background: #FFF1BA;
+      }
+    }
+    tr:nth-child(even) {
+      td {
+        background: #FFFFFF;
+      }
+    }
+    td {
+      padding: 10px 20px;
+      border-right: 1px solid #FC0;
+      font-weight: normal;
+      font-size: 80%;
+    }
+  }
+
+  @media screen and (max-width: $mobile-width) {
+    table {
+      margin: 0 -5%;
+      width: 110%;
+      font-size: 80%;
+
+      th {
+        padding: 5px 5px;
+      }
+
+      td {
+        padding: 5px 5px;
+      }
+    }
+  }
+}

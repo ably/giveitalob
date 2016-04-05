@@ -1,12 +1,11 @@
 /* jshint esnext: true */
 
-import Struct from "../carbide/struct";
+import Struct from "../../node_modules/carbide/struct";
 
 var STATE_DEFAULTS = {
   uplinkStatus: "UNKNOWN",
   uplinkChannelName: "UNKNOWN",
-  flightOutputStatus: "FOLLOWING_FLIGHT", // FOLLOWING_LIVE | HOLDING_SNAPSHOT
-  liveFlight: [],
+  uplinkDevice: null,
   flightSnapshot: null,
   alert: ""
 };

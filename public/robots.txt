@@ -1,0 +1,4 @@
+User-agent: *
+Disallow:
+
+# Humans, see https://giveitalob.com/humans.txt

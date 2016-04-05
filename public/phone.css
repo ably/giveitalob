@@ -1,0 +1,553 @@
+/* 3D Phone model CSS */
+/* Source: http://tridiv.com/app/index.html?dmlldz1wcmV2aWV3JmRvYz17InNldHRpbmdzIjp7Im5hbWUiOiJhYmx5UGhvbmUiLCJsaWdodCI6InN0YXRpYyIsInNoYWRlIjoiLjMiLCJ0aW50IjoiLjMiLCJib3JkZXIiOiIwIiwiYmciOiIiLCJ6b29tIjoxMTIuNSwibWF0Y2giOiIwLjUiLCJzbmFwIjoib2ZmIn0sInNoYXBlcyI6W3sidHlwZSI6ImN1Ym9pZCIsInkiOiIxLjEyNSIsInciOiIxNiIsImgiOiIuNSIsImQiOiIzMiIsInJ5IjoiMTgwIiwiY3IiOiIyLjUiLCJjQWxsIjoiIzMwMzAzMCIsIm5hbWUiOlsiYmFjayJdLCJpQm0iOiJodHRwOi8vbG9iLXN0YWdpbmcuaGVyb2t1YXBwLmNvbS9pbWFnZXMvcGhvbmUvYmFjay5wbmcifSx7InR5cGUiOiJjdWJvaWQiLCJ3IjoiMTYuNSIsImgiOiIxLjc1IiwiZCI6IjMyLjUiLCJjciI6IjIuNjI1IiwiY0FsbCI6IiNkNGQxY2YiLCJuYW1lIjpbIm1pZCJdfSx7InR5cGUiOiJjdWJvaWQiLCJ5IjotMS4xMDAwMDAwMDAwMDAwMDAzLCJ3IjoiMTYiLCJoIjoiLjQ1IiwiZCI6IjMyIiwiY3IiOiIyLjUiLCJjQWxsIjoiIzMwMzAzMCIsImlUcCI6Imh0dHA6Ly9sb2Itc3RhZ2luZy5oZXJva3VhcHAuY29tL2ltYWdlcy9waG9uZS9mcm9udC5wbmciLCJuYW1lIjpbInRvcCJdfSx7InR5cGUiOiJjdWJvaWQiLCJ4IjoiLTguMzgiLCJ6IjotMTIuNSwidyI6Ii41IiwiaCI6Ii4yNSIsImQiOiIxLjUiLCJyeCI6IjAiLCJyeiI6LTkwLCJjciI6Ii4yNSIsImNBbGwiOiIjY2JjOGM2IiwibmFtZSI6WyJsb2NrIl19LHsidHlwZSI6ImN5bGluZGVyIiwieCI6Ii04LjM4IiwieiI6Ii05LjUiLCJkaWFtZXRlciI6IjEuMjUiLCJoIjoiMC4yNSIsInJ6IjotOTAsInNpZGVzIjoiMTIiLCJjQWxsIjoiI2NiYzhjNiIsIm5hbWUiOlsiYnRuLXBsdXMiXX0seyJ0eXBlIjoiY3lsaW5kZXIiLCJ4IjoiLTguMzgiLCJ6IjoiLTciLCJkaWFtZXRlciI6IjEuMjUiLCJoIjoiMC4yNSIsInJ6IjotOTAsInNpZGVzIjoiMTIiLCJjQWxsIjoiI2NiYzhjNiIsIm5hbWUiOlsiYnRuLWxlc3MiXX0seyJ0eXBlIjoiY3Vib2lkIiwieCI6My41LCJ6IjoiLTE2LjM4IiwidyI6Ii41IiwiaCI6Ii4yNSIsImQiOiIyLjc1IiwicngiOiIwIiwicnkiOi05MCwicnoiOi05MCwiY3IiOiIuMjUiLCJjQWxsIjoiI2NiYzhjNiIsIm5hbWUiOlsicG93ZXIiXX0seyJ0eXBlIjoiY3Vib2lkIiwieSI6Ii0xLjEiLCJ3IjoiMTQiLCJoIjoiLjQiLCJkIjoiMjEiLCJpVHAiOiJodHRwOi8vbG9iLXN0YWdpbmcuaGVyb2t1YXBwLmNvbS9pbWFnZXMvcGhvbmUvc2NyZWVuLnBuZyIsIm5hbWUiOiJjdWItOCIsIm8iOiIxIiwiY0FsbCI6IiNGRkNEMDAifV19 */
+#tridiv {
+  perspective: 800px;
+  position: absolute;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  font-size: 112.5%;
+  /* .back styles */
+  /* .mid styles */
+  /* .top styles */
+  /* .lock styles */
+  /* .btn-plus styles */
+  /* .btn-less styles */
+  /* .power styles */
+  /* .cub-8 styles */ }
+  #tridiv .scene, #tridiv .shape, #tridiv .face, #tridiv .face-wrapper, #tridiv .cr {
+    position: absolute;
+    transform-style: preserve-3d; }
+  #tridiv .scene {
+    width: 80em;
+    height: 80em;
+    top: 50%;
+    left: 50%;
+    margin: -40em 0 0 -40em; }
+  #tridiv .shape {
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    transform-origin: 50%; }
+  #tridiv .face, #tridiv .face-wrapper {
+    overflow: hidden;
+    transform-origin: 0 0;
+    backface-visibility: hidden;
+    /* hidden by default, prevent blinking and other weird rendering glitchs */ }
+  #tridiv .face {
+    background-size: 100% 100% !important;
+    background-position: center; }
+  #tridiv .face-wrapper .face {
+    left: 100%;
+    width: 100%;
+    height: 100%; }
+  #tridiv .photon-shader {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%; }
+  #tridiv .side {
+    left: 50%; }
+  #tridiv .cr, #tridiv .cr .side {
+    height: 100%; }
+  #tridiv [class*="cuboid"] .ft, #tridiv [class*="cuboid"] .bk {
+    width: 100%;
+    height: 100%; }
+  #tridiv [class*="cuboid"] .bk {
+    left: 100%; }
+  #tridiv [class*="cuboid"] .rt {
+    transform: rotateY(-90deg) translateX(-50%); }
+  #tridiv [class*="cuboid"] .lt {
+    transform: rotateY(90deg) translateX(-50%); }
+  #tridiv [class*="cuboid"] .tp {
+    transform: rotateX(90deg) translateY(-50%); }
+  #tridiv [class*="cuboid"] .bm {
+    transform: rotateX(-90deg) translateY(-50%); }
+  #tridiv [class*="cuboid"] .lt {
+    left: 100%; }
+  #tridiv [class*="cuboid"] .bm {
+    top: 100%; }
+  #tridiv [class*="cylinder"] .tp {
+    transform: rotateX(90deg) translateY(-50%); }
+  #tridiv [class*="cylinder"] .bm {
+    transform: rotateX(-90deg) translateY(-50%); }
+  #tridiv [class*="cylinder"] .tp, #tridiv [class*="cylinder"] .bm, #tridiv [class*="cylinder"] .tp .photon-shader, #tridiv [class*="cylinder"] .bm .photon-shader {
+    border-radius: 50%; }
+  #tridiv [class*="cylinder"] .bm {
+    top: 100%; }
+  #tridiv .back {
+    transform: translate3D(0em, 1.125em, 0em) rotateX(0deg) rotateY(180deg) rotateZ(0deg);
+    opacity: 1;
+    width: 16em;
+    height: .5em;
+    margin: -0.25em 0 0 -8em; }
+  #tridiv .back .ft {
+    transform: translateZ(16em); }
+  #tridiv .back .bk {
+    transform: translateZ(-16em) rotateY(180deg); }
+  #tridiv .back .rt, #tridiv .back .lt {
+    width: 32em;
+    height: .5em; }
+  #tridiv .back .tp, #tridiv .back .bm {
+    width: 16em;
+    height: 32em; }
+  #tridiv .back .face {
+    background-color: #303030; }
+  #tridiv .back .bm {
+    background: url(/images/phone/back.png); }
+  #tridiv .back .ft {
+    width: 11em;
+    margin-left: 2.5em; }
+  #tridiv .back .bk {
+    width: 11em;
+    margin-left: -2.5em; }
+  #tridiv .back .rt, #tridiv .back .lt {
+    width: 27em; }
+  #tridiv .back .tp, #tridiv .back .bm, #tridiv .back .tp .photon-shader, #tridiv .back .bm .photon-shader {
+    border-radius: 2.5em; }
+  #tridiv .back .cr {
+    width: 2.5em;
+    left: 1.25em; }
+  #tridiv .back .cr-0 {
+    transform: translate3D(11em, 0, 13.5em); }
+  #tridiv .back .cr-1 {
+    transform: translate3D(11em, 0, -13.5em); }
+  #tridiv .back .cr-2 {
+    transform: translate3D(0, 0, -13.5em); }
+  #tridiv .back .cr-3 {
+    transform: translate3D(0, 0, 13.5em); }
+  #tridiv .back .cr-0 .s0 {
+    transform: rotateY(9deg) translate3D(-50%, 0, 2.475em); }
+  #tridiv .back .cr-0 .s1 {
+    transform: rotateY(27deg) translate3D(-50%, 0, 2.475em); }
+  #tridiv .back .cr-0 .s2 {
+    transform: rotateY(45deg) translate3D(-50%, 0, 2.475em); }
+  #tridiv .back .cr-0 .s3 {
+    transform: rotateY(63deg) translate3D(-50%, 0, 2.475em); }
+  #tridiv .back .cr-0 .s4 {
+    transform: rotateY(81deg) translate3D(-50%, 0, 2.475em); }
+  #tridiv .back .cr-1 .s0 {
+    transform: rotateY(99deg) translate3D(-50%, 0, 2.475em); }
+  #tridiv .back .cr-1 .s1 {
+    transform: rotateY(117deg) translate3D(-50%, 0, 2.475em); }
+  #tridiv .back .cr-1 .s2 {
+    transform: rotateY(135deg) translate3D(-50%, 0, 2.475em); }
+  #tridiv .back .cr-1 .s3 {
+    transform: rotateY(153deg) translate3D(-50%, 0, 2.475em); }
+  #tridiv .back .cr-1 .s4 {
+    transform: rotateY(171deg) translate3D(-50%, 0, 2.475em); }
+  #tridiv .back .cr-2 .s0 {
+    transform: rotateY(189deg) translate3D(-50%, 0, 2.475em); }
+  #tridiv .back .cr-2 .s1 {
+    transform: rotateY(207deg) translate3D(-50%, 0, 2.475em); }
+  #tridiv .back .cr-2 .s2 {
+    transform: rotateY(225deg) translate3D(-50%, 0, 2.475em); }
+  #tridiv .back .cr-2 .s3 {
+    transform: rotateY(243deg) translate3D(-50%, 0, 2.475em); }
+  #tridiv .back .cr-2 .s4 {
+    transform: rotateY(261deg) translate3D(-50%, 0, 2.475em); }
+  #tridiv .back .cr-3 .s0 {
+    transform: rotateY(279deg) translate3D(-50%, 0, 2.475em); }
+  #tridiv .back .cr-3 .s1 {
+    transform: rotateY(297deg) translate3D(-50%, 0, 2.475em); }
+  #tridiv .back .cr-3 .s2 {
+    transform: rotateY(315deg) translate3D(-50%, 0, 2.475em); }
+  #tridiv .back .cr-3 .s3 {
+    transform: rotateY(333deg) translate3D(-50%, 0, 2.475em); }
+  #tridiv .back .cr-3 .s4 {
+    transform: rotateY(351deg) translate3D(-50%, 0, 2.475em); }
+  #tridiv .back .side {
+    width: 0.8169222016226814em; }
+  #tridiv .mid {
+    transform: translate3D(0em, 0em, 0em) rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+    opacity: 1;
+    width: 16.5em;
+    height: 1.75em;
+    margin: -0.875em 0 0 -8.25em; }
+  #tridiv .mid .ft {
+    transform: translateZ(16.25em); }
+  #tridiv .mid .bk {
+    transform: translateZ(-16.25em) rotateY(180deg); }
+  #tridiv .mid .rt, #tridiv .mid .lt {
+    width: 32.5em;
+    height: 1.75em; }
+  #tridiv .mid .tp, #tridiv .mid .bm {
+    width: 16.5em;
+    height: 32.5em; }
+  #tridiv .mid .face {
+    background-color: #d4d1cf; }
+  #tridiv .mid .ft {
+    width: 11.25em;
+    margin-left: 2.625em; }
+  #tridiv .mid .bk {
+    width: 11.25em;
+    margin-left: -2.625em; }
+  #tridiv .mid .rt, #tridiv .mid .lt {
+    width: 27.25em; }
+  #tridiv .mid .tp, #tridiv .mid .bm, #tridiv .mid .tp .photon-shader, #tridiv .mid .bm .photon-shader {
+    border-radius: 2.625em; }
+  #tridiv .mid .cr {
+    width: 2.625em;
+    left: 1.3125em; }
+  #tridiv .mid .cr-0 {
+    transform: translate3D(11.25em, 0, 13.625em); }
+  #tridiv .mid .cr-1 {
+    transform: translate3D(11.25em, 0, -13.625em); }
+  #tridiv .mid .cr-2 {
+    transform: translate3D(0, 0, -13.625em); }
+  #tridiv .mid .cr-3 {
+    transform: translate3D(0, 0, 13.625em); }
+  #tridiv .mid .cr-0 .s0 {
+    transform: rotateY(9deg) translate3D(-50%, 0, 2.6em); }
+  #tridiv .mid .cr-0 .s1 {
+    transform: rotateY(27deg) translate3D(-50%, 0, 2.6em); }
+  #tridiv .mid .cr-0 .s2 {
+    transform: rotateY(45deg) translate3D(-50%, 0, 2.6em); }
+  #tridiv .mid .cr-0 .s3 {
+    transform: rotateY(63deg) translate3D(-50%, 0, 2.6em); }
+  #tridiv .mid .cr-0 .s4 {
+    transform: rotateY(81deg) translate3D(-50%, 0, 2.6em); }
+  #tridiv .mid .cr-1 .s0 {
+    transform: rotateY(99deg) translate3D(-50%, 0, 2.6em); }
+  #tridiv .mid .cr-1 .s1 {
+    transform: rotateY(117deg) translate3D(-50%, 0, 2.6em); }
+  #tridiv .mid .cr-1 .s2 {
+    transform: rotateY(135deg) translate3D(-50%, 0, 2.6em); }
+  #tridiv .mid .cr-1 .s3 {
+    transform: rotateY(153deg) translate3D(-50%, 0, 2.6em); }
+  #tridiv .mid .cr-1 .s4 {
+    transform: rotateY(171deg) translate3D(-50%, 0, 2.6em); }
+  #tridiv .mid .cr-2 .s0 {
+    transform: rotateY(189deg) translate3D(-50%, 0, 2.6em); }
+  #tridiv .mid .cr-2 .s1 {
+    transform: rotateY(207deg) translate3D(-50%, 0, 2.6em); }
+  #tridiv .mid .cr-2 .s2 {
+    transform: rotateY(225deg) translate3D(-50%, 0, 2.6em); }
+  #tridiv .mid .cr-2 .s3 {
+    transform: rotateY(243deg) translate3D(-50%, 0, 2.6em); }
+  #tridiv .mid .cr-2 .s4 {
+    transform: rotateY(261deg) translate3D(-50%, 0, 2.6em); }
+  #tridiv .mid .cr-3 .s0 {
+    transform: rotateY(279deg) translate3D(-50%, 0, 2.6em); }
+  #tridiv .mid .cr-3 .s1 {
+    transform: rotateY(297deg) translate3D(-50%, 0, 2.6em); }
+  #tridiv .mid .cr-3 .s2 {
+    transform: rotateY(315deg) translate3D(-50%, 0, 2.6em); }
+  #tridiv .mid .cr-3 .s3 {
+    transform: rotateY(333deg) translate3D(-50%, 0, 2.6em); }
+  #tridiv .mid .cr-3 .s4 {
+    transform: rotateY(351deg) translate3D(-50%, 0, 2.6em); }
+  #tridiv .mid .side {
+    width: 0.8565183117038154em; }
+  #tridiv .top {
+    transform: translate3D(0em, -1.1em, 0em) rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+    opacity: 1;
+    width: 16em;
+    height: .45em;
+    margin: -0.225em 0 0 -8em; }
+  #tridiv .top .ft {
+    transform: translateZ(16em); }
+  #tridiv .top .bk {
+    transform: translateZ(-16em) rotateY(180deg); }
+  #tridiv .top .rt, #tridiv .top .lt {
+    width: 32em;
+    height: .45em; }
+  #tridiv .top .tp, #tridiv .top .bm {
+    width: 16em;
+    height: 32em; }
+  #tridiv .top .face {
+    background-color: #303030; }
+  #tridiv .top .tp {
+    background: url(/images/phone/front.png); }
+  #tridiv .top .ft {
+    width: 11em;
+    margin-left: 2.5em; }
+  #tridiv .top .bk {
+    width: 11em;
+    margin-left: -2.5em; }
+  #tridiv .top .rt, #tridiv .top .lt {
+    width: 27em; }
+  #tridiv .top .tp, #tridiv .top .bm, #tridiv .top .tp .photon-shader, #tridiv .top .bm .photon-shader {
+    border-radius: 2.5em; }
+  #tridiv .top .cr {
+    width: 2.5em;
+    left: 1.25em; }
+  #tridiv .top .cr-0 {
+    transform: translate3D(11em, 0, 13.5em); }
+  #tridiv .top .cr-1 {
+    transform: translate3D(11em, 0, -13.5em); }
+  #tridiv .top .cr-2 {
+    transform: translate3D(0, 0, -13.5em); }
+  #tridiv .top .cr-3 {
+    transform: translate3D(0, 0, 13.5em); }
+  #tridiv .top .cr-0 .s0 {
+    transform: rotateY(9deg) translate3D(-50%, 0, 2.475em); }
+  #tridiv .top .cr-0 .s1 {
+    transform: rotateY(27deg) translate3D(-50%, 0, 2.475em); }
+  #tridiv .top .cr-0 .s2 {
+    transform: rotateY(45deg) translate3D(-50%, 0, 2.475em); }
+  #tridiv .top .cr-0 .s3 {
+    transform: rotateY(63deg) translate3D(-50%, 0, 2.475em); }
+  #tridiv .top .cr-0 .s4 {
+    transform: rotateY(81deg) translate3D(-50%, 0, 2.475em); }
+  #tridiv .top .cr-1 .s0 {
+    transform: rotateY(99deg) translate3D(-50%, 0, 2.475em); }
+  #tridiv .top .cr-1 .s1 {
+    transform: rotateY(117deg) translate3D(-50%, 0, 2.475em); }
+  #tridiv .top .cr-1 .s2 {
+    transform: rotateY(135deg) translate3D(-50%, 0, 2.475em); }
+  #tridiv .top .cr-1 .s3 {
+    transform: rotateY(153deg) translate3D(-50%, 0, 2.475em); }
+  #tridiv .top .cr-1 .s4 {
+    transform: rotateY(171deg) translate3D(-50%, 0, 2.475em); }
+  #tridiv .top .cr-2 .s0 {
+    transform: rotateY(189deg) translate3D(-50%, 0, 2.475em); }
+  #tridiv .top .cr-2 .s1 {
+    transform: rotateY(207deg) translate3D(-50%, 0, 2.475em); }
+  #tridiv .top .cr-2 .s2 {
+    transform: rotateY(225deg) translate3D(-50%, 0, 2.475em); }
+  #tridiv .top .cr-2 .s3 {
+    transform: rotateY(243deg) translate3D(-50%, 0, 2.475em); }
+  #tridiv .top .cr-2 .s4 {
+    transform: rotateY(261deg) translate3D(-50%, 0, 2.475em); }
+  #tridiv .top .cr-3 .s0 {
+    transform: rotateY(279deg) translate3D(-50%, 0, 2.475em); }
+  #tridiv .top .cr-3 .s1 {
+    transform: rotateY(297deg) translate3D(-50%, 0, 2.475em); }
+  #tridiv .top .cr-3 .s2 {
+    transform: rotateY(315deg) translate3D(-50%, 0, 2.475em); }
+  #tridiv .top .cr-3 .s3 {
+    transform: rotateY(333deg) translate3D(-50%, 0, 2.475em); }
+  #tridiv .top .cr-3 .s4 {
+    transform: rotateY(351deg) translate3D(-50%, 0, 2.475em); }
+  #tridiv .top .side {
+    width: 0.8169222016226814em; }
+  #tridiv .lock {
+    transform: translate3D(-8.38em, 0em, -12.5em) rotateX(0deg) rotateY(0deg) rotateZ(-90deg);
+    opacity: 1;
+    width: .5em;
+    height: .25em;
+    margin: -0.125em 0 0 -0.25em; }
+  #tridiv .lock .ft {
+    transform: translateZ(0.75em); }
+  #tridiv .lock .bk {
+    transform: translateZ(-0.75em) rotateY(180deg); }
+  #tridiv .lock .rt, #tridiv .lock .lt {
+    width: 1.5em;
+    height: .25em; }
+  #tridiv .lock .tp, #tridiv .lock .bm {
+    width: .5em;
+    height: 1.5em; }
+  #tridiv .lock .face {
+    background-color: #cbc8c6; }
+  #tridiv .lock .ft {
+    width: 0em;
+    margin-left: .25em; }
+  #tridiv .lock .bk {
+    width: 0em;
+    margin-left: -0.25em; }
+  #tridiv .lock .rt, #tridiv .lock .lt {
+    width: 1em; }
+  #tridiv .lock .tp, #tridiv .lock .bm, #tridiv .lock .tp .photon-shader, #tridiv .lock .bm .photon-shader {
+    border-radius: .25em; }
+  #tridiv .lock .cr {
+    width: .25em;
+    left: 0.125em; }
+  #tridiv .lock .cr-0 {
+    transform: translate3D(0em, 0, 0.5em); }
+  #tridiv .lock .cr-1 {
+    transform: translate3D(0em, 0, -0.5em); }
+  #tridiv .lock .cr-2 {
+    transform: translate3D(0, 0, -0.5em); }
+  #tridiv .lock .cr-3 {
+    transform: translate3D(0, 0, 0.5em); }
+  #tridiv .lock .cr-0 .s0 {
+    transform: rotateY(15deg) translate3D(-50%, 0, 0.225em); }
+  #tridiv .lock .cr-0 .s1 {
+    transform: rotateY(45deg) translate3D(-50%, 0, 0.225em); }
+  #tridiv .lock .cr-0 .s2 {
+    transform: rotateY(75deg) translate3D(-50%, 0, 0.225em); }
+  #tridiv .lock .cr-1 .s0 {
+    transform: rotateY(105deg) translate3D(-50%, 0, 0.225em); }
+  #tridiv .lock .cr-1 .s1 {
+    transform: rotateY(135deg) translate3D(-50%, 0, 0.225em); }
+  #tridiv .lock .cr-1 .s2 {
+    transform: rotateY(165deg) translate3D(-50%, 0, 0.225em); }
+  #tridiv .lock .cr-2 .s0 {
+    transform: rotateY(195deg) translate3D(-50%, 0, 0.225em); }
+  #tridiv .lock .cr-2 .s1 {
+    transform: rotateY(225deg) translate3D(-50%, 0, 0.225em); }
+  #tridiv .lock .cr-2 .s2 {
+    transform: rotateY(255deg) translate3D(-50%, 0, 0.225em); }
+  #tridiv .lock .cr-3 .s0 {
+    transform: rotateY(285deg) translate3D(-50%, 0, 0.225em); }
+  #tridiv .lock .cr-3 .s1 {
+    transform: rotateY(315deg) translate3D(-50%, 0, 0.225em); }
+  #tridiv .lock .cr-3 .s2 {
+    transform: rotateY(345deg) translate3D(-50%, 0, 0.225em); }
+  #tridiv .lock .side {
+    width: 0.15897459621556134em; }
+  #tridiv .btn-plus {
+    transform: translate3D(-8.38em, 0em, -9.5em) rotateX(0deg) rotateY(0deg) rotateZ(-90deg);
+    opacity: 1;
+    width: 1.25em;
+    height: 0.25em;
+    margin: -0.125em 0 0 -0.625em; }
+  #tridiv .btn-plus .tp, #tridiv .btn-plus .bm {
+    width: 1.25em;
+    height: 1.25em; }
+  #tridiv .btn-plus .side {
+    width: 0.3599364905389034em;
+    height: 0.25em; }
+  #tridiv .btn-plus .s0 {
+    transform: rotateY(15deg) translate3D(-50%, 0, 0.6em); }
+  #tridiv .btn-plus .s1 {
+    transform: rotateY(45deg) translate3D(-50%, 0, 0.6em); }
+  #tridiv .btn-plus .s2 {
+    transform: rotateY(75deg) translate3D(-50%, 0, 0.6em); }
+  #tridiv .btn-plus .s3 {
+    transform: rotateY(105deg) translate3D(-50%, 0, 0.6em); }
+  #tridiv .btn-plus .s4 {
+    transform: rotateY(135deg) translate3D(-50%, 0, 0.6em); }
+  #tridiv .btn-plus .s5 {
+    transform: rotateY(165deg) translate3D(-50%, 0, 0.6em); }
+  #tridiv .btn-plus .s6 {
+    transform: rotateY(195deg) translate3D(-50%, 0, 0.6em); }
+  #tridiv .btn-plus .s7 {
+    transform: rotateY(225deg) translate3D(-50%, 0, 0.6em); }
+  #tridiv .btn-plus .s8 {
+    transform: rotateY(255deg) translate3D(-50%, 0, 0.6em); }
+  #tridiv .btn-plus .s9 {
+    transform: rotateY(285deg) translate3D(-50%, 0, 0.6em); }
+  #tridiv .btn-plus .s10 {
+    transform: rotateY(315deg) translate3D(-50%, 0, 0.6em); }
+  #tridiv .btn-plus .s11 {
+    transform: rotateY(345deg) translate3D(-50%, 0, 0.6em); }
+  #tridiv .btn-plus .face, #tridiv .btn-plus .side {
+    background-color: #cbc8c6; }
+  #tridiv .btn-less {
+    transform: translate3D(-8.38em, 0em, -7em) rotateX(0deg) rotateY(0deg) rotateZ(-90deg);
+    opacity: 1;
+    width: 1.25em;
+    height: 0.25em;
+    margin: -0.125em 0 0 -0.625em; }
+  #tridiv .btn-less .tp, #tridiv .btn-less .bm {
+    width: 1.25em;
+    height: 1.25em; }
+  #tridiv .btn-less .side {
+    width: 0.3599364905389034em;
+    height: 0.25em; }
+  #tridiv .btn-less .s0 {
+    transform: rotateY(15deg) translate3D(-50%, 0, 0.6em); }
+  #tridiv .btn-less .s1 {
+    transform: rotateY(45deg) translate3D(-50%, 0, 0.6em); }
+  #tridiv .btn-less .s2 {
+    transform: rotateY(75deg) translate3D(-50%, 0, 0.6em); }
+  #tridiv .btn-less .s3 {
+    transform: rotateY(105deg) translate3D(-50%, 0, 0.6em); }
+  #tridiv .btn-less .s4 {
+    transform: rotateY(135deg) translate3D(-50%, 0, 0.6em); }
+  #tridiv .btn-less .s5 {
+    transform: rotateY(165deg) translate3D(-50%, 0, 0.6em); }
+  #tridiv .btn-less .s6 {
+    transform: rotateY(195deg) translate3D(-50%, 0, 0.6em); }
+  #tridiv .btn-less .s7 {
+    transform: rotateY(225deg) translate3D(-50%, 0, 0.6em); }
+  #tridiv .btn-less .s8 {
+    transform: rotateY(255deg) translate3D(-50%, 0, 0.6em); }
+  #tridiv .btn-less .s9 {
+    transform: rotateY(285deg) translate3D(-50%, 0, 0.6em); }
+  #tridiv .btn-less .s10 {
+    transform: rotateY(315deg) translate3D(-50%, 0, 0.6em); }
+  #tridiv .btn-less .s11 {
+    transform: rotateY(345deg) translate3D(-50%, 0, 0.6em); }
+  #tridiv .btn-less .face, #tridiv .btn-less .side {
+    background-color: #cbc8c6; }
+  #tridiv .power {
+    transform: translate3D(3.5em, 0em, -16.38em) rotateX(0deg) rotateY(-90deg) rotateZ(-90deg);
+    opacity: 1;
+    width: .5em;
+    height: .25em;
+    margin: -0.125em 0 0 -0.25em; }
+  #tridiv .power .ft {
+    transform: translateZ(1.375em); }
+  #tridiv .power .bk {
+    transform: translateZ(-1.375em) rotateY(180deg); }
+  #tridiv .power .rt, #tridiv .power .lt {
+    width: 2.75em;
+    height: .25em; }
+  #tridiv .power .tp, #tridiv .power .bm {
+    width: .5em;
+    height: 2.75em; }
+  #tridiv .power .face {
+    background-color: #cbc8c6; }
+  #tridiv .power .ft {
+    width: 0em;
+    margin-left: .25em; }
+  #tridiv .power .bk {
+    width: 0em;
+    margin-left: -0.25em; }
+  #tridiv .power .rt, #tridiv .power .lt {
+    width: 2.25em; }
+  #tridiv .power .tp, #tridiv .power .bm, #tridiv .power .tp .photon-shader, #tridiv .power .bm .photon-shader {
+    border-radius: .25em; }
+  #tridiv .power .cr {
+    width: .25em;
+    left: 0.125em; }
+  #tridiv .power .cr-0 {
+    transform: translate3D(0em, 0, 1.125em); }
+  #tridiv .power .cr-1 {
+    transform: translate3D(0em, 0, -1.125em); }
+  #tridiv .power .cr-2 {
+    transform: translate3D(0, 0, -1.125em); }
+  #tridiv .power .cr-3 {
+    transform: translate3D(0, 0, 1.125em); }
+  #tridiv .power .cr-0 .s0 {
+    transform: rotateY(15deg) translate3D(-50%, 0, 0.225em); }
+  #tridiv .power .cr-0 .s1 {
+    transform: rotateY(45deg) translate3D(-50%, 0, 0.225em); }
+  #tridiv .power .cr-0 .s2 {
+    transform: rotateY(75deg) translate3D(-50%, 0, 0.225em); }
+  #tridiv .power .cr-1 .s0 {
+    transform: rotateY(105deg) translate3D(-50%, 0, 0.225em); }
+  #tridiv .power .cr-1 .s1 {
+    transform: rotateY(135deg) translate3D(-50%, 0, 0.225em); }
+  #tridiv .power .cr-1 .s2 {
+    transform: rotateY(165deg) translate3D(-50%, 0, 0.225em); }
+  #tridiv .power .cr-2 .s0 {
+    transform: rotateY(195deg) translate3D(-50%, 0, 0.225em); }
+  #tridiv .power .cr-2 .s1 {
+    transform: rotateY(225deg) translate3D(-50%, 0, 0.225em); }
+  #tridiv .power .cr-2 .s2 {
+    transform: rotateY(255deg) translate3D(-50%, 0, 0.225em); }
+  #tridiv .power .cr-3 .s0 {
+    transform: rotateY(285deg) translate3D(-50%, 0, 0.225em); }
+  #tridiv .power .cr-3 .s1 {
+    transform: rotateY(315deg) translate3D(-50%, 0, 0.225em); }
+  #tridiv .power .cr-3 .s2 {
+    transform: rotateY(345deg) translate3D(-50%, 0, 0.225em); }
+  #tridiv .power .side {
+    width: 0.15897459621556134em; }
+  #tridiv .cub-8 {
+    transform: translate3D(0em, -1.1em, 0em) rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+    opacity: 1;
+    width: 14em;
+    height: .4em;
+    margin: -0.2em 0 0 -7em; }
+  #tridiv .cub-8 .ft {
+    transform: translateZ(10.5em); }
+  #tridiv .cub-8 .bk {
+    transform: translateZ(-10.5em) rotateY(180deg); }
+  #tridiv .cub-8 .rt, #tridiv .cub-8 .lt {
+    width: 21em;
+    height: .4em; }
+  #tridiv .cub-8 .tp, #tridiv .cub-8 .bm {
+    width: 14em;
+    height: 21em; }
+  #tridiv .cub-8 .face {
+    background-color: #FFCD00; }
+  #tridiv .cub-8 .tp {
+    background: url(/images/phone/screen.png); }
+

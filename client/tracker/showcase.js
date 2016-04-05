@@ -8,7 +8,7 @@ export default function TrackerShowcase(window){
   if ( !(this instanceof TrackerShowcase) ) { return new TrackerShowcase(window); }
   var showcase = this;
   var views = [];
-
+  var phones = [];
 
   this.update = function(projection){
     // Values needed in display
@@ -31,19 +31,26 @@ export default function TrackerShowcase(window){
     views.push(view);
   };
 
-  // DEBT
+  this.addPhone = function(phone) {
+    phones.push(phone);
+  }
+
   this.addReading = function(newReading){
     views.forEach(function(view){
-      if (view.addReading) {
-        view.addReading(newReading);
-      }
+      view.addReading(newReading);
     });
   }
 
-  this.setReadings = function(readings){
+  this.addFlight = function(newFlightData, live) {
     views.forEach(function(view){
-      if (view.setReadings) {
-        view.setReadings(readings);
+      view.addFlight(newFlightData, live);
+    });
+  }
+
+  this.orientatePhones = function(position) {
+    phones.forEach(function(phone){
+      if (phone.setOrientation) {
+        phone.setOrientation(position);
       }
     });
   }

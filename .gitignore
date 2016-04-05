@@ -36,6 +36,8 @@ build/
 
 node_modules
 **/bundle.js
-vendor
 *.log
 otest/*
+
+## Do not commit local ENV file used by heroku local
+.env

@@ -1,208 +1,26 @@
-@import url(https://fonts.googleapis.com/css?family=Raleway:400,300,200);
+/* Global Lob CSS */
 
-@import 'vendor/scut';
-@import "./notices";
-@import "./uplink";
-@import "./header";
+$max-width: 980px; /* Designed for up to tablet */
+$tablet-width: 979px; /* Designed for up to tablet */
+$mobile-width: 500px;
 
-// RESETS
-// Preferred behaviour
+$placeholder-color: #999;
+
+@import url(https://fonts.googleapis.com/css?family=Raleway:400,300);
+
+/* CSS resets
+   Preferred behaviour */
+@import "node_modules/scut/dist/scut";
 @include scut-reset-border-box;
 @include scut-reset-button;
 @include scut-sticky-footer-fluid(body, footer);
-// @include scut-reset-semanticize;
 
-// STRUCTURE
-// styling added to semantic elements
+/* Shortcuts for vendor prefixes */
+@import "node_modules/bourbon/app/assets/stylesheets/bourbon";
 
-html, body {
-  margin: 0;
-}
-
-body {
-  font-family: 'Raleway', sans-serif;
-  font-weight: 300;
-  background-color: #FFCC00;
-  font-size: 1.2rem;
-}
-
-h1 {
-  font-size: 300%;
-  text-align: center;
-  font-weight: inherit;
-  margin: 0;
-}
-
-h2 {
-  font-size: 120%;
-  margin: 0;
-  text-align: center;
-}
-
-hr {
-  border: 1px solid black;
-}
-
-
-// LAYOUT
-// elements used across pages
-
-nav {
-  padding-top: 1em;
-  text-align: center;
-}
-.nav-item {
-  border: 2px solid;
-  border-radius: 4px;
-  padding: 0.1em 0.5em;
-  background-image: linear-gradient(to top, #fc0, #FFE788);
-  color: black;
-  text-decoration: none;
-  display: inline-block;
-  margin: 0.5em;
-  &:focus, &:active {
-    background-image: linear-gradient(to bottom, #fc0, #FFE788);
-    text-decoration: underline;
-  }
-}
-
-form.button {
-  display: block;
-  max-width: 560px;
-  background-image: linear-gradient(to top, #fc0, #FFE788);
-  font-size: 120%;
-  text-align: center;
-  margin: 1rem auto;
-  border: 2px solid;
-  border-radius: 4px;
-  button {
-    padding: 0.5em;
-    &:focus, &:active {
-      text-decoration: underline;
-    }
-  }
-  button[disabled] {
-    color: #AAA;
-  }
-}
-.center {
-  text-align: center;
-}
-
-.readout {
-  text-align: center;
-  font-family: monospace;
-}
-
-.width-limited {
-  max-width: 760px;
-  margin: 0 auto;
-  padding-left: 1em;
-  padding-right: 1em;
-}
-
-span {
-  &.right {
-    width: 50%;
-    display: inline-block;
-    padding-right: 0.4em;
-    text-align: right;
-  }
-  &.left {
-    width: 50%;
-    display: inline-block;
-    padding-left: 0.4em;
-    text-align: left;
-  }
-}
-
-
-::-webkit-input-placeholder {
-  color: #777;
-}
-
-:-moz-placeholder { /* Firefox 18- */
-  color: #777;
-}
-
-::-moz-placeholder {  /* Firefox 19+ */
-  color: #777;
-}
-
-:-ms-input-placeholder {
-  color: #777;
-}
-
-input {
-  font-size: 100%;
-  width: 50%;
-  margin-right: 0.4em;
-  background-color: rgba(0,0,0,0);
-  font-family: raleway;
-}
-
-#tracker-graph {
-  background-color: #EEE;
-  border: 2px solid black;
-}
-canvas {
-  background-color: #EEE;
-  width: 100%;
-}
-main {
-  a.button {
-    background-image: linear-gradient(to top, #fc0, #FFE788);
-    font-size: 120%;
-    text-align: center;
-    border: 2px solid;
-    display: block;
-    padding: 0.5em;
-    border-radius: 4px;
-    margin: 1rem auto;
-    max-width: 560px;
-    text-decoration: none;
-    color: black;
-  }
-}
-
-footer {
-  background-color: black;
-  color: white;
-  a {
-    // text-decoration: none;
-    font-weight: bold;
-    // color: #266CB3;
-    color: #FC0;
-  }
-}
-
-footer p {
-  padding-left: 1em;
-  padding-right: 1em;
-  text-align: right;
-}
-
-footer span {
-  width: 22%;
-}
-.icon {
-  display: inline-block;
-  width: 1em;
-  height: 1em;
-}
-
-/* ================================================================================
-Example showing how to change the color/size of the icons:
-.icon-name {
-font-size: 32px; // works because "width" & "height" were set using em units
-color: red; // works because "fill" was set to "currentColor"
-}
-================================================================================ */
-
-.icon-twitter {
-  width: 0.9287109375em;
-}
-
-.icon-facebook {
-  width: 0.5712890625em;
-}
+/* Our CSS files */
+@import "framework";
+@import "components";
+@import "layout";
+@import "pages";
+@import "notices";

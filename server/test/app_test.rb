@@ -41,7 +41,7 @@ class AppTest < MiniTest::Test
 
   def test_posting_new_flight_redirects_with_token_and_channel
     # DEBT start flight
-    post '/new-flight'
+    get '/new-flight'
     assert_match(/flyer\?channel-name=[A-Z0-9]{4}&token=/, last_response.location)
   end
 
@@ -52,7 +52,7 @@ class AppTest < MiniTest::Test
   end
 
   def test_request_tracking_a_flight_should_redirect_with_token_and_channel
-    post '/track-flight', {'channel-name': 'QWER'}
+    get '/track-flight', {'channel-name': 'QWER'}
     # DEBT might make sense to redirect to /tracker/:channel-name
     assert_match(/tracker\?channel-name=QWER&token=/, last_response.location)
   end

@@ -1,23 +1,24 @@
 /* jshint esnext: true */
 
-export default function Display($root){
-  var $message = $root.querySelector("[data-display~=message]");
+export default function Display() {
+  var $root = $('.notices'),
+      $message = $root.find('.message');
+
   return Object.create({}, {
     active: {
       set: function(active){
         var ACTIVE = "active";
         if (active) {
-          $root.classList.add(ACTIVE);
+          $root.addClass(ACTIVE);
         } else {
-          $root.classList.remove(ACTIVE);
+          $root.removeClass(ACTIVE);
         }
       },
       enumerable: true
     },
     message: {
       set: function(message){
-        console.log(message);
-        $message.innerHTML = message;
+        $message.html(message);
       }
     }
   });

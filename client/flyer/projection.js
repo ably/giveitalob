@@ -2,49 +2,85 @@
 
 function readingsDuration(readings){
   if (!readings[0]) { return 0; }
-  var last = readings.length;
+
   var t0 = readings[0].timestamp;
-  var t1 = readings[last - 1].timestamp;
-  // DEBT Magic number that make sense when sample rate is every 250ms
-  return (t1 + 250 - t0) / 1000;
+  var t1 = readings[readings.length - 1].timestamp;
+
+  return (t1 - t0) / 1000;
 }
-function altitudeForFreefallDuration(duration){
-  // Altitude Calculation
 
-  // SUVAT
-  // s = vt - 0.5 * a * t^2
-  // input
-  // s = s <- desired result
-  // u = ? <- not needed
-  // v = 0 <- stationary at top
-  // a = - 9.81 <- local g
-  // t = flightTime/2 time to top of arc
+function altitudeForFreefallDuration(durationInSeconds){
+  /*
+    Altitude Calculation
 
-  // s = 9.81 * 1/8 t^2
-  var t = duration;
-  return 9.81/8 * t * t;
+    Makes an assumption that magnitude is 10 (stationery) at
+    the top of the throw and bottom of the throw starts when magnitude
+    starts increasing again indicating deceleration. Our flight data
+    is trimmed before it arrives here so that it only contains freefall
+    information.
+
+    As we have two peaks and one trough, the freefall data is the mid point
+    (as in level of 10) of peak 1 & bottom of trough 1.
+
+    Vertical drop formula:
+      height = gravity 9.8m/s * time^2 / 2
+  */
+
+  return 9.8 * Math.pow(durationInSeconds, 2) / 2;
 }
 
 function round(number){
   return parseFloat(number.toFixed(2));
 }
 
-function Projection(rawState){
+function maxFlightDuration(flights) {
+  var flightDurations = flights.map(readingsDuration);
+  return Math.max.apply(null, flightDurations);
+}
 
+function maxAltitude(flights) {
+  var flightDurations = flights.map(readingsDuration);
+  var max = Math.max.apply(null, [0].concat(flightDurations));
+  return round(altitudeForFreefallDuration(max));
+}
+
+function Projection(rawState){
   Object.defineProperty(this, "maxFlightTime", {
     get: function(){
-      var flights = rawState.flightHistory.concat([rawState.currentFlight]);
-      var flightDurations = flights.map(readingsDuration);
-      var time =  Math.max.apply(null, flightDurations);
-      return time;
+      return maxFlightDuration(rawState.flightHistory.concat(rawState.currentFlight));
+    }
+  });
+
+  Object.defineProperty(this, "lastFlightTime", {
+    get: function(){
+      var lastFlight = rawState.flightHistory[rawState.flightHistory.length - 1];
+      return maxFlightDuration([lastFlight]);
+    }
+  });
+
+  Object.defineProperty(this, "lastFlightTimestamp", {
+    get: function(){
+      var lastFlight = rawState.flightHistory[rawState.flightHistory.length - 1];
+      return lastFlight[lastFlight.length-1].timestamp;
+    }
+  });
+
+  Object.defineProperty(this, "flightCount", {
+    get: function(){
+      return rawState.flightHistory.length;
     }
   });
 
   Object.defineProperty(this, "maxAltitude", {
     get: function(){
-      var flightDurations = rawState.flightHistory.map(readingsDuration);
-      var max = Math.max.apply(null, [0].concat(flightDurations));
-      return round(altitudeForFreefallDuration(max));
+      return maxAltitude(rawState.flightHistory.concat(rawState.currentFlight));
+    }
+  });
+
+  Object.defineProperty(this, "lastAltitude", {
+    get: function(){
+      var lastFlight = rawState.flightHistory[rawState.flightHistory.length - 1];
+      return maxAltitude([lastFlight]);
     }
   });
 
@@ -57,6 +93,12 @@ function Projection(rawState){
   Object.defineProperty(this, "hasThrow", {
     get: function(){
       return this.maxAltitude !== 0;
+    }
+  });
+
+  Object.defineProperty(this, "hasOneThrow", {
+    get: function(){
+      return this.hasThrow && (rawState.flightHistory.length === 1);
     }
   });
 
@@ -73,11 +115,6 @@ function Projection(rawState){
   Object.defineProperty(this, "alert", {
     get: function(){
       return rawState.alert;
-    }
-  });
-  Object.defineProperty(this, "identity", {
-    get: function(){
-      return rawState.identity;
     }
   });
 }
