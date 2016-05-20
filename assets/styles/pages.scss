@@ -6,10 +6,14 @@
     display: none;
   }
 
+  .track-flight {
+    margin-bottom: 3em;
+  }
+
   div.recent-lobs {
     display: none;
     width: $narrow-centre-column-width + 15px;
-    margin: 0 auto 35px auto;
+    margin: 0 auto 3em auto;
     overflow: hidden;
   }
 
@@ -134,9 +138,22 @@
 /* Track another phone page */
 
 .tracker {
-  text-align: center;
   width: $max-width;
-  margin: 0 auto;
+
+  .uplink-up {
+    display: none;
+  }
+
+  .uplink-status-message {
+    font-size: 1.2rem;
+    margin: 1em 0;
+    .code {
+      display: block;
+      margin: 0.5em 0;
+      font-size: 1.2em;
+      font-weight: bold;
+    }
+  }
 
   .graph-and-phone {
     overflow: hidden;
@@ -234,34 +251,6 @@
   .flight-history {
     display: none;
     margin-bottom: 2em;
-
-    table {
-      margin: 0 auto;
-      th {
-        background-color: #B80201;
-        color: white;
-        padding: 10px 20px;
-        border-right: 1px solid #FC0;
-        font-weight: bold;
-        font-size: 80%;
-      }
-      tr:nth-child(odd) {
-        td {
-          background: #FFF1BA;
-        }
-      }
-      tr:nth-child(even) {
-        td {
-          background: #FFFFFF;
-        }
-      }
-      td {
-        padding: 10px 20px;
-        border-right: 1px solid #FC0;
-        font-weight: normal;
-        font-size: 80%;
-      }
-    }
   }
 }
 
@@ -286,37 +275,4 @@
   clear: both;
   margin: 24px 0;
 
-  table {
-    margin: 0 auto;
-    min-width: $narrow-centre-column-width;
-    border-spacing: 0;
-
-    th, td {
-      padding: 10px 20px 10px 0;
-      font-size: 0.9rem;
-      border-bottom: 2px solid rgba(0, 0, 0, 0.15);
-      &:last-child {
-        text-alignt: right;
-      }
-    }
-    th {
-      font-weight: bold;
-    }
-  }
-
-  @media screen and (max-width: $mobile-width) {
-    table {
-      margin: 0 -5%;
-      width: 110%;
-      font-size: 80%;
-
-      th {
-        padding: 5px 5px;
-      }
-
-      td {
-        padding: 5px 5px;
-      }
-    }
-  }
 }

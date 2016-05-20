@@ -29,22 +29,23 @@ var uplinkController = new UplinkController(router.state, tracker);
 function uplinkStatusMessageFromProjection(projection) {
   var message = projection.uplinkStatus;
   if (message === 'AVAILABLE') {
-    return '<p>Connection made to live Lob <b>' + projection.uplinkChannelName + '</b>.</p>' +
-      "<p>As soon as the device is connected, you'll see the results in realtime below</p>";
+    return "<p>We're connected, but waiting for data from phone <strong>" + projection.uplinkChannelName + '</strong>.</p>' +
+      "<p>As soon as the phone sends its stats, we'll show you the live lob dashboard.</p>";
   } else if (message === 'STREAMING') {
-    return 'Streaming Lob <b>' + projection.uplinkChannelName + "</b>" +
-      (projection.uplinkDevice ? "  from " + projection.uplinkDevice : "");
+    return 'Live lob dashboard for ' + (projection.uplinkDevice ? projection.uplinkDevice : "mobile") + " phone:" +
+      '<span class="code">' + projection.uplinkChannelName + "</span>";
   } else if (message === 'FAILED') {
-    return 'Could not connect to live Lob realtime service';
+    return 'Oops, it looks like we cannot connect to the phone. Are you sure you have an Internet connection available?';
   } else if (message === 'DISCONNECTED') {
-    return 'Hold on, we\'re currently disconnected from the live Lob';
+    return "Hold on, we've just been disconnected. We'll try and reconnect now...";
   } else {
-    return 'Unknown';
+    return "Oops, something bad has happened, and it's our fault. Please try and reload the page.";
   }
 }
 
 ready(function(){
   var $uplinkStatusMessage = $('.uplink-status-message'),
+      $uplinkUpIcon = $('.uplink-up'),
       $graphAndPhone = $('.graph-and-phone'),
       $preloader = $('.connecting-loader'),
       $flightHistory = $('.flight-history'),
@@ -59,6 +60,11 @@ ready(function(){
   var mainView = {
     render: function(projection) {
       $uplinkStatusMessage.html(uplinkStatusMessageFromProjection(projection));
+      if ((projection.uplinkStatus === 'AVAILABLE') || (projection.uplinkStatus === 'STREAMING')) {
+        $uplinkUpIcon.show();
+      } else {
+        $uplinkUpIcon.hide();
+      }
 
       if (projection.uplinkStatus === 'STREAMING') {
         $graphAndPhone.show();

@@ -102,3 +102,22 @@ a.button {
   @extend button[type=submit];
   display: block;
 }
+
+table {
+  margin: 0 auto;
+  min-width: $narrow-centre-column-width;
+  border-spacing: 0;
+
+  th, td {
+    padding: 10px 20px 10px 0;
+    font-size: 0.9rem;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.15);
+    text-align: left;
+    &:last-child {
+      text-align: right;
+    }
+  }
+  th {
+    font-weight: bold;
+  }
+}

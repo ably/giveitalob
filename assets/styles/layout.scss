@@ -73,6 +73,10 @@
         transform: rotate(17deg);
       }
     }
+
+    body.no-phones & {
+      display: none;
+    }
   }
 }
 
