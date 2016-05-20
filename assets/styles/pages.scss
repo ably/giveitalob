@@ -265,36 +265,42 @@
   }
 }
 
-/* Leaderboard container */
+/* About page */
+.about {
+  section {
+    margin-bottom: 4em;
+  }
+  img.ably-logo {
+    height: 80px;
+  }
+  h2 a {
+    color: black;
+  }
+  h2.workshop-logo {
+    font-size: 1.2em;
+  }
+}
+
+/* Leaderboard container partial */
 .leaderboard {
   clear: both;
   margin: 24px 0;
 
   table {
     margin: 0 auto;
+    min-width: $narrow-centre-column-width;
+    border-spacing: 0;
+
+    th, td {
+      padding: 10px 20px 10px 0;
+      font-size: 0.9rem;
+      border-bottom: 2px solid rgba(0, 0, 0, 0.15);
+      &:last-child {
+        text-alignt: right;
+      }
+    }
     th {
-      background-color: #B80201;
-      color: white;
-      padding: 10px 20px;
-      border-right: 1px solid #FC0;
       font-weight: bold;
-      font-size: 80%;
-    }
-    tr:nth-child(odd) {
-      td {
-        background: #FFF1BA;
-      }
-    }
-    tr:nth-child(even) {
-      td {
-        background: #FFFFFF;
-      }
-    }
-    td {
-      padding: 10px 20px;
-      border-right: 1px solid #FC0;
-      font-weight: normal;
-      font-size: 80%;
     }
   }
 
