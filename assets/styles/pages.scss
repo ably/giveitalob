@@ -6,32 +6,22 @@
     display: none;
   }
 
-  h2 {
-    border-top: 1px dashed #CA920D;
-    margin-top: 1.5em;
-    padding-top: 1.5em;
-  }
-
   div.recent-lobs {
     display: none;
+    width: $narrow-centre-column-width + 15px;
+    margin: 0 auto 35px auto;
+    overflow: hidden;
   }
 
   ul.lob-history {
     display: inline;
     list-style: none;
-    margin: 0;
+    margin: 15px 0;
     padding: 0;
 
     li {
-      display: inline;
-      &::after {
-        content: ", ";
-      }
-    }
-    li:last-child {
-      &::after {
-        content: "...";
-      }
+      @extend button[type=submit];
+      float: left;
     }
   }
 }
@@ -275,8 +265,11 @@
   }
 }
 
-/* Leaderboard page */
+/* Leaderboard container */
 .leaderboard {
+  clear: both;
+  margin: 24px 0;
+
   table {
     margin: 0 auto;
     th {

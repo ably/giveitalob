@@ -4,9 +4,12 @@ $max-width: 980px; /* Designed for up to tablet */
 $tablet-width: 979px; /* Designed for up to tablet */
 $mobile-width: 500px;
 
+$font: 'Open Sans', sans-serif;
 $placeholder-color: #999;
+$link-color: #A3323B;
+$narrow-centre-column-width: 443px;
 
-@import url(https://fonts.googleapis.com/css?family=Raleway:400,300);
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:300,400,600);
 
 /* CSS resets
    Preferred behaviour */

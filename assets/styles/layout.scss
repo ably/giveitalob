@@ -1,15 +1,87 @@
 /* Shared layout styling such as headers, footers */
 
-/* Generic content area */
-main {
-  margin: 0 auto 2.5em auto;
-  padding: 0 1em;
-  box-sizing: border-box;
+/* Gradient background with clouds & phones */
+.background {
+  z-index: -4;
 
-  /* Generic style to ensure content does not get too wide */
-  &.width-limited {
-    max-width: $tablet-width;
+  .gradient {
+    z-index: -3;
+    position: absolute;
+    height: 800px;
+    width: 100%;
+    top: 0;
+    left: 0;
+    background: #1B8AC8;
+    @include background-image(linear-gradient(#1B8AC8, #F0D3C2));
   }
+
+  img {
+    z-index: -2;
+    &.background-cloud-top {
+      position: absolute;
+      top: 100px;
+      margin: 0 50%;
+      width: 210px;
+      height: 111px;
+      left: -240px;
+    }
+    &.background-cloud-bottom {
+      width: 900px;
+      height: 503px;
+      position: absolute;
+      top: 400px;
+      margin: 0 50%;
+      left: -450px;
+    }
+  }
+
+  .floating-phones {
+    z-index: -1;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    overflow: hidden;
+
+    img {
+      &.phone {
+        height: 320px;
+        position: relative;
+        display: block;
+        margin: 0 auto;
+        z-index: -1;
+      }
+
+      &.phone-samsung {
+        @extend .phone;
+        left: 30%;
+        top: 350px;
+        transform: rotate(17deg);
+      }
+
+      &.phone-iphone {
+        @extend .phone;
+        right: 30%;
+        top: 525px;
+        transform: rotate(-17deg);
+      }
+
+      &.phone-android {
+        @extend .phone;
+        top: 675px;
+        transform: rotate(17deg);
+      }
+    }
+  }
+}
+
+/* Outer content area */
+main {
+  margin: 0 auto 6em auto;
+  width: 690px;
+  padding: 0 10px;
+  text-align: center;
 }
 
 /*
@@ -21,76 +93,16 @@ header {
   position: relative;
   text-align: center;
 
-  h1 { display: none; }
-  h2 { display: none; }
-
-  img.heading {
-    margin-top: 90px;
-    max-width: 702px;
+  h1 {
+    margin: 50px 0 0 0;
+    .header-copy { display: none; }
+    img.header-logo { width: 300px; }
   }
 
-  img.phone-rocket {
-    position: absolute;
-    z-index: -1;
-    margin-left: -350px;
-    margin-top: 10px;
-    max-width: 282px;
-  }
-
-  @mixin header-tablet {
-    img.heading {
-      max-width: 480px;
-      margin-top: 60px;
-    }
-
-    img.phone-rocket {
-      margin-left: -245px;
-      max-width: 182px;
-    }
-  }
-
-  @mixin header-mobile {
-    img.heading {
-      max-width: 300px;
-      margin-top: 40px;
-    }
-
-    img.phone-rocket {
-      margin-left: -150px;
-      max-width: 122px;
-    }
-  }
-
-  @mixin header-mobile-tiny {
-    img.heading {
-      max-width: 210px;
-      margin-top: 35px;
-    }
-
-    img.phone-rocket {
-      margin-left: -115px;
-      max-width: 90px;
-    }
-  }
-
-  body.small-header & {
-    @include header-tablet;
-
-    @media screen and (max-width: $tablet-width) {
-      @include header-mobile;
-    }
-
-    @media screen and (max-width: $mobile-width) {
-      @include header-mobile-tiny;
-    }
-  }
-
-  @media screen and (max-width: $tablet-width) {
-    @include header-tablet;
-  }
-
-  @media screen and (max-width: $mobile-width) {
-    @include header-mobile;
+  .strap-line {
+    color: white;
+    font-weight: 300;
+    font-size: 1.8rem;
   }
 }
 
@@ -100,64 +112,36 @@ footer {
   background-color: black;
   color: white;
   text-align: center;
-  font-size: 90%;
+  font-size: 0.8rem;
+  color: #999;
 
   a {
-    color: #FC0;
+    color: white;
     &:hover {
-      color: #FC0;
+      text-decoration: underline;
     }
   }
 
-  ul {
-    margin: 0;
-    list-style: none;
+  .container {
+    width: $narrow-centre-column-width;
+    margin: 1.5rem auto;
     overflow: hidden;
-    li {
-      display: inline-block;
-      padding: 10px 25px 10px 20px;
-      border-right: 1px solid #EEE;
-      &:last-child {
-        border: none;
-      }
+
+    aside.about {
+      text-align: left;
+      margin-right: 110px;
+      float: left;
     }
-  }
 
-  @media screen and (max-width: $tablet-width) {
-    ul {
-      li {
-        padding: 10px 15px 10px 10px;
-        font-size: 85%;
-      }
-    }
-  }
+    aside.sponsor {
+      text-align: left;
+      float: right;
+      width: 100px;
+      font-size: 0.9em;
 
-  @media screen and (max-width: $tablet-width) {
-    ul {
-      padding: 0 0 5px 0;
-      li {
-        padding: 5px 10px 5px 10px;
-        border: none;
-        clear: left;
-        display: block;
-        border-bottom: 1px solid #333;
-        box-sizing: border-box;
-
-        &:last-child {
-          border-bottom: none
-        }
-
-        &.nav {
-          width: 50%;
-          display: block;
-          box-sizing: border-box;
-          clear: none;
-          float: left;
-          border-left: 1px solid #333;
-          &:first-child {
-            border-left: none;
-          }
-        }
+      img {
+        margin-top: 5px;
+        width: 100px;
       }
     }
   }

@@ -1,67 +1,75 @@
 /* Shared CSS components */
 
 /* Panel that typically includes 0+ form elements and one button */
-
 form.panel {
   display: block;
-  font-size: 120%;
   width: 100%;
-  text-align: center;
-  margin: 1rem auto;
-  border: none;
+  margin: 2rem auto;
 
-  input[type=text] {
-    padding: 9px;
-    border: none;
-    border-bottom: solid 2px #D08200;
-    transition: border 0.3s;
-    margin: 10px;
+  .row {
+    clear: both;
 
-    &:focus {
-      border-bottom: solid 2px #000000;
-      outline: none;
+    button, input:last-child {
+      margin-right: 0;
     }
-  }
-
-  button {
-    border: 1px solid #D08200;
-    position: relative;
-    top: -2px;
-    @include background(linear-gradient(to bottom, #fff200, #f0d000));
-    border-radius: 28px;
-    font-family: Arial;
-    color: #000000;
-    font-size: 20px;
-    padding: 11px 20px 11px 20px;
-    text-decoration: none;
-    cursor: pointer;
-  }
-
-  button:hover {
-    @include background(linear-gradient(to bottom, #f5e90e, #d4bb15));
-    text-decoration: none;
-  }
-
-  button[disabled] {
-    @include background(linear-gradient(to bottom, #bdbdbd, #999999));
-    text-decoration: none;
-    text-shadow: none;
-    color: #333;
   }
 }
 
-a.button {
-  @include background(linear-gradient(to top, #fc0, #FFE788));
-  font-size: 120%;
-  text-align: center;
-  border: 2px solid;
+/* Heading icons as images due to inability to do cache invalidation with URLs in CSS */
+.h2-icon {
+  width: 40px;
+  height: 40px;
+  margin-top: 20px;
+  clear: both;
   display: block;
-  padding: 0.5em;
-  border-radius: 4px;
-  margin: 1rem auto;
-  max-width: 560px;
-  text-decoration: none;
-  color: black;
+  margin: 0 auto;
+  + h2 {
+    margin: 0 0 20px 0;
+  }
+}
+
+/* Leaderboard navigation */
+
+ul.leader-nav {
+  display: block;
+  list-style: none;
+  margin: 15px auto;
+  padding: 0;
+  width: $narrow-centre-column-width;
+  overflow: hidden;
+
+  li {
+    background-color: white;
+    float: left;
+    width: 33%;
+    margin-left: 1px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 12px;
+
+    a {
+      color: black;
+    }
+
+    &.selected {
+      background-color: $link-color;
+      color: white;
+      a {
+        color: white;
+      }
+    }
+
+    &:first-child {
+      border-top-left-radius: 5px;
+      border-bottom-left-radius: 5px;
+      margin-left: 0;
+    }
+    &:last-child {
+      border-top-right-radius: 5px;
+      border-bottom-right-radius: 5px;
+    }
+  }
 }
 
 /* CSS loader courtesy of http://codepen.io/martinvd/pen/vEQeWR */
@@ -263,7 +271,7 @@ $iconInnerLines: $iconSize / 8;
   }
 }
 
-p:hover, .icon:hover, p:hover > .icon {
+.icon:hover, p:hover > .icon {
   border-color: $hoverColor;
   cursor: pointer;
   color: $hoverColor;

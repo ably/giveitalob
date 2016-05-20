@@ -1,0 +1,29 @@
+<div class="leaderboard">
+  <% if leaderboard.empty? %>
+    <p>
+      It doesn't look like anyone has submitted there lobs to the leaderboard for the last <%= past %>
+    </p>
+    <p>
+      Lucky you, get lobbing now and be the first to the top of our <%= past %> leaderboard.
+    </p>
+  <% else %>
+    <table>
+      <tr>
+        <th>Pos</th>
+        <th>Name</th>
+        <th>Height</th>
+        <th class="wide-screen">Airborne</th>
+        <th class="wide-screen">Device</th>
+      </tr>
+      <% leaderboard.each_with_index do |flight, index| %>
+        <tr>
+          <td><%= index+1 %></td>
+          <td><%= flight.username %></td>
+          <td><%= flight.max_altitude %>m</td>
+          <td class="wide-screen"><%= flight.max_flight_time %>s</td>
+          <td class="wide-screen"><%= flight.device %>s</td>
+        </tr>
+      <% end %>
+    </table>
+  <% end %>
+</div>
