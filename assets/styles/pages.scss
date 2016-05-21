@@ -155,6 +155,7 @@
 
 .tracker {
   width: $max-width;
+  max-width: $max-width;
 
   .uplink-up {
     display: none;
