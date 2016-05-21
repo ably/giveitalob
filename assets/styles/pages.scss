@@ -4,6 +4,9 @@
   /* Assume visitor does not have an accelerometer unless we detect one */
   .mobile-ready {
     display: none;
+    @media screen and (max-width: $mobile-width) {
+      margin: 3em 0 4em 0;
+    }
   }
 
   .track-flight {
@@ -12,7 +15,7 @@
 
   div.recent-lobs {
     display: none;
-    width: $narrow-centre-column-width + 15px;
+    max-width: $narrow-centre-column-width + 15px;
     margin: 0 auto 3em auto;
     overflow: hidden;
   }
@@ -26,6 +29,19 @@
     li {
       @extend button[type=submit];
       float: left;
+    }
+
+    @media screen and (max-width: $mobile-width) {
+      li {
+        float: left;
+        width: calc(50% - 10px);
+        margin: 0 0 20px 0;
+        clear: initial;
+
+        &:nth-child(odd) {
+          margin-right: 20px;
+        }
+      }
     }
   }
 }
@@ -46,50 +62,14 @@
 /* Throw your phone flying page */
 
 .flyer {
-  max-width: $max-width;
   text-align: center;
 
   .connection-active {
     display: none;
   }
 
-  .phone-reading-panels {
-    position: relative;
-    min-height: 175px;
-    overflow: hidden;
-
-    .guage-widget {
-      transform: scale(0.66);
-      position: absolute;
-      left: calc(25% - 90px);
-      z-index: -1;
-
-      .caption {
-        padding: 20px;
-        font-weight: bold;
-        font-size: 110%;
-      }
-    }
-
-    .phone {
-      transform: scale(0.66);
-      position: absolute;
-      position: absolute;
-      left: calc(75% - 115px);
-      top: -30px;
-
-      #tridiv {
-        width: 350px;
-        height: 350px;
-        font-size: 37.5%;
-        margin: 0;
-        position: absolute;
-      }
-    }
-  }
-
   .uplink-status {
-    font-size: 80%;
+    font-size: 1.2rem;
     margin-bottom: 1em;
 
     p.title-with-hint {
@@ -106,19 +86,46 @@
     @include preloader;
   }
 
-  .leaderboard {
+  .connection-active {
+    margin-bottom: 2rem;
+    .last-reading {
+      margin-bottom: 2.5rem;
+      .height {
+        font-size: 5rem;
+        font-weight: bold;
+        color: $link-color;
+        line-height: 1.2em;
+      }
+      .airtime {
+        font-size: 1.2rem;
+        color: black;
+      }
+    }
+  }
+
+  .message {
+    margin: 0 0 1.5em 0;
+    font-size: 1.2rem;
+    p.prompt {
+      font-size: 1.2em;
+    }
+  }
+
+  .submit-to-leaderboard {
+    margin-top: 1em;
     display: none;
-    font-size: 85%;
-    border-top: 1px solid #ca920d;
+    border-top: 2px solid rgba(255,255,255,0.5);
+    padding-top: 2em;
 
     h3 {
       font-size: 100%;
     }
 
-    form {
+    form.panel {
       input[type=text] {
         min-width: 280px;
       }
+      margin-bottom: 0.5em;
     }
 
     .submitted-panel {
@@ -126,11 +133,20 @@
     }
   }
 
-  .message {
-    margin: 0 0 1em 0;
-    font-size: 90%;
+  .unique-code {
+    max-width: $narrow-centre-column-width;
+    margin: 3em auto 1.5em auto;
+    background: #EFE2D9;
+    @include background-image(linear-gradient(#D1D8DC, #EFE2D9));
+    border-radius: 5px;
+    padding: 12px;
+    .lob-code {
+      font-size: 1.3em;
+      font-weight: bold;
+      margin-bottom: 0.5em;
+    }
     p {
-      margin: 0.5em 0;
+      margin: 0 0 0.5em 0;
     }
   }
 }
@@ -194,7 +210,7 @@
     }
   }
 
-  @media screen and (max-width: $tablet-width) {
+  @media screen and (max-width: $max-width) {
     width: initial;
     .graph-and-phone {
       #tracker-wrapper {
@@ -274,5 +290,4 @@
 .leaderboard {
   clear: both;
   margin: 24px 0;
-
 }

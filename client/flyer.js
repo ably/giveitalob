@@ -168,9 +168,6 @@ export default function Flyer(state) {
 
     transmitReadingAndOrientation(reading, orientation);
 
-    flyer.view.renderPhoneMovement(reading);
-    flyer.view.renderPhoneOrientation(orientation);
-
     this.trackThrows(reading, function(currentFlight, peakOrTroughHistory) {
       var state = flyer.state.set("latestReading", reading);
       var flightHistory = state.flightHistory;

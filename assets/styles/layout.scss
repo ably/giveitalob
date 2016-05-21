@@ -3,6 +3,12 @@
 /* Gradient background with clouds & phones */
 .background {
   z-index: -4;
+  position: absolute;
+  overflow: hidden;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
 
   .gradient {
     z-index: -3;
@@ -24,6 +30,9 @@
       width: 210px;
       height: 111px;
       left: -240px;
+      @media screen and (max-width: $mobile-width) {
+        top: 80px;
+      }
     }
     &.background-cloud-bottom {
       width: 900px;
@@ -32,6 +41,13 @@
       top: 400px;
       margin: 0 50%;
       left: -450px;
+      @media screen and (max-width: $mobile-width) {
+        width: 150%;
+        height: inherit;
+        top: 220px;
+        margin: 0 0;
+        left: -25%;
+      }
     }
   }
 
@@ -83,9 +99,13 @@
 /* Outer content area */
 main {
   margin: 0 auto 6em auto;
-  width: 690px;
+  max-width: 690px;
   padding: 0 10px;
   text-align: center;
+
+  @media screen and (max-width: $mobile-width) {
+    padding: 0 25px;
+  }
 }
 
 /*
@@ -93,7 +113,7 @@ main {
 */
 
 header {
-  margin: 0 auto 30px 0;
+  margin: 0 auto 30px auto;
   position: relative;
   text-align: center;
 
@@ -103,6 +123,11 @@ header {
 
   h1 {
     margin: 50px 0 0 0;
+    @media screen and (max-width: $mobile-width) {
+      margin-top: 60px;
+      font-size: 30px;
+    }
+
     .header-copy { display: none; }
 
     img.header-logo { width: 300px; }
@@ -125,6 +150,10 @@ header {
         height: 30px;
         left: 30px;
         top: 14px;
+        @media screen and (max-width: $mobile-width) {
+          height: 25px;
+          top: 9px;
+        }
       }
     }
 
@@ -134,6 +163,12 @@ header {
       img.header-logo-small {
         height: 40px;
         display: inline;
+        position: relative;
+        top: 7px;
+        @media screen and (max-width: $mobile-width) {
+          height: 30px;
+          top: 8px;
+        }
       }
     }
 
@@ -174,9 +209,49 @@ footer {
       width: 100px;
       font-size: 0.9em;
 
+      .blurb {
+        display: inline;
+      }
+
       img {
         margin-top: 5px;
         width: 100px;
+      }
+    }
+  }
+
+  @media screen and (max-width: $mobile-width) {
+    font-size: 0.9rem;
+
+    .container {
+      width: 100%;
+      margin: 2em 0;
+      padding: 0 2em;
+
+      aside.about {
+        display: block;
+        float: none;
+        margin: 0;
+        p:first-child {
+          margin-top: 0;
+        }
+      }
+
+      aside.sponsor {
+        display: block;
+        float: none;
+        width: inherit;
+        font-size: inherit;
+        .blurb {
+          display: block;
+          float: left;
+          width: 40%;
+        }
+        img {
+          display: block;
+          float: left;
+          margin: 12px 0 0 30px;
+        }
       }
     }
   }

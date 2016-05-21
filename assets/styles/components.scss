@@ -9,8 +9,10 @@ form.panel {
   .row {
     clear: both;
 
-    button, input:last-child {
-      margin-right: 0;
+    @media screen and (min-width: $mobile-width + 1px) {
+      button, input:last-child {
+        margin-right: 0;
+      }
     }
   }
 }
@@ -35,7 +37,7 @@ ul.leader-nav {
   list-style: none;
   margin: 15px auto;
   padding: 0;
-  width: $narrow-centre-column-width;
+  max-width: $narrow-centre-column-width;
   overflow: hidden;
 
   li {
@@ -147,91 +149,6 @@ ul.leader-nav {
   }
   100% {
     @include transform(translateY(-32px));
-  }
-}
-
-/* Guage widge - courtesy of http://codepen.io/frexuz/pen/dKpxo */
-
-.guage-widget {
-  margin-top: 30px;
-  width: 180px;
-  height: 90px;
-  position: absolute;
-
-  ul.labels {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: -10%;
-
-    li {
-      position: absolute;
-      padding: 3px 5px;
-      list-style: none;
-      font-size: 18px;
-
-      &:nth-child(1) {
-        top: 100%;
-        left: 0;
-        @include transform(translateX(-100%) translateY(-100%));
-      }
-      &:nth-child(2) {
-        top: 0;
-        left: 5%;
-        @include transform(translateX(-50%));
-      }
-      &:nth-child(3) {
-        top: -12%;
-        left: 50%;
-        @include transform(translateX(-50%) translateY(-100%));
-      }
-      &:nth-child(4) {
-        top: 0;
-        right: 5%;
-        @include transform(translateX(50%));
-      }
-      &:nth-child(5) {
-        top: 100%;
-        right: 0;
-        @include transform(translateX(100%) translateY(-100%));
-      }
-    }
-  }
-
-  .guage {
-    overflow: hidden;
-    height: 100%;
-    .inner {
-      width: 100%;
-      height: 200%;
-      background: #FFF6CE;
-      border-radius: 50%;
-    }
-  }
-
-  .needle {
-    border-radius: 50%;
-    width: 30px;
-    height: 30px;
-    background: red;
-    position: absolute;
-    left: 50%;
-    top: 100%;
-    @include transform(translateX(-50%) translateY(-50%) rotate(-90deg));
-    @include transition(all 0.05s ease);
-    &:after {
-      content: "";
-      position: absolute;
-      border-style: solid;
-      border-color: transparent transparent #f00 transparent;
-      border-width: 50px 6px;
-      bottom: 100%;
-      height: 0;
-      width: 0;
-      left: 50%;
-      margin-left: -6px;
-      margin-bottom: -2px;
-    }
   }
 }
 

@@ -25,11 +25,13 @@ h1 {
   font-size: 3rem;
   font-weight: 400;
   margin: 0;
+  color: #000;
 }
 
 h2 {
   font-size: 1.3rem;
   font-weight: 600;
+  color: #000;
 }
 
 a {
@@ -53,6 +55,17 @@ a {
   &.--wide {
     width: $narrow-centre-column-width;
     margin: 0 auto;
+  }
+
+  @media screen and (max-width: $mobile-width) {
+    width: 100%;
+    margin: 0 auto 20px auto;
+    display: block;
+    clear: both;
+
+    &.--wide {
+      width: 100%;
+    }
   }
 }
 
@@ -96,6 +109,11 @@ button, button[type=submit], input[type=submit] {
     background-color: #CCC;
     color: #888;
   }
+
+  &.--important {
+    background-color: $link-color;
+    color: white;
+  }
 }
 
 a.button {
@@ -119,5 +137,14 @@ table {
   }
   th {
     font-weight: bold;
+  }
+
+  @media screen and (max-width: $mobile-width) {
+    min-width: initial;
+    width: 100%;
+
+    .wide-screen {
+      display: none;
+    }
   }
 }
