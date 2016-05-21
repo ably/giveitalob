@@ -306,12 +306,6 @@ export default function Flyer(state) {
     }
   }
 
-  flyer.closeAlert = function(){
-    // DEBT untested
-    flyer.state = flyer.state.set("alert", "");
-    showcase(flyer.state);
-  };
-
   flyer.accelerometerNotSupported = function() {
     flyer.state = flyer.state.merge({
       "alert": "Accelerometer not found for this device. Please try again on a different mobile",

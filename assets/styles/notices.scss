@@ -1,52 +1,18 @@
 /* Notice that appears at the top of the page about not having an accelerometer */
 .device-compatibility-notice {
-  width: 490px;
-  margin: 30px auto;
-  padding: 15px 45px;
-  border-radius: 5px;
-  background-color: #7FBBDD;
-  font-size: 0.8rem;
-  text-align: center;
-  color: $link-color;
-}
+  max-width: 490px;
+  margin: 0 auto;
+  div {
+    margin: 30px;
+    padding: 15px 45px;
+    border-radius: 5px;
+    background-color: #7FBBDD;
+    font-size: 0.8rem;
+    text-align: center;
+    color: $link-color;
 
-.notices {
-  position: fixed;
-  width: 100%;
-  height: 0;
-  padding: 0 1em;
-  overflow: hidden;
-  z-index: 10;
-
-  transition: background-color 1s, height 0s 1s;
-  background-color: rgba(255,255,255,0);
-
-  section {
-    background-color: white;
-    max-width: 720px;
-    margin: 1em auto;
-    border: 2px solid;
-    border-radius: 4px;
-
-    transform: translateY(-150%);
-    transition: transform 0.6s cubic-bezier(0.680, -0.550, 0.265, 1.550) 0s;
-  }
-
-  p {
-    max-width: 540px;
-    margin: 0 auto;
-    padding: 0.5em;
-    &.close {
-      text-align: right;
-    }
-  }
-
-  &.active {
-    height: 100%;
-    transition: background-color 1s 0s, height 0s 0s;
-    background-color: rgba(255,255,255,0.5);
-    section {
-      transform: translateY(0%);
+    @media screen and (max-width: $mobile-width) {
+      margin: 15px;
     }
   }
 }

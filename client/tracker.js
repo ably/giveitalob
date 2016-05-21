@@ -8,7 +8,6 @@ import UplinkController from "./tracker/uplink-controller";
 import ConsoleView from "./tracker/console-view";
 import Showcase from "./tracker/showcase";
 import Reading from "./lib/reading";
-import AlertDisplay from "./alert/display";
 import Phone from "./lib/phone";
 import GraphDisplay from "./tracker/graph-display";
 import { ready } from "./utils/dom";
@@ -18,7 +17,6 @@ window.Tracker = Tracker;
 window.Tracker.Reading = Reading;
 
 var router = Router(window.location);
-console.log('Router:', 'Started with initial state:', router.state);
 
 var tracker = new Tracker();
 tracker.logger = window.console;
@@ -51,8 +49,7 @@ ready(function(){
       $flightHistory = $('.flight-history'),
       $flightHistoryTable = $flightHistory.find('table');
 
-  var alertDisplay = AlertDisplay(),
-      phone = new Phone(),
+  var phone = new Phone(),
       graphDisplay;
 
   var paused = false;
@@ -75,14 +72,6 @@ ready(function(){
       } else {
         $graphAndPhone.hide();
         $preloader.show();
-      }
-
-      var alertMessage = projection.alert;
-      if (alertMessage) {
-        alertDisplay.message = alertMessage;
-        alertDisplay.active = true;
-      } else {
-        alertDisplay.active = false;
       }
 
       $('.pause-button').on('click', function() {

@@ -30,9 +30,7 @@ function Tracker(state, world){
   try {
     state = State(state || {});
   } catch (e) {
-    // alert(e); DEBT throws in tests
     throw new TypeError(TRACKER_INVALID_STATE_MESSAGE);
-    // return; // Will be needed if we move the error handling to logger
   }
   var tracker = this;
   tracker.state = state;
@@ -98,11 +96,6 @@ function Tracker(state, world){
 
   tracker.newOrientation = function(position){
     tracker.showcase.orientatePhones(position);
-  };
-
-  tracker.closeAlert = function(){
-    tracker.state = tracker.state.set("alert", "");
-    showcase(tracker.state);
   };
 
   function showcase(state) {

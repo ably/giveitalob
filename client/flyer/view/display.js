@@ -1,6 +1,5 @@
 /* jshint esnext: true */
 
-import AlertDisplay from "../../alert/display";
 import Device from "../../lib/device";
 
 /* This function class contains the logic for the presentation
@@ -25,8 +24,6 @@ function Display($root){
       $connectionActive = $root.find(".connection-active"),
       $lobHeight = $root.find(".last-reading .height"),
       $lobAirtime = $root.find(".last-reading .airtime");
-
-  var alertDisplay = AlertDisplay();
 
   var deviceType = new Device().deviceDescription();
 
@@ -57,13 +54,11 @@ function Display($root){
       $leaderboardForm.find('submit').attr('disabled', 'disabled');
 
       $.post('/submit-flight', data).done(function() {
-          alertDisplay.active = false;
           $leaderBoardSubmittedAltitude.text(altitude + "m");
           $leaderboardSubmitPanel.hide();
           $leaderboardSubmittedPanel.show();
         }).fail(function() {
-          alertDisplay.message = "Oops, something went wrong submitting your lob to the leaderboard. Please try again";
-          alertDisplay.active = true;
+          alert("Oops, something went wrong submitting your lob to the leaderboard. Please try again");
         }).always(function() {
           $leaderboardForm.find('submit').removeAttr('disabled');
         })
