@@ -112,9 +112,7 @@ var Lob = (function () { 'use strict';
     try {
       state = State(state || {});
     } catch (e) {
-      // alert(e); DEBT throws in tests
       throw new TypeError(TRACKER_INVALID_STATE_MESSAGE);
-      // return; // Will be needed if we move the error handling to logger
     }
     var tracker = this;
     tracker.state = state;
@@ -180,11 +178,6 @@ var Lob = (function () { 'use strict';
 
     tracker.newOrientation = function(position){
       tracker.showcase.orientatePhones(position);
-    };
-
-    tracker.closeAlert = function(){
-      tracker.state = tracker.state.set("alert", "");
-      showcase(tracker.state);
     };
 
     function showcase(state) {
@@ -418,32 +411,6 @@ var Lob = (function () { 'use strict';
     });
   }
 
-  /* jshint esnext: true */
-
-  function Display() {
-    var $root = $('.notices'),
-        $message = $root.find('.message');
-
-    return Object.create({}, {
-      active: {
-        set: function(active){
-          var ACTIVE = "active";
-          if (active) {
-            $root.addClass(ACTIVE);
-          } else {
-            $root.removeClass(ACTIVE);
-          }
-        },
-        enumerable: true
-      },
-      message: {
-        set: function(message){
-          $message.html(message);
-        }
-      }
-    });
-  }
-
   function Phone() {
     if ( !(this instanceof Phone) ) { return new Phone(); }
     var $phone = document.documentElement.querySelector('#tridiv .scene');
@@ -669,7 +636,6 @@ var Lob = (function () { 'use strict';
   window.Tracker.Reading = Reading;
 
   var router = Router(window.location);
-  console.log('Router:', 'Started with initial state:', router.state);
 
   var tracker = new Tracker();
   tracker.logger = window.console;
@@ -680,29 +646,29 @@ var Lob = (function () { 'use strict';
   function uplinkStatusMessageFromProjection(projection) {
     var message = projection.uplinkStatus;
     if (message === 'AVAILABLE') {
-      return '<p>Connection made to live Lob <b>' + projection.uplinkChannelName + '</b>.</p>' +
-        "<p>As soon as the device is connected, you'll see the results in realtime below</p>";
+      return "<p>We're connected, but waiting for data from phone <strong>" + projection.uplinkChannelName + '</strong>.</p>' +
+        "<p>As soon as the phone sends its stats, we'll show you the live lob dashboard.</p>";
     } else if (message === 'STREAMING') {
-      return 'Streaming Lob <b>' + projection.uplinkChannelName + "</b>" +
-        (projection.uplinkDevice ? "  from " + projection.uplinkDevice : "");
+      return 'Live lob dashboard for ' + (projection.uplinkDevice ? projection.uplinkDevice : "mobile") + " phone:" +
+        '<span class="code">' + projection.uplinkChannelName + "</span>";
     } else if (message === 'FAILED') {
-      return 'Could not connect to live Lob realtime service';
+      return 'Oops, it looks like we cannot connect to the phone. Are you sure you have an Internet connection available?';
     } else if (message === 'DISCONNECTED') {
-      return 'Hold on, we\'re currently disconnected from the live Lob';
+      return "Hold on, we've just been disconnected. We'll try and reconnect now...";
     } else {
-      return 'Unknown';
+      return "Oops, something bad has happened, and it's our fault. Please try and reload the page.";
     }
   }
 
   ready(function(){
     var $uplinkStatusMessage = $('.uplink-status-message'),
+        $uplinkUpIcon = $('.uplink-up'),
         $graphAndPhone = $('.graph-and-phone'),
         $preloader = $('.connecting-loader'),
         $flightHistory = $('.flight-history'),
         $flightHistoryTable = $flightHistory.find('table');
 
-    var alertDisplay = Display(),
-        phone = new Phone(),
+    var phone = new Phone(),
         graphDisplay;
 
     var paused = false;
@@ -710,6 +676,11 @@ var Lob = (function () { 'use strict';
     var mainView = {
       render: function(projection) {
         $uplinkStatusMessage.html(uplinkStatusMessageFromProjection(projection));
+        if ((projection.uplinkStatus === 'AVAILABLE') || (projection.uplinkStatus === 'STREAMING')) {
+          $uplinkUpIcon.show();
+        } else {
+          $uplinkUpIcon.hide();
+        }
 
         if (projection.uplinkStatus === 'STREAMING') {
           $graphAndPhone.show();
@@ -720,14 +691,6 @@ var Lob = (function () { 'use strict';
         } else {
           $graphAndPhone.hide();
           $preloader.show();
-        }
-
-        var alertMessage = projection.alert;
-        if (alertMessage) {
-          alertDisplay.message = alertMessage;
-          alertDisplay.active = true;
-        } else {
-          alertDisplay.active = false;
         }
 
         $('.pause-button').on('click', function() {

@@ -614,9 +614,6 @@ var Lob = (function () { 'use strict';
 
       transmitReadingAndOrientation(reading, orientation);
 
-      flyer.view.renderPhoneMovement(reading);
-      flyer.view.renderPhoneOrientation(orientation);
-
       this.trackThrows(reading, function(currentFlight, peakOrTroughHistory) {
         var state = flyer.state.set("latestReading", reading);
         var flightHistory = state.flightHistory;
@@ -754,12 +751,6 @@ var Lob = (function () { 'use strict';
         }
       }
     }
-
-    flyer.closeAlert = function(){
-      // DEBT untested
-      flyer.state = flyer.state.set("alert", "");
-      showcase(flyer.state);
-    };
 
     flyer.accelerometerNotSupported = function() {
       flyer.state = flyer.state.merge({
@@ -907,38 +898,12 @@ var Lob = (function () { 'use strict';
     return new Presenter(app);
   }
 
-  /* jshint esnext: true */
-
-  function Display() {
-    var $root = $('.notices'),
-        $message = $root.find('.message');
-
-    return Object.create({}, {
-      active: {
-        set: function(active){
-          var ACTIVE = "active";
-          if (active) {
-            $root.addClass(ACTIVE);
-          } else {
-            $root.removeClass(ACTIVE);
-          }
-        },
-        enumerable: true
-      },
-      message: {
-        set: function(message){
-          $message.html(message);
-        }
-      }
-    });
-  }
-
   /* This function class contains the logic for the presentation
      messaging in the view based on the state, but is weirdly not a
      view itself as their is a view, a projection, and a presenter? */
 
-  function Display$1($root){
-    var $leaderboardPanel = $root.find(".leaderboard"),
+  function Display($root){
+    var $leaderboardPanel = $root.find(".submit-to-leaderboard"),
         $leaderboardSubmitPanel = $leaderboardPanel.find(".submit-panel"),
         $leaderboardSubmittedPanel = $leaderboardPanel.find(".submitted-panel"),
         $leaderboardForm = $leaderboardPanel.find("form"),
@@ -950,10 +915,11 @@ var Lob = (function () { 'use strict';
 
     var $message = $root.find(".message"),
         $uplinkStatus = $root.find(".uplink-status"),
+        $lobCode = $root.find(".lob-code"),
         $loader = $root.find(".connecting-loader"),
-        $connectionActive = $root.find(".connection-active");
-
-    var alertDisplay = Display();
+        $connectionActive = $root.find(".connection-active"),
+        $lobHeight = $root.find(".last-reading .height"),
+        $lobAirtime = $root.find(".last-reading .airtime");
 
     var deviceType = new Device().deviceDescription();
 
@@ -984,13 +950,11 @@ var Lob = (function () { 'use strict';
         $leaderboardForm.find('submit').attr('disabled', 'disabled');
 
         $.post('/submit-flight', data).done(function() {
-            alertDisplay.active = false;
             $leaderBoardSubmittedAltitude.text(altitude + "m");
             $leaderboardSubmitPanel.hide();
             $leaderboardSubmittedPanel.show();
           }).fail(function() {
-            alertDisplay.message = "Oops, something went wrong submitting your lob to the leaderboard. Please try again";
-            alertDisplay.active = true;
+            alert("Oops, something went wrong submitting your lob to the leaderboard. Please try again");
           }).always(function() {
             $leaderboardForm.find('submit').removeAttr('disabled');
           })
@@ -1023,24 +987,23 @@ var Lob = (function () { 'use strict';
     function updateUplinkStatus(presentation) {
       switch(presentation.uplinkStatus.toLowerCase()) {
         case "connecting":
-          $uplinkStatus.html("Hold on, we're establishing a realtime connection to stream your lob.");
+          $uplinkStatus.show().html("Hold on, we're now establishing a connection to stream your lob live.");
           setLoading(true);
           break;
         case "disconnected":
-          $uplinkStatus.html("Hold on, we've lost the realtime connection. Trying to reconnect now.");
+          $uplinkStatus.show().html("Oops, we seem to have been disconnected. Trying to reconnect now.");
           setLoading(true);
           break;
         case "failed":
-          $uplinkStatus.html("Oops, we've failed to establish a realtime connection. Try reloading this app.");
+          $uplinkStatus.show().html("Oops, it looks like we cannot connect to the phone. Are you sure you have an Internet connection available?");
           setLoading(true);
           break;
         case "incompatible":
-          $uplinkStatus.html("Unfortunately no accelerometer was found on this device. Please try again on a different mobile");
+          $uplinkStatus.show().html("Unfortunately an accelerometer was not found on this device. Please try with a more modern mobile phone.");
           setLoading(true);
           break;
         case "transmitting":
-          $uplinkStatus.html("<p class='title-with-hint'>Your unique Lob code is: <b>" + presentation.channelName + "</b></p>" +
-            "<p class='hint'>Give this to others and they can watch your Lob live.<br><a href='/why-stream'>How does this work?</a>");
+          $uplinkStatus.hide();
           setLoading(false);
           break;
         default:
@@ -1049,34 +1012,37 @@ var Lob = (function () { 'use strict';
     }
 
     function renderNoThrows(presentation) {
-      $message.html("<p>Are you ready?</p><p><b>Lob your phone in the air now.</b></p><p>Good luck!</p>");
+      $message.html('<p class="prompt">Ready?</b></p><p>Lob your phone in the air and don\'t forget to catch it!</p>');
       updateUplinkStatus(presentation);
     }
 
     function renderFirstThrow(presentation) {
-      $message.html("<p>Great throw!</p>" +
-        "<p>You lobbed it <b>" + presentation.lastAltitude + "</b> for <b>" + presentation.lastFlightTime + "</b></p>" +
+      $message.html('<p class="prompt">Great throw!</p>' +
         "<p>Go on, try again!</p>");
+      $lobHeight.text(presentation.lastAltitude);
+      $lobAirtime.text(presentation.lastFlightTime + ' Airtime');
       updateUplinkStatus(presentation);
     }
 
     function renderMultipleThrows(presentation) {
       if (presentation.lastHigherThanBefore) {
-        $message.html("<p>Superb, <b>that's your new record!</b></p>" +
-          "<p>You lobbed it <b>" + presentation.lastAltitude + "</b> for <b>" + presentation.lastFlightTime + "</b></p>" +
-          "<p>Your previous best was <b>" + presentation.maxAltitude + "</b> high</p>" +
+        $message.html('<p class="prompt">Superb, that\'s your new record!</p>' +
           "<p>Go for glory, see if you can go higher!</p>");
+        $lobHeight.text(presentation.lastAltitude);
+        $lobAirtime.text(presentation.lastFlightTime + ' Airtime');
         showLeaderboard(presentation.rawMaxAltitude, presentation.rawMaxFlightTime);
       } else {
-        $message.html("<p>Not bad, but that's not your best so far.</p>" +
-          "<p>You lobbed it <b>" + presentation.lastAltitude + "</b> for <b>" + presentation.lastFlightTime + "</b></p>" +
-          "<p>Your previous best was <b>" + presentation.maxAltitude + "</b> high</p>" +
+        $message.html('<p class="prompt">Not bad, but not your best so far.</p>' +
           "<p>Give it another go!</p>");
+        $lobHeight.text(presentation.lastAltitude);
+        $lobAirtime.text(presentation.lastFlightTime + ' Airtime');
       }
       updateUplinkStatus(presentation);
     }
 
     this.render = function(presentation) {
+      $lobCode.text(presentation.channelName);
+
       if (!presentation.hasThrow) {
         renderNoThrows(presentation);
       } else if (presentation.hasOneThrow) {
@@ -1090,135 +1056,23 @@ var Lob = (function () { 'use strict';
     init();
   }
 
-  function Phone() {
-    if ( !(this instanceof Phone) ) { return new Phone(); }
-    var $phone = document.documentElement.querySelector('#tridiv .scene');
-    var prefixes = ["-webkit-", "-moz-", "-ms-", ""];
-
-    this.setOrientation = function(position) {
-      var landscape = false;
-
-      if ((position.orientation == 90) || (position.orientation == -90)) {
-        landscape = true;
-      }
-
-      /* Don't rotate on Y axis so that phone rotates on X & Y axis in front of user */
-      var xRotation = (90 - position.beta) + 270,
-          yRotation = landscape ? 90 : 0,
-          zRotation = position.gamma;
-
-      var cssText = '';
-
-      for (var prefixIndex = 0; prefixIndex < prefixes.length; prefixIndex++) {
-        var prefix = prefixes[prefixIndex];
-        cssText += prefix + 'transform: rotateX(' + xRotation + 'deg) rotateY(' + yRotation + 'deg) rotateZ(' + zRotation + 'deg);';
-      }
-
-      $phone.style.cssText = cssText;
-    }
-  }
-
-  function Guage() {
-    if ( !(this instanceof Guage) ) { return new Guage(); }
-    var $guage = document.documentElement.querySelector('.guage-widget .needle');
-    var prefixes = ["-webkit-", "-moz-", "-ms-", ""];
-
-    this.setMomentum = function(reading) {
-      /* momentum is stationery at 10, less than or greater than represents momentum */
-      var normalizedReading = Math.abs(reading.magnitude - Config.gravityMagnitudeConstant);
-      var boundedReading = Math.min(100, Math.max(0, normalizedReading));
-      var angle = (boundedReading - 50) / 100 * 180;
-      var cssText = '';
-
-      for (var prefixIndex = 0; prefixIndex < prefixes.length; prefixIndex++) {
-        var prefix = prefixes[prefixIndex];
-        cssText += prefix + 'transform: translateX(-50%) translateY(-50%) rotate(' + angle + 'deg);'
-      }
-
-      $guage.style.cssText = cssText;
-    }
-  }
-
-  function throttle(fn, threshhold, scope) {
-    threshhold = threshhold;
-    var last,
-    deferTimer;
-    return function () {
-      var context = scope || this;
-      var now = Date.now(), args = arguments;
-
-      if (last && now < last + threshhold) {
-        // hold on to it
-        clearTimeout(deferTimer);
-        deferTimer = setTimeout(function () {
-          last = now;
-          fn.apply(context, args);
-        }, threshhold);
-      } else {
-        last = now;
-        fn.apply(context, args);
-      }
-    };
-  }
-
   function FlyerView() {
     var memoized = {};
 
     var getDisplay = function() {
       if (!memoized.display) {
         var $flyer = $('.flyer');
-        memoized.display = new Display$1($flyer);
+        memoized.display = new Display($flyer);
       }
       return memoized.display;
-    }
-
-    var getAlertDisplay = function() {
-      if (!memoized.alertDisplay) {
-        memoized.alertDisplay = Display();
-      }
-      return memoized.alertDisplay;
-    }
-
-    var getPhone = function() {
-      if (!memoized.phone) {
-        memoized.phone = new Phone();
-      }
-      return memoized.phone;
-    }
-
-    var getGuage = function() {
-      if (!memoized.guage) {
-        memoized.guage = new Guage();
-      }
-      return memoized.guage;
-    }
-
-    var renderPhoneMovement = function(reading) {
-      getGuage().setMomentum(reading);
-    }
-
-    var renderPhoneOrientation = function(position) {
-      getPhone().setOrientation(position);
     }
 
     this.render = function(projection) {
       var presentation = present(projection);
       var display = getDisplay();
-      var alertDisplay = getAlertDisplay();
 
       display.render(presentation);
-
-      var alertMessage = projection.alert;
-      if (alertMessage) {
-        alertDisplay.message = alertMessage;
-        alertDisplay.active = true;
-      } else {
-        alertDisplay.active = false;
-      }
     }
-
-    this.renderPhoneMovement = throttle(renderPhoneMovement.bind(this), Config.readingPublishLimit);
-    this.renderPhoneOrientation = throttle(renderPhoneOrientation.bind(this), Config.readingPublishLimit);
   }
 
   if (!Object.assign) {
