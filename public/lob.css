@@ -92,7 +92,7 @@ a {
   a:hover {
     text-decoration: underline; }
 
-.button-base, input[type=text], button, button[type=submit], a.button, .home ul.lob-history li, input[type=submit] {
+.button-base, input[type=text], button, button[type=submit], a.button, .home ul.lob-history li a, input[type=submit] {
   font-family: "Open Sans", sans-serif;
   font-size: 1rem;
   border-radius: 5px;
@@ -100,16 +100,17 @@ a {
   width: 210px;
   height: 40px;
   margin: 0 20px 20px 0; }
-  .button-base.--wide, input.--wide[type=text], button.--wide, a.--wide.button, .home ul.lob-history li.--wide, input.--wide[type=submit] {
+  .button-base.--wide, input.--wide[type=text], button.--wide, a.--wide.button, .home ul.lob-history li a.--wide, input.--wide[type=submit] {
     width: 443px;
     margin: 0 auto; }
-  @media screen and (max-width: 500px) {
-    .button-base, input[type=text], button, button[type=submit], a.button, .home ul.lob-history li, input[type=submit] {
+  @media screen and (max-width: 1000px) {
+    .button-base, input[type=text], button, button[type=submit], a.button, .home ul.lob-history li a, input[type=submit] {
       width: 100%;
+      max-width: 443px;
       margin: 0 auto 20px auto;
       display: block;
       clear: both; }
-      .button-base.--wide, input.--wide[type=text], button.--wide, a.--wide.button, .home ul.lob-history li.--wide, input.--wide[type=submit] {
+      .button-base.--wide, input.--wide[type=text], button.--wide, a.--wide.button, .home ul.lob-history li a.--wide, input.--wide[type=submit] {
         width: 100%; } }
 
 input[type=text] {
@@ -136,19 +137,19 @@ input[type=text] {
     color: #999;
     text-align: center; }
 
-button, button[type=submit], a.button, .home ul.lob-history li, input[type=submit] {
+button, button[type=submit], a.button, .home ul.lob-history li a, input[type=submit] {
   background-color: #158CC2;
   color: white;
   font-weight: bold;
   text-transform: uppercase;
   padding: 10px 12px 14px 12px;
   position: relative; }
-  button a, button[type=submit] a, a.button a, .home ul.lob-history li a, input[type=submit] a {
+  button a, button[type=submit] a, a.button a, .home ul.lob-history li a a, input[type=submit] a {
     color: white; }
-  button[disabled], button[type=submit][disabled], a[disabled].button, .home ul.lob-history li[disabled], input[type=submit][disabled] {
+  button[disabled], button[type=submit][disabled], a[disabled].button, .home ul.lob-history li a[disabled], input[type=submit][disabled] {
     background-color: #CCC;
     color: #888; }
-  button.--important, button[type=submit].--important, a.--important.button, .home ul.lob-history li.--important, input[type=submit].--important {
+  button.--important, button[type=submit].--important, a.--important.button, .home ul.lob-history li a.--important, input[type=submit].--important {
     background-color: #A3323B;
     color: white; }
 
@@ -163,12 +164,13 @@ table {
     padding: 10px 20px 10px 0;
     font-size: 0.9rem;
     border-bottom: 2px solid rgba(0, 0, 0, 0.15);
-    text-align: left; }
+    text-align: left;
+    vertical-align: top; }
     table th:last-child, table td:last-child {
       text-align: right; }
   table th {
     font-weight: bold; }
-  @media screen and (max-width: 500px) {
+  @media screen and (max-width: 1000px) {
     table {
       min-width: initial;
       width: 100%; }
@@ -183,7 +185,7 @@ form.panel {
   margin: 2rem auto; }
   form.panel .row {
     clear: both; }
-    @media screen and (min-width: 501px) {
+    @media screen and (min-width: 1001px) {
       form.panel .row button, form.panel .row input:last-child {
         margin-right: 0; } }
 
@@ -434,23 +436,23 @@ ul.leader-nav {
   .background img {
     z-index: -2; }
     .background img.background-cloud-top {
-      position: absolute;
+      position: fixed;
       top: 100px;
       margin: 0 50%;
       width: 210px;
       height: 111px;
       left: -240px; }
-      @media screen and (max-width: 500px) {
+      @media screen and (max-width: 1000px) {
         .background img.background-cloud-top {
           top: 80px; } }
     .background img.background-cloud-bottom {
       width: 900px;
       height: 503px;
-      position: absolute;
+      position: fixed;
       top: 400px;
       margin: 0 50%;
       left: -450px; }
-      @media screen and (max-width: 500px) {
+      @media screen and (max-width: 1000px) {
         .background img.background-cloud-bottom {
           width: 150%;
           height: inherit;
@@ -467,21 +469,27 @@ ul.leader-nav {
     overflow: hidden; }
     .background .floating-phones img.phone, .background .floating-phones img.phone-samsung, .background .floating-phones img.phone-iphone, .background .floating-phones img.phone-android {
       height: 320px;
-      position: relative;
+      position: absolute;
       display: block;
-      margin: 0 auto;
       z-index: -1; }
     .background .floating-phones img.phone-samsung {
-      left: 30%;
+      right: calc(20% - 80px);
       top: 350px;
       transform: rotate(17deg); }
+      .background .floating-phones img.phone-samsung.--low {
+        top: 2300px; }
     .background .floating-phones img.phone-iphone {
-      right: 30%;
-      top: 525px;
+      left: calc(20% - 80px);
+      top: 875px;
       transform: rotate(-17deg); }
+      .background .floating-phones img.phone-iphone.--low {
+        top: 2825px; }
     .background .floating-phones img.phone-android {
-      top: 675px;
-      transform: rotate(17deg); }
+      top: 1550px;
+      transform: rotate(17deg);
+      left: calc(50% - 80px); }
+      .background .floating-phones img.phone-android.--low {
+        top: 3500px; }
     body.no-phones .background .floating-phones {
       display: none; }
 
@@ -491,7 +499,7 @@ main {
   max-width: 690px;
   padding: 0 10px;
   text-align: center; }
-  @media screen and (max-width: 500px) {
+  @media screen and (max-width: 1000px) {
     main {
       padding: 0 25px; } }
 
@@ -506,7 +514,7 @@ header {
     display: none; }
   header h1 {
     margin: 50px 0 0 0; }
-    @media screen and (max-width: 500px) {
+    @media screen and (max-width: 1000px) {
       header h1 {
         margin-top: 60px;
         font-size: 30px; } }
@@ -529,10 +537,11 @@ header {
         height: 30px;
         left: 30px;
         top: 14px; }
-        @media screen and (max-width: 500px) {
+        @media screen and (max-width: 1000px) {
           body.small-header header .back img.back-arrow {
             height: 25px;
-            top: 9px; } }
+            top: 9px;
+            left: 20px; } }
     body.small-header header h1 {
       margin: 15px auto 15px auto; }
       body.small-header header h1 img.header-logo {
@@ -542,7 +551,7 @@ header {
         display: inline;
         position: relative;
         top: 7px; }
-        @media screen and (max-width: 500px) {
+        @media screen and (max-width: 1000px) {
           body.small-header header h1 img.header-logo-small {
             height: 30px;
             top: 8px; } }
@@ -578,7 +587,7 @@ footer {
       footer .container aside.sponsor img {
         margin-top: 5px;
         width: 100px; }
-  @media screen and (max-width: 500px) {
+  @media screen and (max-width: 1000px) {
     footer {
       font-size: 0.9rem; }
       footer .container {
@@ -610,14 +619,14 @@ footer {
   /* Assume visitor does not have an accelerometer unless we detect one */ }
   .home .mobile-ready {
     display: none; }
-    @media screen and (max-width: 500px) {
+    @media screen and (max-width: 1000px) {
       .home .mobile-ready {
         margin: 3em 0 4em 0; } }
   .home .track-flight {
     margin-bottom: 3em; }
   .home div.recent-lobs {
     display: none;
-    max-width: 458px;
+    max-width: 443px;
     margin: 0 auto 3em auto;
     overflow: hidden; }
   .home ul.lob-history {
@@ -626,15 +635,16 @@ footer {
     margin: 15px 0;
     padding: 0; }
     .home ul.lob-history li {
-      float: left; }
-    @media screen and (max-width: 500px) {
-      .home ul.lob-history li {
-        float: left;
-        width: calc(50% - 10px);
-        margin: 0 0 20px 0;
-        clear: initial; }
-        .home ul.lob-history li:nth-child(odd) {
-          margin-right: 20px; } }
+      float: left;
+      width: calc(50% - 10px);
+      margin: 0 0 20px 0; }
+      .home ul.lob-history li:nth-child(odd) {
+        margin-right: 20px; }
+      .home ul.lob-history li a {
+        width: 100%;
+        clear: initial;
+        margin: 0;
+        display: block; }
 
 /* Throw your phone flying page */
 .flyer {
@@ -703,23 +713,24 @@ footer {
       margin: 0 0 0.5em 0; }
 
 /* Track another phone page */
-.tracker {
+main.tracker {
   width: 980px;
-  max-width: 980px; }
-  .tracker .uplink-up {
+  max-width: 980px;
+  padding: 0 12px; }
+  main.tracker .uplink-up {
     display: none; }
-  .tracker .uplink-status-message {
+  main.tracker .uplink-status-message {
     font-size: 1.2rem;
     margin: 1em 0; }
-    .tracker .uplink-status-message .code {
+    main.tracker .uplink-status-message .code {
       display: block;
       margin: 0.5em 0;
       font-size: 1.2em;
       font-weight: bold; }
-  .tracker .graph-and-phone {
+  main.tracker .graph-and-phone {
     overflow: hidden;
     display: none; }
-    .tracker .graph-and-phone #tracker-wrapper {
+    main.tracker .graph-and-phone #tracker-wrapper {
       background-color: #FFF;
       border: 1px solid #AAA;
       float: left;
@@ -728,62 +739,53 @@ footer {
       padding: 5px;
       width: 570px;
       position: relative; }
-    .tracker .graph-and-phone #tracker-graph {
+    main.tracker .graph-and-phone #tracker-graph {
       width: 555px;
       height: 270px; }
-    .tracker .graph-and-phone #tridiv {
+    main.tracker .graph-and-phone #tridiv {
       float: right;
       position: relative;
       width: 350px;
       height: 350px;
-      font-size: 37.5%; }
-    .tracker .graph-and-phone .pause-button, .tracker .graph-and-phone .play-button {
+      font-size: 45%; }
+    main.tracker .graph-and-phone .pause-button, main.tracker .graph-and-phone .play-button {
       position: absolute;
       top: 5px;
       right: 7px;
       margin: 0; }
-    .tracker .graph-and-phone .play-button {
+    main.tracker .graph-and-phone .play-button {
       display: none; }
-  @media screen and (max-width: 980px) {
-    .tracker {
-      width: initial; }
-      .tracker .graph-and-phone #tracker-wrapper {
-        width: 100%; }
-      .tracker .graph-and-phone #tracker-graph {
-        float: none;
-        width: 100%;
-        height: 250px; }
-      .tracker .graph-and-phone #tridiv {
-        float: none;
-        margin: 0 auto;
-        clear: left; } }
-  @media screen and (max-width: 500px) {
-    .tracker .graph-and-phone {
-      padding-bottom: 200px;
-      position: relative; }
-      .tracker .graph-and-phone #tracker-wrapper {
-        width: 100%; }
-      .tracker .graph-and-phone #tracker-graph {
-        float: none;
-        width: 100%;
-        height: 160px; }
-      .tracker .graph-and-phone #tridiv {
-        width: 100%;
-        height: 350px;
-        font-size: 37.5%;
-        transform: scale(0.6, 0.6);
-        position: absolute;
-        top: 160px; } }
-  .tracker .lock-unlock {
+  @media screen and (max-width: 1000px) {
+    main.tracker {
+      width: 95%;
+      width: calc(100% - 12px);
+      max-width: initial; }
+      main.tracker .graph-and-phone {
+        padding-bottom: 250px;
+        position: relative; }
+        main.tracker .graph-and-phone #tracker-wrapper {
+          width: 100%; }
+        main.tracker .graph-and-phone #tracker-graph {
+          float: none;
+          width: 100%;
+          height: 160px; }
+        main.tracker .graph-and-phone #tridiv {
+          width: 100%;
+          height: 350px;
+          font-size: 55%;
+          transform: scale(0.6, 0.6);
+          position: absolute;
+          top: 160px; } }
+  main.tracker .lock-unlock {
     clear: both; }
-  .tracker .connecting-loader {
+  main.tracker .connecting-loader {
     padding-top: 2em; }
-    .tracker .connecting-loader .loader {
+    main.tracker .connecting-loader .loader {
       left: calc(50% - 24px);
       position: relative; }
-    .tracker .connecting-loader .back {
+    main.tracker .connecting-loader .back {
       padding-top: 2em; }
-  .tracker .flight-history {
+  main.tracker .flight-history {
     display: none;
     margin-bottom: 2em; }
 
@@ -807,17 +809,17 @@ footer {
 
 /* Notice that appears at the top of the page about not having an accelerometer */
 .device-compatibility-notice {
-  max-width: 490px;
+  max-width: 1100px;
   margin: 0 auto; }
   .device-compatibility-notice div {
     margin: 30px;
-    padding: 15px 45px;
+    padding: 15px;
     border-radius: 5px;
     background-color: #7FBBDD;
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     text-align: center;
     color: #A3323B; }
-    @media screen and (max-width: 500px) {
-      .device-compatibility-notice div {
-        margin: 15px; } }
+
+.mobile-not-ready {
+  display: hidden; }
 
