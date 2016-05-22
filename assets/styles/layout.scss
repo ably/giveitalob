@@ -63,30 +63,30 @@
     img {
       &.phone {
         height: 320px;
-        position: relative;
+        position: absolute;
         display: block;
-        margin: 0 auto;
         z-index: -1;
       }
 
       &.phone-samsung {
         @extend .phone;
-        left: 30%;
+        right: calc(30% - 160px);
         top: 350px;
         transform: rotate(17deg);
       }
 
       &.phone-iphone {
         @extend .phone;
-        right: 30%;
-        top: 525px;
+        left: calc(30% - 160px);
+        top: 875px;
         transform: rotate(-17deg);
       }
 
       &.phone-android {
         @extend .phone;
-        top: 675px;
+        top: 1550px;
         transform: rotate(17deg);
+        left: calc(50% - 160px);
       }
     }
 

@@ -48,7 +48,9 @@
   <!-- ****** faviconit.com favicons ****** -->
 
   <link rel="stylesheet" href="/lob.css<%=cache_invalidator_param%>" media="screen" charset="utf-8">
-  <script lang="text/javascript" src="//cdn.ably.io/lib/ably.min.js" ></script>
+  <script type="text/javascript" src="//cdn.ably.io/lib/ably.min.js" ></script>
+  <script type="text/javascript" src="/vendor.js<%=cache_invalidator_param%>"></script>
+  <script type="text/javascript">$(function() { $(window).stellar(); });</script>
 
   <%= yield_content :head %>
 </head>
@@ -57,12 +59,12 @@
   <!-- phone cloud gradient background -->
   <div class="background" aria-hidden="true">
     <div class="gradient"></div>
-    <img class="background-cloud-top" src="/images/cloud_02.png<%=cache_invalidator_param%>">
-    <img class="background-cloud-bottom" src="/images/cloud_01.png<%=cache_invalidator_param%>">
+    <img class="background-cloud-top" src="/images/cloud_02.png<%=cache_invalidator_param%>" data-no-retina data-stellar-ratio="-0.1">
+    <img class="background-cloud-bottom" src="/images/cloud_01.png<%=cache_invalidator_param%>" data-no-retina data-stellar-ratio="-0.2">
     <div class="floating-phones">
-      <img class="phone-samsung" src="/images/device_02.svg<%=cache_invalidator_param%>" data-no-retina>
-      <img class="phone-iphone" src="/images/device_01.svg<%=cache_invalidator_param%>" data-no-retina>
-      <img class="phone-android" src="/images/device_03.svg<%=cache_invalidator_param%>" data-no-retina>
+      <img class="phone-samsung" src="/images/device_02.svg<%=cache_invalidator_param%>" data-no-retina data-stellar-ratio="1.5">
+      <img class="phone-iphone" src="/images/device_01.svg<%=cache_invalidator_param%>" data-no-retina data-stellar-ratio="1.5">
+      <img class="phone-android" src="/images/device_03.svg<%=cache_invalidator_param%>" data-no-retina data-stellar-ratio="1.5">
     </div>
   </div>
 
