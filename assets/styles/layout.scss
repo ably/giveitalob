@@ -24,7 +24,7 @@
   img {
     z-index: -2;
     &.background-cloud-top {
-      position: absolute;
+      position: fixed;
       top: 100px;
       margin: 0 50%;
       width: 210px;
@@ -37,7 +37,7 @@
     &.background-cloud-bottom {
       width: 900px;
       height: 503px;
-      position: absolute;
+      position: fixed;
       top: 400px;
       margin: 0 50%;
       left: -450px;
@@ -61,6 +61,8 @@
     overflow: hidden;
 
     img {
+      $second-row-offset: 1950px;
+
       &.phone {
         height: 320px;
         position: absolute;
@@ -70,23 +72,32 @@
 
       &.phone-samsung {
         @extend .phone;
-        right: calc(30% - 160px);
+        right: calc(20% - 80px);
         top: 350px;
         transform: rotate(17deg);
+        &.--low {
+          top: 350px + $second-row-offset;
+        }
       }
 
       &.phone-iphone {
         @extend .phone;
-        left: calc(30% - 160px);
+        left: calc(20% - 80px);
         top: 875px;
         transform: rotate(-17deg);
+        &.--low {
+          top: 875px + $second-row-offset;
+        }
       }
 
       &.phone-android {
         @extend .phone;
         top: 1550px;
         transform: rotate(17deg);
-        left: calc(50% - 160px);
+        left: calc(50% - 80px);
+        &.--low {
+          top: 1550px + $second-row-offset;
+        }
       }
     }
 
