@@ -1,18 +1,18 @@
 /* Notice that appears at the top of the page about not having an accelerometer */
 .device-compatibility-notice {
-  max-width: 490px;
+  max-width: $mobile-width + 100px;
   margin: 0 auto;
   div {
     margin: 30px;
-    padding: 15px 45px;
+    padding: 15px;
     border-radius: 5px;
     background-color: #7FBBDD;
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     text-align: center;
     color: $link-color;
-
-    @media screen and (max-width: $mobile-width) {
-      margin: 15px;
-    }
   }
+}
+
+.mobile-not-ready {
+  display: hidden;
 }

@@ -59,6 +59,7 @@ a {
 
   @media screen and (max-width: $mobile-width) {
     width: 100%;
+    max-width: $narrow-centre-column-width;
     margin: 0 auto 20px auto;
     display: block;
     clear: both;
@@ -131,6 +132,7 @@ table {
     font-size: 0.9rem;
     border-bottom: 2px solid rgba(0, 0, 0, 0.15);
     text-align: left;
+    vertical-align: top;
     &:last-child {
       text-align: right;
     }

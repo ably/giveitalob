@@ -16,7 +16,7 @@ var Thresholds = {
   minFlightTime: 150 /* min flight time to be a viable throw */
 }
 
-var DebugThrows = false; /* Will output debugging info when false */
+var DebugThrows = false; /* Will output debugging info when true */
 var lastDebugArgs;
 
 function debug() {

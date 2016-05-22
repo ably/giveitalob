@@ -15,7 +15,7 @@
 
   div.recent-lobs {
     display: none;
-    max-width: $narrow-centre-column-width + 15px;
+    max-width: $narrow-centre-column-width;
     margin: 0 auto 3em auto;
     overflow: hidden;
   }
@@ -27,20 +27,19 @@
     padding: 0;
 
     li {
-      @extend button[type=submit];
       float: left;
-    }
+      width: calc(50% - 10px);
+      margin: 0 0 20px 0;
+      &:nth-child(odd) {
+        margin-right: 20px;
+      }
 
-    @media screen and (max-width: $mobile-width) {
-      li {
-        float: left;
-        width: calc(50% - 10px);
-        margin: 0 0 20px 0;
+      a {
+        @extend button[type=submit];
+        width: 100%;
         clear: initial;
-
-        &:nth-child(odd) {
-          margin-right: 20px;
-        }
+        margin: 0;
+        display: block;
       }
     }
   }
@@ -153,9 +152,10 @@
 
 /* Track another phone page */
 
-.tracker {
+main.tracker {
   width: $max-width;
   max-width: $max-width;
+  padding: 0 12px;
 
   .uplink-up {
     display: none;
@@ -197,7 +197,7 @@
       position: relative;
       width: 350px;
       height: 350px;
-      font-size: 37.5%;
+      font-size: 45%;
     }
 
     .pause-button, .play-button {
@@ -211,29 +211,13 @@
     }
   }
 
-  @media screen and (max-width: $max-width) {
-    width: initial;
-    .graph-and-phone {
-      #tracker-wrapper {
-        width: 100%;
-      }
-
-      #tracker-graph {
-        float: none;
-        width: 100%;
-        height: 250px;
-      }
-      #tridiv {
-        float: none;
-        margin: 0 auto;
-        clear: left;
-      }
-    }
-  }
-
   @media screen and (max-width: $mobile-width) {
+    width: 95%;
+    width: calc(100% - 12px);
+    max-width: initial;
+
     .graph-and-phone {
-      padding-bottom: 200px;
+      padding-bottom: 250px;
       position: relative;
 
       #tracker-wrapper {
@@ -249,7 +233,7 @@
       #tridiv {
         width: 100%;
         height: 350px;
-        font-size: 37.5%;
+        font-size: 55%;
         transform: scale(0.6, 0.6);
         position: absolute;
         top: 160px;
