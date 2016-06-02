@@ -10,6 +10,9 @@ $(function() {
     if (gn.isAvailable(GyroNorm.DEVICE_ORIENTATION) || gn.isAvailable(GyroNorm.ACCELERATION_INCLUDING_GRAVITY)) {
       $mobileSupported.show();
       $mobileNotSupported.hide();
+    } else {
+      $mobileSupported.hide();
+      $mobileNotSupported.show();
     }
   });
 

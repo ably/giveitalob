@@ -1,30 +1,36 @@
-<main class="width-limited">
-  <p>
-    Lob is a fun labs project demonstration of the amazing realtime capabilities of the modern web. <br>
-    The realtime messaging is powered by <a href="https://www.ably.io">Ably</a> and built jointly as a labs project by <a href="http://workshop14.io">Workshop14.io</a> and <a href="https://www.ably.io">Ably</a>.
-  </p>
+<% content_for :body_class do %>small-header<% end %>
 
-  <p>
-    It is now possible for any webpage to communicate near instantaneously using websockets.
-    Websockets makes possible a whole host of new applications where instant data exchange makes amazing things happen.
-    Every time you've ever thought a web page was lagging behind, real time now makes websites bang up to the minute, second, millisecond.
-  </p>
+<main class="about">
+  <section>
+    <h2>What were we thinking?</h2>
+    <p>
+      Lob is a fun labs project demonstration of the amazing realtime capabilities of the modern web. <br>
+      The realtime data streaming from a phone to the lob dashboard is powered by <a href="https://www.ably.io">Ably</a>. Lob was built jointly as a labs project by <a href="http://workshop14.io">Workshop14.io</a> and <a href="https://www.ably.io">Ably</a>.
+    </p>
 
-  <hr>
+    <p>
+      It is now possible for any webpage to communicate near instantaneously using WebSockets.
+      WebSockets makes possible a whole host of new applications where instant data exchange makes amazing things happen.
+      Every time you've ever thought a web page was lagging behind, realtime now makes websites bang up to the minute, second, millisecond.
+    </p>
+  </section>
 
-  <h2><a href="https://www.ably.io">Ably - simply better realtime messaging</a></h2>
-  <p>
-    Ably is a platform that makes it easy for you to add realtime messaging and streaming data to your applications.
-    <br>
-    <a href="https://www.ably.io">Find out more &raquo;</a>
-  </p>
+  <section>
+    <a href="https://www.ably.io" target="_blank">
+      <img class="ably-logo" src="/images/ably_logo_about.svg<%=cache_invalidator_param%>" alt="Ably logo" data-no-retina>
+    </a>
+    <h2><a href="https://www.ably.io">Simply better realtime</a></h2>
+    <p>
+      Ably is a realtime data delivery platform that makes it easy for you to add realtime messaging and data streaming to your applications.
+    </p>
+    <a class="button --wide" href="https://www.ably.io">Find out more</a>
+  </section>
 
-  <hr>
-
-  <h2><a href="http://workshop14.io">Workshop14.io</a></h2>
-  <p>
-    Crafting professional software for fast and fresh web solutions.
-    <br>
-    <a href="http://workshop14.io">Find out more &raquo;</a>
-  </p>
+  <section>
+    <h2 class="workshop-logo"><a href="http://workshop14.io">Workshop 14</a></h2>
+    <p>
+      Crafting professional software for fast and fresh web solutions.
+    </p>
+    <a class="button --wide" href="http://workshop14.io">Find out more</a>
+  </section>
 </main>

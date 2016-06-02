@@ -1,33 +1,54 @@
 <% content_for :head do %>
-  <script type="text/javascript" src="/vendor.js<%=cache_invalidator_param%>"></script>
   <script type="text/javascript" src="/home.js<%=cache_invalidator_param%>"></script>
 <% end %>
 
-<main class="home width-limited">
+<% content_for :flash do %>
+  <div class="device-compatibility-notice mobile-not-ready">
+    <div>
+      Looks like you're using a device that doesn't have an accelerometer. To see how high you can lob, try this site on a phone that supports <a href="http://caniuse.com/#feat=deviceorientation">orientation</a>.
+    </div>
+  </div>
+<% end %>
+
+<main class="home">
   <div class="mobile-ready">
-    <p><b>Ready?</b> Press 'start flight' and throw your phone into the air. Remember to catch it!</p>
     <form class="panel" action="/lob" method="get">
-      <button type="submit" name="button">Start Flight</button>
+      <button type="submit" name="button" class="--wide --important">Start Flight</button>
     </form>
   </div>
 
-  <div class="mobile-not-ready">
-    Looks like you're using a device that doesn't have an accelerometer. Try this site on a phone that supports <a href="http://caniuse.com/#feat=deviceorientation">orientation and movement</a>, or view someone else's lob below.
-  </div>
+  <img class="h2-icon" src="/images/icon_eye.svg" aria-hidden="true" data-no-retina></img>
+  <h2>View live lob dashboard!</h2>
+  <p>All phones lobbed stream their movement to our servers. Enter the unique lob code shown on yours or a friend's phone to view their live lobs and stats.</p>
 
-  <h2 name="watch">Watch a phone get lobbed in real time</h2>
-  <p>All phones lobbed stream their movement in realtime to our servers. Enter the unique live Lob code shown on yours or a friend's phone to view their live stream.</p>
   <form class="track-flight panel" action="/track" method="get">
-    <label>
-      <input type="text" name="channel-name" placeholder="Enter a live Lob code" required>
+    <div class="row">
+      <input type="text" name="channel-name" placeholder="Enter code" required>
       <button type="submit">Watch live lob</button>
-    </label>
+    </div>
   </form>
+
   <div class="recent-lobs">
-    Recent lobs: <ul class="lob-history"></ul>
+    <img class="h2-icon" src="/images/icon_clock.svg" aria-hidden="true" data-no-retina></img>
+    <h2>Recent lobs</h2>
+    <ul class="lob-history"></ul>
   </div>
 
+  <img class="h2-icon" src="/images/icon_cup.svg" aria-hidden="true" data-no-retina></img>
   <h2>Leaderboard</h2>
-  <p>Throw your phone to the sky and have your name etched in our leaderboard forever</p>
-  <a href="/leaderboard">View the leaderboard</a>
+  <ul class="leader-nav">
+    <li class="selected">
+      <a href="/leaderboard/month">30 Days</a>
+    </li>
+    <li>
+      <a href="/leaderboard/week">Week</a>
+    </li>
+    <li>
+      <a href="/leaderboard">Today</a>
+    </li>
+  </ul>
+
+  <%= erb :_leaderboard_table, locals: { leaderboard: leaderboard, past: '30 days' } %>
+
+  <a href="/leaderboard/month" class="button --wide">Full leaderboard</a>
 </main>

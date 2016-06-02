@@ -27,7 +27,7 @@ class LobApp < Sinatra::Base
   set :erb, escape_html: true
 
   get '/' do
-    erb :index
+    erb :index, locals: { leaderboard: Leaderboard.best_this_month(limit: 10) }
   end
 
   get '/about' do

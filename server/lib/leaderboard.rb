@@ -1,9 +1,12 @@
 require_relative './flight'
 
 class Leaderboard
+  ONE_DAY = 60 * 60
+
   def self.best_today(limit: 100)
+    day_ago = Time.now - ONE_DAY
     Flight
-      .where{submitted_at > (Time.now - 86400)}
+      .where('submitted_at > ?', day_ago)
       .order(:max_altitude)
       .reverse
       .limit(limit)
@@ -11,8 +14,9 @@ class Leaderboard
   end
 
   def self.best_this_week(limit: 100)
+    week_ago = Time.now - 7 * 24 * ONE_DAY
     Flight
-      .where{submitted_at > (Time.now - 7 * 86400)}
+      .where('submitted_at > ?', week_ago)
       .order(:max_altitude)
       .reverse
       .limit(limit)
@@ -20,8 +24,9 @@ class Leaderboard
   end
 
   def self.best_this_month(limit: 100)
+    month_ago = Time.now - 30 * 24 * ONE_DAY
     Flight
-      .where{submitted_at > (Time.now - 30 * 86400)}
+      .where('submitted_at > ?', month_ago)
       .order(:max_altitude)
       .reverse
       .limit(limit)

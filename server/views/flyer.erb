@@ -2,47 +2,30 @@
 
 <% content_for :head do %>
   <link rel="stylesheet" href="/phone-model.css<%=cache_invalidator_param%>" media="screen" charset="utf-8">
-  <script type="text/javascript" src="/vendor.js<%=cache_invalidator_param%>"></script>
   <script type="text/javascript" src="/flyer.js<%=cache_invalidator_param%>"></script>
 <% end %>
 
 <main class="flyer">
-  <div class="uplink-status">Hold on, just getting ready...</div>
+  <div class="uplink-status">Hold on, we're just preparing for your lob...</div>
 
   <div class="connecting-loader">
     <%= erb :_loader %>
     <div class="back">
-      <a href="/">&laquo; cancel</a>
+      <a href="/">Cancel</a>
     </div>
   </div>
 
   <div class="connection-active">
-    <div class="phone-reading-panels">
-      <div class="guage-widget">
-        <ul class="labels">
-          <li>0%</li>
-          <li>25%</li>
-          <li>50%</li>
-          <li>75%</li>
-          <li>100%</li>
-        </ul>
-        <div class="guage">
-          <div class="inner"></div>
-        </div>
-        <div class="needle"></div>
-        <div class="caption">
-          LobForce™
-        </div>
-      </div>
-
-      <div class="phone">
-        <%= erb :_phone %>
-      </div>
+    <div class="last-reading">
+      <div class="height">0m</div>
+      <div class="airtime">0s Airtime</div>
     </div>
 
     <p class="message"></p>
 
-    <div class="leaderboard panel">
+    <div class="submit-to-leaderboard">
+      <img class="h2-icon" src="/images/icon_cup.svg" aria-hidden="true" data-no-retina></img>
+      <h2>Leaderboard</h2>
       <div class="submit-panel">
         <form class="panel" action="/submit-flight" method="post">
           <h3>Submit your <span class="max-altitude-message"></span> Lob to our leaderboard</h3>
@@ -55,7 +38,18 @@
         <h3>You're in our leaderboard</h3>
         <p>Your height of <span class="max-altitude-message-submitted"></span> was submitted to the leaderboard.</p>
       </div>
-      <a href="/leaderboard">View the leaderboard &raquo;</a>
+      <a href="/leaderboard">View the leaderboard</a>
+    </div>
+
+    <div class="unique-code">
+      <p class="code-intro">Your unique code is</p>
+      <div class="lob-code">TBC</div>
+      <p>
+        Use this to view or share your live lob dashboard.
+        <br>
+        <a href='/why-stream'>How does this work?</a>
+      </p>
+    </div>
   </div>
 </main>
 

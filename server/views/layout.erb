@@ -48,48 +48,81 @@
   <!-- ****** faviconit.com favicons ****** -->
 
   <link rel="stylesheet" href="/lob.css<%=cache_invalidator_param%>" media="screen" charset="utf-8">
-  <script lang="text/javascript" src="//cdn.ably.io/lib/ably.min.js" ></script>
+  <script type="text/javascript" src="//cdn.ably.io/lib/ably.min.js" ></script>
+  <script type="text/javascript" src="/vendor.js<%=cache_invalidator_param%>"></script>
+  <script type="text/javascript">$(function() { $(window).stellar({ horizontalScrolling: false }); });</script>
 
   <%= yield_content :head %>
 </head>
 
 <body class="<%= yield_content :body_class %>">
-  <aside class="notices" onclick="Lob.closeAlert()">
-    <section>
-      <h1>Ooops!</h1>
-      <p class="message"></p>
-      <p class="close">Click to close</p>
-    </section>
-    <div class="sheet"></div>
-  </aside>
+  <!-- phone cloud gradient background -->
+  <div class="background" aria-hidden="true">
+    <div class="gradient"></div>
+    <img class="background-cloud-top" src="/images/cloud_02.png<%=cache_invalidator_param%>" data-no-retina>
+    <img class="background-cloud-bottom" src="/images/cloud_01.png<%=cache_invalidator_param%>" data-no-retina>
+    <div class="floating-phones">
+      <img class="phone-samsung" src="/images/device_02.svg<%=cache_invalidator_param%>" data-no-retina data-stellar-ratio="2">
+      <img class="phone-iphone" src="/images/device_01.svg<%=cache_invalidator_param%>" data-no-retina data-stellar-ratio="2">
+      <img class="phone-android" src="/images/device_03.svg<%=cache_invalidator_param%>" data-no-retina data-stellar-ratio="2">
+      <img class="phone-samsung --low" src="/images/device_02.svg<%=cache_invalidator_param%>" data-no-retina data-stellar-ratio="2">
+      <img class="phone-iphone --low" src="/images/device_01.svg<%=cache_invalidator_param%>" data-no-retina data-stellar-ratio="2">
+      <img class="phone-android --low" src="/images/device_03.svg<%=cache_invalidator_param%>" data-no-retina data-stellar-ratio="2">
+    </div>
+  </div>
+
+  <noscript>
+    <div class="device-compatibility-notice">
+      <div>
+        Wow, your browser is either really old or configured to disable Javascript. You need a Javascript enabled browser to use this site.
+      </div>
+    </div>
+  </noscript>
+
+  <%= yield_content :flash %>
 
   <header>
+    <div class="back">
+      <a href="/">
+        <img class="back-arrow" src="/images/gui_back_arrow.svg<%=cache_invalidator_param%>" alt="Back" data-no-retina>
+      </a>
+    </div>
+
     <a href="/">
-      <h1>Give it a Lob</h1>
-      <h2>How high can you throw your phone?</h2>
-      <img src="/images/heading.png<%=cache_invalidator_param%>" alt="Give it a lob" class="heading">
-      <img src="/images/phone-rocket.png<%=cache_invalidator_param%>" alt="Phone rocketing" class="phone-rocket">
+      <h1>
+        <span class="header-copy">Give it a Lob</span>
+        <img class="header-logo" src="/images/gial_logo_stacked.svg<%=cache_invalidator_param%>" aria-hidden="true" alt="Give it a Lob" data-no-retina>
+        <img class="header-logo-small" src="/images/gial_logo_horiz.svg<%=cache_invalidator_param%>" aria-hidden="true" alt="Give it a  Lob" data-no-retina>
+      </h1>
     </a>
+
+    <div class="strap-line">How high can you lob your phone?</div>
   </header>
 
   <%= yield %>
 
   <footer>
-    <ul>
-      <li class="nav">
-        <a href="/">Home</a>
-      </li>
-      <li class="nav">
-        <a href="/about">About</a>
-      </li>
-      <li>
-        Made by <a href="http://workshop14.io" target="_blank">Workshop14.io</a> &amp; <a href="https://ably.io" target="_blank">Ably</a>
-      </li>
-      <li>
-        Realtime powered &amp; sponsored by <a href="https://ably.io" target="_blank">Ably</a>
-      </li>
-    </ul>
+    <div class="container">
+      <aside class="about">
+        <p>
+          <a href="/about">About Lob!</a>
+        </p>
+        <p>
+          Made by <a href="http://workshop14.io" target="_blank">Workshop14.io</a> &amp; <a href="https://www.ably.io" target="_blank">Ably</a>
+        </p>
+      </aside>
+
+      <aside class="sponsor">
+        <div class="blurb">
+          <p>Realtime powered &amp; sponsored by</p>
+        </div>
+        <a href="https://www.ably.io" target="_blank">
+          <img src="/images/ably_logo_col.svg<%=cache_invalidator_param%>" alt="Ably logo" data-no-retina>
+        </a>
+      </aside>
+    </div>
   </footer>
+
   <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
     (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -99,6 +132,7 @@
   ga('create', 'UA-62043294-4', 'auto');
   ga('send', 'pageview');
   </script>
+
   <%= erb :_rollbar %>
 </body>
 </html>

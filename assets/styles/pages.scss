@@ -4,33 +4,42 @@
   /* Assume visitor does not have an accelerometer unless we detect one */
   .mobile-ready {
     display: none;
+    @media screen and (max-width: $mobile-width) {
+      margin: 3em 0 4em 0;
+    }
   }
 
-  h2 {
-    border-top: 1px dashed #CA920D;
-    margin-top: 1.5em;
-    padding-top: 1.5em;
+  .track-flight {
+    margin-bottom: 3em;
   }
 
   div.recent-lobs {
     display: none;
+    max-width: $narrow-centre-column-width;
+    margin: 0 auto 3em auto;
+    overflow: hidden;
   }
 
   ul.lob-history {
     display: inline;
     list-style: none;
-    margin: 0;
+    margin: 15px 0;
     padding: 0;
 
     li {
-      display: inline;
-      &::after {
-        content: ", ";
+      float: left;
+      width: calc(50% - 10px);
+      margin: 0 0 20px 0;
+      &:nth-child(odd) {
+        margin-right: 20px;
       }
-    }
-    li:last-child {
-      &::after {
-        content: "...";
+
+      a {
+        @extend button[type=submit];
+        width: 100%;
+        clear: initial;
+        margin: 0;
+        display: block;
       }
     }
   }
@@ -52,50 +61,14 @@
 /* Throw your phone flying page */
 
 .flyer {
-  max-width: $max-width;
   text-align: center;
 
   .connection-active {
     display: none;
   }
 
-  .phone-reading-panels {
-    position: relative;
-    min-height: 175px;
-    overflow: hidden;
-
-    .guage-widget {
-      transform: scale(0.66);
-      position: absolute;
-      left: calc(25% - 90px);
-      z-index: -1;
-
-      .caption {
-        padding: 20px;
-        font-weight: bold;
-        font-size: 110%;
-      }
-    }
-
-    .phone {
-      transform: scale(0.66);
-      position: absolute;
-      position: absolute;
-      left: calc(75% - 115px);
-      top: -30px;
-
-      #tridiv {
-        width: 350px;
-        height: 350px;
-        font-size: 37.5%;
-        margin: 0;
-        position: absolute;
-      }
-    }
-  }
-
   .uplink-status {
-    font-size: 80%;
+    font-size: 1.2rem;
     margin-bottom: 1em;
 
     p.title-with-hint {
@@ -112,19 +85,46 @@
     @include preloader;
   }
 
-  .leaderboard {
+  .connection-active {
+    margin-bottom: 2rem;
+    .last-reading {
+      margin-bottom: 2.5rem;
+      .height {
+        font-size: 5rem;
+        font-weight: bold;
+        color: $link-color;
+        line-height: 1.2em;
+      }
+      .airtime {
+        font-size: 1.2rem;
+        color: black;
+      }
+    }
+  }
+
+  .message {
+    margin: 0 0 1.5em 0;
+    font-size: 1.2rem;
+    p.prompt {
+      font-size: 1.2em;
+    }
+  }
+
+  .submit-to-leaderboard {
+    margin-top: 1em;
     display: none;
-    font-size: 85%;
-    border-top: 1px solid #ca920d;
+    border-top: 2px solid rgba(255,255,255,0.5);
+    padding-top: 2em;
 
     h3 {
       font-size: 100%;
     }
 
-    form {
+    form.panel {
       input[type=text] {
         min-width: 280px;
       }
+      margin-bottom: 0.5em;
     }
 
     .submitted-panel {
@@ -132,21 +132,45 @@
     }
   }
 
-  .message {
-    margin: 0 0 1em 0;
-    font-size: 90%;
+  .unique-code {
+    max-width: $narrow-centre-column-width;
+    margin: 3em auto 1.5em auto;
+    background: #EFE2D9;
+    @include background-image(linear-gradient(#D1D8DC, #EFE2D9));
+    border-radius: 5px;
+    padding: 12px;
+    .lob-code {
+      font-size: 1.3em;
+      font-weight: bold;
+      margin-bottom: 0.5em;
+    }
     p {
-      margin: 0.5em 0;
+      margin: 0 0 0.5em 0;
     }
   }
 }
 
 /* Track another phone page */
 
-.tracker {
-  text-align: center;
+main.tracker {
   width: $max-width;
-  margin: 0 auto;
+  max-width: $max-width;
+  padding: 0 12px;
+
+  .uplink-up {
+    display: none;
+  }
+
+  .uplink-status-message {
+    font-size: 1.2rem;
+    margin: 1em 0;
+    .code {
+      display: block;
+      margin: 0.5em 0;
+      font-size: 1.2em;
+      font-weight: bold;
+    }
+  }
 
   .graph-and-phone {
     overflow: hidden;
@@ -173,7 +197,7 @@
       position: relative;
       width: 350px;
       height: 350px;
-      font-size: 37.5%;
+      font-size: 45%;
     }
 
     .pause-button, .play-button {
@@ -187,29 +211,13 @@
     }
   }
 
-  @media screen and (max-width: $tablet-width) {
-    width: initial;
-    .graph-and-phone {
-      #tracker-wrapper {
-        width: 100%;
-      }
-
-      #tracker-graph {
-        float: none;
-        width: 100%;
-        height: 250px;
-      }
-      #tridiv {
-        float: none;
-        margin: 0 auto;
-        clear: left;
-      }
-    }
-  }
-
   @media screen and (max-width: $mobile-width) {
+    width: 95%;
+    width: calc(100% - 12px);
+    max-width: initial;
+
     .graph-and-phone {
-      padding-bottom: 200px;
+      padding-bottom: 250px;
       position: relative;
 
       #tracker-wrapper {
@@ -225,7 +233,7 @@
       #tridiv {
         width: 100%;
         height: 350px;
-        font-size: 37.5%;
+        font-size: 55%;
         transform: scale(0.6, 0.6);
         position: absolute;
         top: 160px;
@@ -244,80 +252,27 @@
   .flight-history {
     display: none;
     margin-bottom: 2em;
-
-    table {
-      margin: 0 auto;
-      th {
-        background-color: #B80201;
-        color: white;
-        padding: 10px 20px;
-        border-right: 1px solid #FC0;
-        font-weight: bold;
-        font-size: 80%;
-      }
-      tr:nth-child(odd) {
-        td {
-          background: #FFF1BA;
-        }
-      }
-      tr:nth-child(even) {
-        td {
-          background: #FFFFFF;
-        }
-      }
-      td {
-        padding: 10px 20px;
-        border-right: 1px solid #FC0;
-        font-weight: normal;
-        font-size: 80%;
-      }
-    }
   }
 }
 
-/* Leaderboard page */
+/* About page */
+.about {
+  section {
+    margin-bottom: 4em;
+  }
+  img.ably-logo {
+    height: 80px;
+  }
+  h2 a {
+    color: black;
+  }
+  h2.workshop-logo {
+    font-size: 1.2em;
+  }
+}
+
+/* Leaderboard container partial */
 .leaderboard {
-  table {
-    margin: 0 auto;
-    th {
-      background-color: #B80201;
-      color: white;
-      padding: 10px 20px;
-      border-right: 1px solid #FC0;
-      font-weight: bold;
-      font-size: 80%;
-    }
-    tr:nth-child(odd) {
-      td {
-        background: #FFF1BA;
-      }
-    }
-    tr:nth-child(even) {
-      td {
-        background: #FFFFFF;
-      }
-    }
-    td {
-      padding: 10px 20px;
-      border-right: 1px solid #FC0;
-      font-weight: normal;
-      font-size: 80%;
-    }
-  }
-
-  @media screen and (max-width: $mobile-width) {
-    table {
-      margin: 0 -5%;
-      width: 110%;
-      font-size: 80%;
-
-      th {
-        padding: 5px 5px;
-      }
-
-      td {
-        padding: 5px 5px;
-      }
-    }
-  }
+  clear: both;
+  margin: 24px 0;
 }

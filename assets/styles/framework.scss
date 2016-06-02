@@ -2,52 +2,151 @@
 
 html, body {
   margin: 0;
+  font-size: 15px;
+  font-weight: 400;
+
+  /* Needed for cloud & phone background to
+     be full page height but not effect the height
+     http://goo.gl/Eqv1Gz */
+  min-height: 100%;
+  position: relative;
 }
 
 body {
-  font-family: 'Raleway', sans-serif;
-  font-weight: 300;
-  background-color: #FFCC00;
-  font-size: 1.2rem;
+  background-color: #F0D3C2;
+  font-family: $font;
+  color: #333;
+
+  /* As above, needed for cell & phone background */
+  height: 100%;
 }
 
 h1 {
-  font-size: 300%;
-  text-align: center;
-  font-weight: inherit;
+  font-size: 3rem;
+  font-weight: 400;
   margin: 0;
+  color: #000;
 }
 
 h2 {
-  font-size: 120%;
-  margin: 0;
-  text-align: center;
-}
-
-hr {
-  border: 1px solid black;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #000;
 }
 
 a {
-  color: #B10000;
-  font-weight: bold;
+  color: $link-color;
   text-decoration: none;
+  font-weight: 600;
   &:hover {
     text-decoration: underline;
-    color: #7D0000;
   }
 }
 
-input {
-  margin-right: 0.4em;
-  background-color: rgba(255,255,255,0.9);
-  font-family: raleway;
-  font-size: 100%;
+.button-base {
+  font-family: $font;
+  font-size: 1rem;
+  border-radius: 5px;
+  border: none;
+  width: 210px;
+  height: 40px;
+  margin: 0 20px 20px 0;
+
+  &.--wide {
+    width: $narrow-centre-column-width;
+    margin: 0 auto;
+  }
+
+  @media screen and (max-width: $mobile-width) {
+    width: 100%;
+    max-width: $narrow-centre-column-width;
+    margin: 0 auto 20px auto;
+    display: block;
+    clear: both;
+
+    &.--wide {
+      width: 100%;
+    }
+  }
+}
+
+input[type=text] {
+  @extend .button-base;
+
+  background-color: #E6E6E6;
+  font-size: 1rem;
+  font-weight: 400;
+  color: #000;
+  box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.2), inset 1px 0px 1px rgba(0, 0, 0, 0.2), inset -1px 0px 1px rgba(0, 0, 0, 0.2), inset 0px -1px 1px rgba(255, 255, 255, 1);
+  padding: 12px;
 
   &:focus {
-    background-color: rgba(255,255,255,1);
+    background: #fff;
+    box-shadow: 0 0 0 3px #85BDDC, 0px 5px 5px rgba(0, 0, 0, 0.15);
+    outline: none;
   }
+
   @include placeholder {
     color: $placeholder-color;
+    text-align: center;
+  }
+}
+
+button, button[type=submit], input[type=submit] {
+  @extend .button-base;
+
+  background-color: #158CC2;
+  color: white;
+  font-weight: bold;
+  text-transform: uppercase;
+  padding: 10px 12px 14px 12px;
+  position: relative;
+
+  a {
+    color: white;
+  }
+
+  &[disabled] {
+    background-color: #CCC;
+    color: #888;
+  }
+
+  &.--important {
+    background-color: $link-color;
+    color: white;
+  }
+}
+
+a.button {
+  @extend button[type=submit];
+  display: block;
+}
+
+table {
+  margin: 0 auto;
+  min-width: $narrow-centre-column-width;
+  border-spacing: 0;
+
+  th, td {
+    padding: 10px 20px 10px 0;
+    font-size: 0.9rem;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.15);
+    text-align: left;
+    vertical-align: top;
+    &:last-child {
+      text-align: right;
+    }
+  }
+  th {
+    font-weight: bold;
+  }
+
+  @media screen and (max-width: $mobile-width) {
+    min-width: initial;
+    width: 100%;
+
+    .wide-screen {
+      display: none;
+    }
   }
 }

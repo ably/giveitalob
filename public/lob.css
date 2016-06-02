@@ -1,7 +1,6 @@
 /* Global Lob CSS */
 /* Designed for up to tablet */
-/* Designed for up to tablet */
-@import url(https://fonts.googleapis.com/css?family=Raleway:400,300);
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:300,400,600);
 /* CSS resets
    Preferred behaviour */
 /*
@@ -59,107 +58,179 @@ footer {
 /* Our CSS files */
 /* Base element styling */
 html, body {
-  margin: 0; }
+  margin: 0;
+  font-size: 15px;
+  font-weight: 400;
+  /* Needed for cloud & phone background to
+     be full page height but not effect the height
+     http://goo.gl/Eqv1Gz */
+  min-height: 100%;
+  position: relative; }
 
 body {
-  font-family: 'Raleway', sans-serif;
-  font-weight: 300;
-  background-color: #FFCC00;
-  font-size: 1.2rem; }
+  background-color: #F0D3C2;
+  font-family: "Open Sans", sans-serif;
+  color: #333;
+  /* As above, needed for cell & phone background */
+  height: 100%; }
 
 h1 {
-  font-size: 300%;
-  text-align: center;
-  font-weight: inherit;
-  margin: 0; }
+  font-size: 3rem;
+  font-weight: 400;
+  margin: 0;
+  color: #000; }
 
 h2 {
-  font-size: 120%;
-  margin: 0;
-  text-align: center; }
-
-hr {
-  border: 1px solid black; }
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #000; }
 
 a {
-  color: #B10000;
-  font-weight: bold;
-  text-decoration: none; }
+  color: #A3323B;
+  text-decoration: none;
+  font-weight: 600; }
   a:hover {
-    text-decoration: underline;
-    color: #7D0000; }
+    text-decoration: underline; }
 
-input {
-  margin-right: 0.4em;
-  background-color: rgba(255, 255, 255, 0.9);
-  font-family: raleway;
-  font-size: 100%; }
-  input:focus {
-    background-color: white; }
-  input::-webkit-input-placeholder {
-    color: #999; }
-  input::-moz-placeholder {
-    color: #999; }
-  input:-moz-placeholder {
-    color: #999; }
-  input:-ms-input-placeholder {
-    color: #999; }
+.button-base, input[type=text], button, button[type=submit], a.button, .home ul.lob-history li a, input[type=submit] {
+  font-family: "Open Sans", sans-serif;
+  font-size: 1rem;
+  border-radius: 5px;
+  border: none;
+  width: 210px;
+  height: 40px;
+  margin: 0 20px 20px 0; }
+  .button-base.--wide, input.--wide[type=text], button.--wide, a.--wide.button, .home ul.lob-history li a.--wide, input.--wide[type=submit] {
+    width: 443px;
+    margin: 0 auto; }
+  @media screen and (max-width: 1000px) {
+    .button-base, input[type=text], button, button[type=submit], a.button, .home ul.lob-history li a, input[type=submit] {
+      width: 100%;
+      max-width: 443px;
+      margin: 0 auto 20px auto;
+      display: block;
+      clear: both; }
+      .button-base.--wide, input.--wide[type=text], button.--wide, a.--wide.button, .home ul.lob-history li a.--wide, input.--wide[type=submit] {
+        width: 100%; } }
+
+input[type=text] {
+  background-color: #E6E6E6;
+  font-size: 1rem;
+  font-weight: 400;
+  color: #000;
+  box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.2), inset 1px 0px 1px rgba(0, 0, 0, 0.2), inset -1px 0px 1px rgba(0, 0, 0, 0.2), inset 0px -1px 1px white;
+  padding: 12px; }
+  input[type=text]:focus {
+    background: #fff;
+    box-shadow: 0 0 0 3px #85BDDC, 0px 5px 5px rgba(0, 0, 0, 0.15);
+    outline: none; }
+  input[type=text]::-webkit-input-placeholder {
+    color: #999;
+    text-align: center; }
+  input[type=text]::-moz-placeholder {
+    color: #999;
+    text-align: center; }
+  input[type=text]:-moz-placeholder {
+    color: #999;
+    text-align: center; }
+  input[type=text]:-ms-input-placeholder {
+    color: #999;
+    text-align: center; }
+
+button, button[type=submit], a.button, .home ul.lob-history li a, input[type=submit] {
+  background-color: #158CC2;
+  color: white;
+  font-weight: bold;
+  text-transform: uppercase;
+  padding: 10px 12px 14px 12px;
+  position: relative; }
+  button a, button[type=submit] a, a.button a, .home ul.lob-history li a a, input[type=submit] a {
+    color: white; }
+  button[disabled], button[type=submit][disabled], a[disabled].button, .home ul.lob-history li a[disabled], input[type=submit][disabled] {
+    background-color: #CCC;
+    color: #888; }
+  button.--important, button[type=submit].--important, a.--important.button, .home ul.lob-history li a.--important, input[type=submit].--important {
+    background-color: #A3323B;
+    color: white; }
+
+a.button {
+  display: block; }
+
+table {
+  margin: 0 auto;
+  min-width: 443px;
+  border-spacing: 0; }
+  table th, table td {
+    padding: 10px 20px 10px 0;
+    font-size: 0.9rem;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.15);
+    text-align: left;
+    vertical-align: top; }
+    table th:last-child, table td:last-child {
+      text-align: right; }
+  table th {
+    font-weight: bold; }
+  @media screen and (max-width: 1000px) {
+    table {
+      min-width: initial;
+      width: 100%; }
+      table .wide-screen {
+        display: none; } }
 
 /* Shared CSS components */
 /* Panel that typically includes 0+ form elements and one button */
 form.panel {
   display: block;
-  font-size: 120%;
   width: 100%;
-  text-align: center;
-  margin: 1rem auto;
-  border: none; }
-  form.panel input[type=text] {
-    padding: 9px;
-    border: none;
-    border-bottom: solid 2px #D08200;
-    transition: border 0.3s;
-    margin: 10px; }
-    form.panel input[type=text]:focus {
-      border-bottom: solid 2px #000000;
-      outline: none; }
-  form.panel button {
-    border: 1px solid #D08200;
-    position: relative;
-    top: -2px;
-    background: -webkit-linear-gradient( top , #fff200, #f0d000);
-    background: linear-gradient(to bottom, #fff200, #f0d000);
-    border-radius: 28px;
-    font-family: Arial;
-    color: #000000;
-    font-size: 20px;
-    padding: 11px 20px 11px 20px;
-    text-decoration: none;
-    cursor: pointer; }
-  form.panel button:hover {
-    background: -webkit-linear-gradient( top , #f5e90e, #d4bb15);
-    background: linear-gradient(to bottom, #f5e90e, #d4bb15);
-    text-decoration: none; }
-  form.panel button[disabled] {
-    background: -webkit-linear-gradient( top , #bdbdbd, #999999);
-    background: linear-gradient(to bottom, #bdbdbd, #999999);
-    text-decoration: none;
-    text-shadow: none;
-    color: #333; }
+  margin: 2rem auto; }
+  form.panel .row {
+    clear: both; }
+    @media screen and (min-width: 1001px) {
+      form.panel .row button, form.panel .row input:last-child {
+        margin-right: 0; } }
 
-a.button {
-  background: -webkit-linear-gradient( bottom , #fc0, #FFE788);
-  background: linear-gradient(to top, #fc0, #FFE788);
-  font-size: 120%;
-  text-align: center;
-  border: 2px solid;
+/* Heading icons as images due to inability to do cache invalidation with URLs in CSS */
+.h2-icon {
+  width: 40px;
+  height: 40px;
+  margin-top: 20px;
+  clear: both;
   display: block;
-  padding: 0.5em;
-  border-radius: 4px;
-  margin: 1rem auto;
-  max-width: 560px;
-  text-decoration: none;
-  color: black; }
+  margin: 0 auto; }
+  .h2-icon + h2 {
+    margin: 0 0 20px 0; }
+
+/* Leaderboard navigation */
+ul.leader-nav {
+  display: block;
+  list-style: none;
+  margin: 15px auto;
+  padding: 0;
+  max-width: 443px;
+  overflow: hidden; }
+  ul.leader-nav li {
+    background-color: white;
+    float: left;
+    width: 33%;
+    margin-left: 1px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 12px; }
+    ul.leader-nav li a {
+      color: black; }
+    ul.leader-nav li.selected {
+      background-color: #A3323B;
+      color: white; }
+      ul.leader-nav li.selected a {
+        color: white; }
+    ul.leader-nav li:first-child {
+      border-top-left-radius: 5px;
+      border-bottom-left-radius: 5px;
+      margin-left: 0; }
+    ul.leader-nav li:last-child {
+      border-top-right-radius: 5px;
+      border-bottom-right-radius: 5px; }
 
 /* CSS loader courtesy of http://codepen.io/martinvd/pen/vEQeWR */
 .loader {
@@ -247,99 +318,6 @@ a.button {
     -o-transform: translateY(-32px);
     transform: translateY(-32px); } }
 
-/* Guage widge - courtesy of http://codepen.io/frexuz/pen/dKpxo */
-.guage-widget {
-  margin-top: 30px;
-  width: 180px;
-  height: 90px;
-  position: absolute; }
-  .guage-widget ul.labels {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: -10%; }
-    .guage-widget ul.labels li {
-      position: absolute;
-      padding: 3px 5px;
-      list-style: none;
-      font-size: 18px; }
-      .guage-widget ul.labels li:nth-child(1) {
-        top: 100%;
-        left: 0;
-        -webkit-transform: translateX(-100%) translateY(-100%);
-        -moz-transform: translateX(-100%) translateY(-100%);
-        -ms-transform: translateX(-100%) translateY(-100%);
-        -o-transform: translateX(-100%) translateY(-100%);
-        transform: translateX(-100%) translateY(-100%); }
-      .guage-widget ul.labels li:nth-child(2) {
-        top: 0;
-        left: 5%;
-        -webkit-transform: translateX(-50%);
-        -moz-transform: translateX(-50%);
-        -ms-transform: translateX(-50%);
-        -o-transform: translateX(-50%);
-        transform: translateX(-50%); }
-      .guage-widget ul.labels li:nth-child(3) {
-        top: -12%;
-        left: 50%;
-        -webkit-transform: translateX(-50%) translateY(-100%);
-        -moz-transform: translateX(-50%) translateY(-100%);
-        -ms-transform: translateX(-50%) translateY(-100%);
-        -o-transform: translateX(-50%) translateY(-100%);
-        transform: translateX(-50%) translateY(-100%); }
-      .guage-widget ul.labels li:nth-child(4) {
-        top: 0;
-        right: 5%;
-        -webkit-transform: translateX(50%);
-        -moz-transform: translateX(50%);
-        -ms-transform: translateX(50%);
-        -o-transform: translateX(50%);
-        transform: translateX(50%); }
-      .guage-widget ul.labels li:nth-child(5) {
-        top: 100%;
-        right: 0;
-        -webkit-transform: translateX(100%) translateY(-100%);
-        -moz-transform: translateX(100%) translateY(-100%);
-        -ms-transform: translateX(100%) translateY(-100%);
-        -o-transform: translateX(100%) translateY(-100%);
-        transform: translateX(100%) translateY(-100%); }
-  .guage-widget .guage {
-    overflow: hidden;
-    height: 100%; }
-    .guage-widget .guage .inner {
-      width: 100%;
-      height: 200%;
-      background: #FFF6CE;
-      border-radius: 50%; }
-  .guage-widget .needle {
-    border-radius: 50%;
-    width: 30px;
-    height: 30px;
-    background: red;
-    position: absolute;
-    left: 50%;
-    top: 100%;
-    -webkit-transform: translateX(-50%) translateY(-50%) rotate(-90deg);
-    -moz-transform: translateX(-50%) translateY(-50%) rotate(-90deg);
-    -ms-transform: translateX(-50%) translateY(-50%) rotate(-90deg);
-    -o-transform: translateX(-50%) translateY(-50%) rotate(-90deg);
-    transform: translateX(-50%) translateY(-50%) rotate(-90deg);
-    -webkit-transition: all 0.05s ease;
-    -moz-transition: all 0.05s ease;
-    transition: all 0.05s ease; }
-    .guage-widget .needle:after {
-      content: "";
-      position: absolute;
-      border-style: solid;
-      border-color: transparent transparent #f00 transparent;
-      border-width: 50px 6px;
-      bottom: 100%;
-      height: 0;
-      width: 0;
-      left: 50%;
-      margin-left: -6px;
-      margin-bottom: -2px; }
-
 /* Courtesy of http://codepen.io/marianarlt/pen/aIzvx */
 .icon {
   height: 18px;
@@ -364,7 +342,7 @@ a.button {
     .icon:hover:before, .icon:hover:after {
       background: #000; }
 
-p:hover, .icon:hover, p:hover > .icon {
+.icon:hover, p:hover > .icon {
   border-color: #000;
   cursor: pointer;
   color: #000; }
@@ -436,172 +414,245 @@ p:hover, .icon:hover, p:hover > .icon {
   border-left-color: #000; }
 
 /* Shared layout styling such as headers, footers */
-/* Generic content area */
+/* Gradient background with clouds & phones */
+.background {
+  z-index: -4;
+  position: absolute;
+  overflow: hidden;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0; }
+  .background .gradient {
+    z-index: -3;
+    position: absolute;
+    height: 800px;
+    width: 100%;
+    top: 0;
+    left: 0;
+    background: #1B8AC8;
+    background-image: -webkit-linear-gradient(#1B8AC8, #F0D3C2);
+    background-image: linear-gradient(#1B8AC8, #F0D3C2); }
+  .background img {
+    z-index: -2; }
+    .background img.background-cloud-top {
+      position: fixed;
+      top: 100px;
+      margin: 0 50%;
+      width: 210px;
+      height: 111px;
+      left: -240px; }
+      @media screen and (max-width: 1000px) {
+        .background img.background-cloud-top {
+          top: 80px; } }
+    .background img.background-cloud-bottom {
+      width: 900px;
+      height: 503px;
+      position: fixed;
+      top: 400px;
+      margin: 0 50%;
+      left: -450px; }
+      @media screen and (max-width: 1000px) {
+        .background img.background-cloud-bottom {
+          width: 150%;
+          height: inherit;
+          top: 220px;
+          margin: 0 0;
+          left: -25%; } }
+  .background .floating-phones {
+    z-index: -1;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    overflow: hidden; }
+    .background .floating-phones img.phone, .background .floating-phones img.phone-samsung, .background .floating-phones img.phone-iphone, .background .floating-phones img.phone-android {
+      height: 320px;
+      position: absolute;
+      display: block;
+      z-index: -1; }
+    .background .floating-phones img.phone-samsung {
+      right: calc(20% - 80px);
+      top: 350px;
+      transform: rotate(17deg); }
+      .background .floating-phones img.phone-samsung.--low {
+        top: 2300px; }
+    .background .floating-phones img.phone-iphone {
+      left: calc(20% - 80px);
+      top: 875px;
+      transform: rotate(-17deg); }
+      .background .floating-phones img.phone-iphone.--low {
+        top: 2825px; }
+    .background .floating-phones img.phone-android {
+      top: 1550px;
+      transform: rotate(17deg);
+      left: calc(50% - 80px); }
+      .background .floating-phones img.phone-android.--low {
+        top: 3500px; }
+    body.no-phones .background .floating-phones {
+      display: none; }
+
+/* Outer content area */
 main {
-  margin: 0 auto 2.5em auto;
-  padding: 0 1em;
-  box-sizing: border-box;
-  /* Generic style to ensure content does not get too wide */ }
-  main.width-limited {
-    max-width: 979px; }
+  margin: 0 auto 6em auto;
+  max-width: 690px;
+  padding: 0 10px;
+  text-align: center; }
+  @media screen and (max-width: 1000px) {
+    main {
+      padding: 0 25px; } }
 
 /*
   Page header: logo + strapline
 */
 header {
-  margin: 0 auto 20px 0;
+  margin: 0 auto 30px auto;
   position: relative;
   text-align: center; }
+  header .back {
+    display: none; }
   header h1 {
-    display: none; }
-  header h2 {
-    display: none; }
-  header img.heading {
-    margin-top: 90px;
-    max-width: 702px; }
-  header img.phone-rocket {
-    position: absolute;
-    z-index: -1;
-    margin-left: -350px;
-    margin-top: 10px;
-    max-width: 282px; }
-  body.small-header header img.heading {
-    max-width: 480px;
-    margin-top: 60px; }
-  body.small-header header img.phone-rocket {
-    margin-left: -245px;
-    max-width: 182px; }
-  @media screen and (max-width: 979px) {
-    body.small-header header img.heading {
-      max-width: 300px;
-      margin-top: 40px; }
-    body.small-header header img.phone-rocket {
-      margin-left: -150px;
-      max-width: 122px; } }
-  @media screen and (max-width: 500px) {
-    body.small-header header img.heading {
-      max-width: 210px;
-      margin-top: 35px; }
-    body.small-header header img.phone-rocket {
-      margin-left: -115px;
-      max-width: 90px; } }
-  @media screen and (max-width: 979px) {
-    header img.heading {
-      max-width: 480px;
-      margin-top: 60px; }
-    header img.phone-rocket {
-      margin-left: -245px;
-      max-width: 182px; } }
-  @media screen and (max-width: 500px) {
-    header img.heading {
-      max-width: 300px;
-      margin-top: 40px; }
-    header img.phone-rocket {
-      margin-left: -150px;
-      max-width: 122px; } }
+    margin: 50px 0 0 0; }
+    @media screen and (max-width: 1000px) {
+      header h1 {
+        margin-top: 60px;
+        font-size: 30px; } }
+    header h1 .header-copy {
+      display: none; }
+    header h1 img.header-logo {
+      width: 300px; }
+    header h1 img.header-logo-small {
+      display: none; }
+  header .strap-line {
+    color: white;
+    font-weight: 300;
+    font-size: 1.8rem; }
+  body.small-header header {
+    border-bottom: 2px solid rgba(255, 255, 255, 0.3); }
+    body.small-header header .back {
+      display: block; }
+      body.small-header header .back img.back-arrow {
+        position: absolute;
+        height: 30px;
+        left: 30px;
+        top: 14px; }
+        @media screen and (max-width: 1000px) {
+          body.small-header header .back img.back-arrow {
+            height: 25px;
+            top: 9px;
+            left: 20px; } }
+    body.small-header header h1 {
+      margin: 15px auto 15px auto; }
+      body.small-header header h1 img.header-logo {
+        display: none; }
+      body.small-header header h1 img.header-logo-small {
+        height: 40px;
+        display: inline;
+        position: relative;
+        top: 7px; }
+        @media screen and (max-width: 1000px) {
+          body.small-header header h1 img.header-logo-small {
+            height: 30px;
+            top: 8px; } }
+    body.small-header header .strap-line {
+      display: none; }
 
 /* Footer */
 footer {
   background-color: black;
   color: white;
   text-align: center;
-  font-size: 90%; }
+  font-size: 0.8rem;
+  color: #999; }
   footer a {
-    color: #FC0; }
+    color: white; }
     footer a:hover {
-      color: #FC0; }
-  footer ul {
-    margin: 0;
-    list-style: none;
+      text-decoration: underline; }
+  footer .container {
+    width: 443px;
+    margin: 1.5rem auto;
     overflow: hidden; }
-    footer ul li {
-      display: inline-block;
-      padding: 10px 25px 10px 20px;
-      border-right: 1px solid #EEE; }
-      footer ul li:last-child {
-        border: none; }
-  @media screen and (max-width: 979px) {
-    footer ul li {
-      padding: 10px 15px 10px 10px;
-      font-size: 85%; } }
-  @media screen and (max-width: 979px) {
-    footer ul {
-      padding: 0 0 5px 0; }
-      footer ul li {
-        padding: 5px 10px 5px 10px;
-        border: none;
-        clear: left;
-        display: block;
-        border-bottom: 1px solid #333;
-        box-sizing: border-box; }
-        footer ul li:last-child {
-          border-bottom: none; }
-        footer ul li.nav {
-          width: 50%;
+    footer .container aside.about {
+      text-align: left;
+      margin-right: 110px;
+      float: left; }
+    footer .container aside.sponsor {
+      text-align: left;
+      float: right;
+      width: 100px;
+      font-size: 0.9em; }
+      footer .container aside.sponsor .blurb {
+        display: inline; }
+      footer .container aside.sponsor img {
+        margin-top: 5px;
+        width: 100px; }
+  @media screen and (max-width: 1000px) {
+    footer {
+      font-size: 0.9rem; }
+      footer .container {
+        width: 100%;
+        margin: 2em 0;
+        padding: 0 2em; }
+        footer .container aside.about {
           display: block;
-          box-sizing: border-box;
-          clear: none;
-          float: left;
-          border-left: 1px solid #333; }
-          footer ul li.nav:first-child {
-            border-left: none; } }
+          float: none;
+          margin: 0; }
+          footer .container aside.about p:first-child {
+            margin-top: 0; }
+        footer .container aside.sponsor {
+          display: block;
+          float: none;
+          width: inherit;
+          font-size: inherit; }
+          footer .container aside.sponsor .blurb {
+            display: block;
+            float: left;
+            width: 40%; }
+          footer .container aside.sponsor img {
+            display: block;
+            float: left;
+            margin: 12px 0 0 30px; } }
 
 /* Home page */
 .home {
   /* Assume visitor does not have an accelerometer unless we detect one */ }
   .home .mobile-ready {
     display: none; }
-  .home h2 {
-    border-top: 1px dashed #CA920D;
-    margin-top: 1.5em;
-    padding-top: 1.5em; }
+    @media screen and (max-width: 1000px) {
+      .home .mobile-ready {
+        margin: 3em 0 4em 0; } }
+  .home .track-flight {
+    margin-bottom: 3em; }
   .home div.recent-lobs {
-    display: none; }
+    display: none;
+    max-width: 443px;
+    margin: 0 auto 3em auto;
+    overflow: hidden; }
   .home ul.lob-history {
     display: inline;
     list-style: none;
-    margin: 0;
+    margin: 15px 0;
     padding: 0; }
     .home ul.lob-history li {
-      display: inline; }
-      .home ul.lob-history li::after {
-        content: ", "; }
-    .home ul.lob-history li:last-child::after {
-      content: "..."; }
+      float: left;
+      width: calc(50% - 10px);
+      margin: 0 0 20px 0; }
+      .home ul.lob-history li:nth-child(odd) {
+        margin-right: 20px; }
+      .home ul.lob-history li a {
+        width: 100%;
+        clear: initial;
+        margin: 0;
+        display: block; }
 
 /* Throw your phone flying page */
 .flyer {
-  max-width: 980px;
   text-align: center; }
   .flyer .connection-active {
     display: none; }
-  .flyer .phone-reading-panels {
-    position: relative;
-    min-height: 175px;
-    overflow: hidden; }
-    .flyer .phone-reading-panels .guage-widget {
-      transform: scale(0.66);
-      position: absolute;
-      left: calc(25% - 90px);
-      z-index: -1; }
-      .flyer .phone-reading-panels .guage-widget .caption {
-        padding: 20px;
-        font-weight: bold;
-        font-size: 110%; }
-    .flyer .phone-reading-panels .phone {
-      transform: scale(0.66);
-      position: absolute;
-      position: absolute;
-      left: calc(75% - 115px);
-      top: -30px; }
-      .flyer .phone-reading-panels .phone #tridiv {
-        width: 350px;
-        height: 350px;
-        font-size: 37.5%;
-        margin: 0;
-        position: absolute; }
   .flyer .uplink-status {
-    font-size: 80%;
+    font-size: 1.2rem;
     margin-bottom: 1em; }
     .flyer .uplink-status p.title-with-hint {
       margin-bottom: 0; }
@@ -616,31 +667,70 @@ footer {
       position: relative; }
     .flyer .connecting-loader .back {
       padding-top: 2em; }
-  .flyer .leaderboard {
-    display: none;
-    font-size: 85%;
-    border-top: 1px solid #ca920d; }
-    .flyer .leaderboard h3 {
-      font-size: 100%; }
-    .flyer .leaderboard form input[type=text] {
-      min-width: 280px; }
-    .flyer .leaderboard .submitted-panel {
-      display: none; }
+  .flyer .connection-active {
+    margin-bottom: 2rem; }
+    .flyer .connection-active .last-reading {
+      margin-bottom: 2.5rem; }
+      .flyer .connection-active .last-reading .height {
+        font-size: 5rem;
+        font-weight: bold;
+        color: #A3323B;
+        line-height: 1.2em; }
+      .flyer .connection-active .last-reading .airtime {
+        font-size: 1.2rem;
+        color: black; }
   .flyer .message {
-    margin: 0 0 1em 0;
-    font-size: 90%; }
-    .flyer .message p {
-      margin: 0.5em 0; }
+    margin: 0 0 1.5em 0;
+    font-size: 1.2rem; }
+    .flyer .message p.prompt {
+      font-size: 1.2em; }
+  .flyer .submit-to-leaderboard {
+    margin-top: 1em;
+    display: none;
+    border-top: 2px solid rgba(255, 255, 255, 0.5);
+    padding-top: 2em; }
+    .flyer .submit-to-leaderboard h3 {
+      font-size: 100%; }
+    .flyer .submit-to-leaderboard form.panel {
+      margin-bottom: 0.5em; }
+      .flyer .submit-to-leaderboard form.panel input[type=text] {
+        min-width: 280px; }
+    .flyer .submit-to-leaderboard .submitted-panel {
+      display: none; }
+  .flyer .unique-code {
+    max-width: 443px;
+    margin: 3em auto 1.5em auto;
+    background: #EFE2D9;
+    background-image: -webkit-linear-gradient(#D1D8DC, #EFE2D9);
+    background-image: linear-gradient(#D1D8DC, #EFE2D9);
+    border-radius: 5px;
+    padding: 12px; }
+    .flyer .unique-code .lob-code {
+      font-size: 1.3em;
+      font-weight: bold;
+      margin-bottom: 0.5em; }
+    .flyer .unique-code p {
+      margin: 0 0 0.5em 0; }
 
 /* Track another phone page */
-.tracker {
-  text-align: center;
+main.tracker {
   width: 980px;
-  margin: 0 auto; }
-  .tracker .graph-and-phone {
+  max-width: 980px;
+  padding: 0 12px; }
+  main.tracker .uplink-up {
+    display: none; }
+  main.tracker .uplink-status-message {
+    font-size: 1.2rem;
+    margin: 1em 0; }
+    main.tracker .uplink-status-message .code {
+      display: block;
+      margin: 0.5em 0;
+      font-size: 1.2em;
+      font-weight: bold; }
+  main.tracker .graph-and-phone {
     overflow: hidden;
     display: none; }
-    .tracker .graph-and-phone #tracker-wrapper {
+    main.tracker .graph-and-phone #tracker-wrapper {
       background-color: #FFF;
       border: 1px solid #AAA;
       float: left;
@@ -649,140 +739,87 @@ footer {
       padding: 5px;
       width: 570px;
       position: relative; }
-    .tracker .graph-and-phone #tracker-graph {
+    main.tracker .graph-and-phone #tracker-graph {
       width: 555px;
       height: 270px; }
-    .tracker .graph-and-phone #tridiv {
+    main.tracker .graph-and-phone #tridiv {
       float: right;
       position: relative;
       width: 350px;
       height: 350px;
-      font-size: 37.5%; }
-    .tracker .graph-and-phone .pause-button, .tracker .graph-and-phone .play-button {
+      font-size: 45%; }
+    main.tracker .graph-and-phone .pause-button, main.tracker .graph-and-phone .play-button {
       position: absolute;
       top: 5px;
       right: 7px;
       margin: 0; }
-    .tracker .graph-and-phone .play-button {
+    main.tracker .graph-and-phone .play-button {
       display: none; }
-  @media screen and (max-width: 979px) {
-    .tracker {
-      width: initial; }
-      .tracker .graph-and-phone #tracker-wrapper {
-        width: 100%; }
-      .tracker .graph-and-phone #tracker-graph {
-        float: none;
-        width: 100%;
-        height: 250px; }
-      .tracker .graph-and-phone #tridiv {
-        float: none;
-        margin: 0 auto;
-        clear: left; } }
-  @media screen and (max-width: 500px) {
-    .tracker .graph-and-phone {
-      padding-bottom: 200px;
-      position: relative; }
-      .tracker .graph-and-phone #tracker-wrapper {
-        width: 100%; }
-      .tracker .graph-and-phone #tracker-graph {
-        float: none;
-        width: 100%;
-        height: 160px; }
-      .tracker .graph-and-phone #tridiv {
-        width: 100%;
-        height: 350px;
-        font-size: 37.5%;
-        transform: scale(0.6, 0.6);
-        position: absolute;
-        top: 160px; } }
-  .tracker .lock-unlock {
+  @media screen and (max-width: 1000px) {
+    main.tracker {
+      width: 95%;
+      width: calc(100% - 12px);
+      max-width: initial; }
+      main.tracker .graph-and-phone {
+        padding-bottom: 250px;
+        position: relative; }
+        main.tracker .graph-and-phone #tracker-wrapper {
+          width: 100%; }
+        main.tracker .graph-and-phone #tracker-graph {
+          float: none;
+          width: 100%;
+          height: 160px; }
+        main.tracker .graph-and-phone #tridiv {
+          width: 100%;
+          height: 350px;
+          font-size: 55%;
+          transform: scale(0.6, 0.6);
+          position: absolute;
+          top: 160px; } }
+  main.tracker .lock-unlock {
     clear: both; }
-  .tracker .connecting-loader {
+  main.tracker .connecting-loader {
     padding-top: 2em; }
-    .tracker .connecting-loader .loader {
+    main.tracker .connecting-loader .loader {
       left: calc(50% - 24px);
       position: relative; }
-    .tracker .connecting-loader .back {
+    main.tracker .connecting-loader .back {
       padding-top: 2em; }
-  .tracker .flight-history {
+  main.tracker .flight-history {
     display: none;
     margin-bottom: 2em; }
-    .tracker .flight-history table {
-      margin: 0 auto; }
-      .tracker .flight-history table th {
-        background-color: #B80201;
-        color: white;
-        padding: 10px 20px;
-        border-right: 1px solid #FC0;
-        font-weight: bold;
-        font-size: 80%; }
-      .tracker .flight-history table tr:nth-child(odd) td {
-        background: #FFF1BA; }
-      .tracker .flight-history table tr:nth-child(even) td {
-        background: #FFFFFF; }
-      .tracker .flight-history table td {
-        padding: 10px 20px;
-        border-right: 1px solid #FC0;
-        font-weight: normal;
-        font-size: 80%; }
 
-/* Leaderboard page */
-.leaderboard table {
+/* About page */
+.about section {
+  margin-bottom: 4em; }
+
+.about img.ably-logo {
+  height: 80px; }
+
+.about h2 a {
+  color: black; }
+
+.about h2.workshop-logo {
+  font-size: 1.2em; }
+
+/* Leaderboard container partial */
+.leaderboard {
+  clear: both;
+  margin: 24px 0; }
+
+/* Notice that appears at the top of the page about not having an accelerometer */
+.device-compatibility-notice {
+  max-width: 1100px;
   margin: 0 auto; }
-  .leaderboard table th {
-    background-color: #B80201;
-    color: white;
-    padding: 10px 20px;
-    border-right: 1px solid #FC0;
-    font-weight: bold;
-    font-size: 80%; }
-  .leaderboard table tr:nth-child(odd) td {
-    background: #FFF1BA; }
-  .leaderboard table tr:nth-child(even) td {
-    background: #FFFFFF; }
-  .leaderboard table td {
-    padding: 10px 20px;
-    border-right: 1px solid #FC0;
-    font-weight: normal;
-    font-size: 80%; }
+  .device-compatibility-notice div {
+    margin: 30px;
+    padding: 15px;
+    border-radius: 5px;
+    background-color: #7FBBDD;
+    font-size: 0.9rem;
+    text-align: center;
+    color: #A3323B; }
 
-@media screen and (max-width: 500px) {
-  .leaderboard table {
-    margin: 0 -5%;
-    width: 110%;
-    font-size: 80%; }
-    .leaderboard table th {
-      padding: 5px 5px; }
-    .leaderboard table td {
-      padding: 5px 5px; } }
-
-.notices {
-  position: fixed;
-  width: 100%;
-  height: 0;
-  padding: 0 1em;
-  overflow: hidden;
-  z-index: 10;
-  transition: background-color 1s, height 0s 1s;
-  background-color: rgba(255, 255, 255, 0); }
-  .notices section {
-    background-color: white;
-    max-width: 720px;
-    margin: 1em auto;
-    border: 2px solid;
-    border-radius: 4px;
-    transform: translateY(-150%);
-    transition: transform 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55) 0s; }
-  .notices p {
-    max-width: 540px;
-    margin: 0 auto;
-    padding: 0.5em; }
-    .notices p.close {
-      text-align: right; }
-  .notices.active {
-    height: 100%;
-    transition: background-color 1s 0s, height 0s 0s;
-    background-color: rgba(255, 255, 255, 0.5); }
-    .notices.active section {
-      transform: translateY(0%); }
+.mobile-not-ready {
+  display: hidden; }
 

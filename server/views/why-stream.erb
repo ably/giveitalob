@@ -1,7 +1,9 @@
-<main class="home width-limited">
+<% content_for :body_class do %>small-header<% end %>
 
+<main class="home width-limited">
   <p>
-    All phones lobbed stream their movement in real time to our servers. Therefore, you and your friends, anywhere in the world, can watch your phone rocket through the sky in real time.</p>
+    All phones lobbed stream their movement in real time to our servers. Therefore, you and your friends, anywhere in the world, can watch your phone rocket through the sky live.
+  </p>
 
   <p>
     Before you <a href="/lob">throw your phone</a>, you will see a Lob Code such <b>XD8CA</b> appear at the top of the page. You will need that code to watch a live lob.
@@ -11,21 +13,5 @@
     The Lob Code for each phone being lobbed is unique. On the <a href="/#watch">home page</a>, under "Watch a phone get lobbed", you can enter the code from the phone and watch the phone from anywhere in the world get its wings.
   </p>
 
-  <a href="/">&laquo; Home</a>
+  <a href="/" class="button">Home</a>
 </main>
-
-<script type="text/javascript">
-(function() {
-  var mobileSupported = document.documentElement.querySelector('.mobile-ready'),
-      mobileNotSupported = document.documentElement.querySelector('.mobile-not-ready');
-
-  if (window.DeviceOrientationEvent && window.DeviceMotionEvent) {
-    window.addEventListener('devicemotion', function(event) {
-      if (!isNaN(parseInt(event.acceleration.x))) {
-        mobileNotSupported.style.display = 'none';
-        mobileSupported.style.display = 'block';
-      }
-    }, false);
-  }
-}());
-</script>

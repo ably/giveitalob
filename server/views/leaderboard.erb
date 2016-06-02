@@ -1,43 +1,20 @@
-<main class="leaderboard width-limited">
-  <h3>
-    Last <%= past %> Leaderboard
-  </h3>
-  <p>
-    See results for last
-    <%= case past
-        when '24 hrs'
-          '<a href="/leaderboard/week">week</a> or <a href="/leaderboard/month">month</a>.'
-        when '7 days'
-          '<a href="/leaderboard">day</a> or <a href="/leaderboard/month">month</a>.'
-        else
-          '<a href="/leaderboard">day</a> or <a href="/leaderboard/week">week</a>.'
-        end %>
-  </p>
-  <hr>
-  <% if leaderboard.empty? %>
-  <p>
-    <i>
-      There are no entries for the last <%= past %>. Try another leaderboard.
-    </i>
-  </p>
-  <% else %>
-  <table>
-    <tr>
-      <th>#</th>
-      <th>Name</th>
-      <th>Height</th>
-      <th>Airborne</th>
-      <th>Device</th>
-    </tr>
-    <% leaderboard.each_with_index do |flight, index| %>
-      <tr>
-        <td><%= index+1 %></td>
-        <td><%= flight.username %></td>
-        <td><%= flight.max_altitude %>m</td>
-        <td><%= flight.max_flight_time %>s</td>
-        <td><%= flight.device %>s</td>
-      </tr>
-    <% end %>
-  </table>
-  <% end %>
+<% content_for :body_class do %>small-header<% end %>
+
+<main>
+  <img class="h2-icon" src="/images/icon_cup.svg" aria-hidden="true" data-no-retina></img>
+  <h2>Leaderboard</h2>
+
+  <ul class="leader-nav">
+    <li <%= 'class="selected"' unless ['7 days', '24 hrs'].include?(past) %>>
+      <a href="/leaderboard/month">30 Days</a>
+    </li>
+    <li <%= 'class="selected"' if past == '7 days'%>>
+      <a href="/leaderboard/week">Week</a>
+    </li>
+    <li <%= 'class="selected"' if past == '24 hrs'%>>
+      <a href="/leaderboard">Today</a>
+    </li>
+  </ul>
+
+  <%= erb :_leaderboard_table, locals: { leaderboard: leaderboard, past: past } %>
 </main>

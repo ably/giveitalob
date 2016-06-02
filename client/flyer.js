@@ -16,7 +16,7 @@ var Thresholds = {
   minFlightTime: 150 /* min flight time to be a viable throw */
 }
 
-var DebugThrows = false; /* Will output debugging info when false */
+var DebugThrows = false; /* Will output debugging info when true */
 var lastDebugArgs;
 
 function debug() {
@@ -168,9 +168,6 @@ export default function Flyer(state) {
 
     transmitReadingAndOrientation(reading, orientation);
 
-    flyer.view.renderPhoneMovement(reading);
-    flyer.view.renderPhoneOrientation(orientation);
-
     this.trackThrows(reading, function(currentFlight, peakOrTroughHistory) {
       var state = flyer.state.set("latestReading", reading);
       var flightHistory = state.flightHistory;
@@ -308,12 +305,6 @@ export default function Flyer(state) {
       }
     }
   }
-
-  flyer.closeAlert = function(){
-    // DEBT untested
-    flyer.state = flyer.state.set("alert", "");
-    showcase(flyer.state);
-  };
 
   flyer.accelerometerNotSupported = function() {
     flyer.state = flyer.state.merge({

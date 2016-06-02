@@ -1,67 +1,77 @@
 /* Shared CSS components */
 
 /* Panel that typically includes 0+ form elements and one button */
-
 form.panel {
   display: block;
-  font-size: 120%;
   width: 100%;
-  text-align: center;
-  margin: 1rem auto;
-  border: none;
+  margin: 2rem auto;
 
-  input[type=text] {
-    padding: 9px;
-    border: none;
-    border-bottom: solid 2px #D08200;
-    transition: border 0.3s;
-    margin: 10px;
+  .row {
+    clear: both;
 
-    &:focus {
-      border-bottom: solid 2px #000000;
-      outline: none;
+    @media screen and (min-width: $mobile-width + 1px) {
+      button, input:last-child {
+        margin-right: 0;
+      }
     }
-  }
-
-  button {
-    border: 1px solid #D08200;
-    position: relative;
-    top: -2px;
-    @include background(linear-gradient(to bottom, #fff200, #f0d000));
-    border-radius: 28px;
-    font-family: Arial;
-    color: #000000;
-    font-size: 20px;
-    padding: 11px 20px 11px 20px;
-    text-decoration: none;
-    cursor: pointer;
-  }
-
-  button:hover {
-    @include background(linear-gradient(to bottom, #f5e90e, #d4bb15));
-    text-decoration: none;
-  }
-
-  button[disabled] {
-    @include background(linear-gradient(to bottom, #bdbdbd, #999999));
-    text-decoration: none;
-    text-shadow: none;
-    color: #333;
   }
 }
 
-a.button {
-  @include background(linear-gradient(to top, #fc0, #FFE788));
-  font-size: 120%;
-  text-align: center;
-  border: 2px solid;
+/* Heading icons as images due to inability to do cache invalidation with URLs in CSS */
+.h2-icon {
+  width: 40px;
+  height: 40px;
+  margin-top: 20px;
+  clear: both;
   display: block;
-  padding: 0.5em;
-  border-radius: 4px;
-  margin: 1rem auto;
-  max-width: 560px;
-  text-decoration: none;
-  color: black;
+  margin: 0 auto;
+  + h2 {
+    margin: 0 0 20px 0;
+  }
+}
+
+/* Leaderboard navigation */
+
+ul.leader-nav {
+  display: block;
+  list-style: none;
+  margin: 15px auto;
+  padding: 0;
+  max-width: $narrow-centre-column-width;
+  overflow: hidden;
+
+  li {
+    background-color: white;
+    float: left;
+    width: 33%;
+    margin-left: 1px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 12px;
+
+    a {
+      color: black;
+    }
+
+    &.selected {
+      background-color: $link-color;
+      color: white;
+      a {
+        color: white;
+      }
+    }
+
+    &:first-child {
+      border-top-left-radius: 5px;
+      border-bottom-left-radius: 5px;
+      margin-left: 0;
+    }
+    &:last-child {
+      border-top-right-radius: 5px;
+      border-bottom-right-radius: 5px;
+    }
+  }
 }
 
 /* CSS loader courtesy of http://codepen.io/martinvd/pen/vEQeWR */
@@ -142,91 +152,6 @@ a.button {
   }
 }
 
-/* Guage widge - courtesy of http://codepen.io/frexuz/pen/dKpxo */
-
-.guage-widget {
-  margin-top: 30px;
-  width: 180px;
-  height: 90px;
-  position: absolute;
-
-  ul.labels {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: -10%;
-
-    li {
-      position: absolute;
-      padding: 3px 5px;
-      list-style: none;
-      font-size: 18px;
-
-      &:nth-child(1) {
-        top: 100%;
-        left: 0;
-        @include transform(translateX(-100%) translateY(-100%));
-      }
-      &:nth-child(2) {
-        top: 0;
-        left: 5%;
-        @include transform(translateX(-50%));
-      }
-      &:nth-child(3) {
-        top: -12%;
-        left: 50%;
-        @include transform(translateX(-50%) translateY(-100%));
-      }
-      &:nth-child(4) {
-        top: 0;
-        right: 5%;
-        @include transform(translateX(50%));
-      }
-      &:nth-child(5) {
-        top: 100%;
-        right: 0;
-        @include transform(translateX(100%) translateY(-100%));
-      }
-    }
-  }
-
-  .guage {
-    overflow: hidden;
-    height: 100%;
-    .inner {
-      width: 100%;
-      height: 200%;
-      background: #FFF6CE;
-      border-radius: 50%;
-    }
-  }
-
-  .needle {
-    border-radius: 50%;
-    width: 30px;
-    height: 30px;
-    background: red;
-    position: absolute;
-    left: 50%;
-    top: 100%;
-    @include transform(translateX(-50%) translateY(-50%) rotate(-90deg));
-    @include transition(all 0.05s ease);
-    &:after {
-      content: "";
-      position: absolute;
-      border-style: solid;
-      border-color: transparent transparent #f00 transparent;
-      border-width: 50px 6px;
-      bottom: 100%;
-      height: 0;
-      width: 0;
-      left: 50%;
-      margin-left: -6px;
-      margin-bottom: -2px;
-    }
-  }
-}
-
 /* Courtesy of http://codepen.io/marianarlt/pen/aIzvx */
 $baseColor: #999;
 $hoverColor: #000;
@@ -263,7 +188,7 @@ $iconInnerLines: $iconSize / 8;
   }
 }
 
-p:hover, .icon:hover, p:hover > .icon {
+.icon:hover, p:hover > .icon {
   border-color: $hoverColor;
   cursor: pointer;
   color: $hoverColor;

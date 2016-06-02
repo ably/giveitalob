@@ -32,9 +32,9 @@ rake db:migrate:up
 
 4. Obtain an [Ably API key](https://www.ably.io) and add to [.env](.env). See [.env.example](.env.example) for an example of how to configure this file.
 
-5. Build your assets. `npm run build` to build and copy assets.
+5. Build your assets. `npm run build` to build and copy assets. If you want the app to rebuild assets automatically, try `rerun -d assets,client npm run build`.
 
-6. Run the local version by executing `puma`. If you want the app to reload automatically when changes are made, try `rerun -d client,config,server puma`. The application will the be available on all network interfaces on port 5000.
+6. Run the local version by executing `puma`. If you want the app to reload automatically when changes are made, try `rerun -d config,server puma`. The application will the be available on all network interfaces on port 5000.
 
 ### Tests
 

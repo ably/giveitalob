@@ -23,9 +23,13 @@ function AccelerometerController(global, flyer){
     console.warn("Gyro log:", data);
   }
   gn.init({ frequency: 10, decimalCounts: 3, logger: logger }).then(function() {
-    gn.start(function(data) {
-      flyer.newReading(data);
-    });
+    if (gn.isAvailable(GyroNorm.DEVICE_ORIENTATION) || gn.isAvailable(GyroNorm.ACCELERATION_INCLUDING_GRAVITY)) {
+      gn.start(function(data) {
+        flyer.newReading(data);
+      });
+    } else {
+      flyer.accelerometerNotSupported();
+    }
   }).catch(function(e) {
     /* DeviceOrientation or DeviceMotion is not supported by the browser or device */
     flyer.accelerometerNotSupported();

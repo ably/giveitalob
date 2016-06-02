@@ -1,14 +1,17 @@
-<% content_for :body_class do %>small-header<% end %>
+<% content_for :body_class do %>small-header no-phones<% end %>
 
 <% content_for :head do %>
   <link rel="stylesheet" href="/phone-model.css<%=cache_invalidator_param%>" media="screen" title="Phone styling" charset="utf-8">
   <script type="text/javascript" src="/vendor-chart.js<%=cache_invalidator_param%>"></script>
-  <script type="text/javascript" src="/vendor.js<%=cache_invalidator_param%>"></script>
   <script type="text/javascript" src="/tracker.js<%=cache_invalidator_param%>"></script>
 <% end %>
 
 <main class="tracker">
-  <div class="uplink-status-message">Connecting to Ably</div>
+  <div class="uplink-up"><img class="h2-icon" src="/images/icon_tick.svg<%=cache_invalidator_param%>" alt="Connection successful" data-no-retina></div>
+
+  <div class="uplink-status-message">
+    <p>Hold on a sec, just getting the lob dashboard ready...</p>
+  </div>
 
   <div class="graph-and-phone">
     <div id="tracker-wrapper">
@@ -22,12 +25,13 @@
   <div class="connecting-loader">
     <%= erb :_loader %>
     <div class="back">
-      <a href="/">&laquo; cancel</a>
+      <a href="/">Cancel</a>
     </div>
   </div>
 
   <div class="flight-history">
-    <h3>Lob history</h3>
+    <img class="h2-icon" src="/images/icon_lob_phone.svg" aria-hidden="true" data-no-retina></img>
+    <h2>Lob history</h2>
     <table>
       <tr>
         <th>Height</th>
