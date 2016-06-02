@@ -75,7 +75,7 @@
         right: calc(20% - 80px);
         top: 350px;
         transform: rotate(17deg);
-        &.--low {
+        &.__low {
           top: 350px + $second-row-offset;
         }
       }
@@ -85,7 +85,7 @@
         left: calc(20% - 80px);
         top: 875px;
         transform: rotate(-17deg);
-        &.--low {
+        &.__low {
           top: 875px + $second-row-offset;
         }
       }
@@ -95,7 +95,7 @@
         top: 1550px;
         transform: rotate(17deg);
         left: calc(50% - 80px);
-        &.--low {
+        &.__low {
           top: 1550px + $second-row-offset;
         }
       }

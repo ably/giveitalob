@@ -100,7 +100,7 @@ a {
   width: 210px;
   height: 40px;
   margin: 0 20px 20px 0; }
-  .button-base.--wide, input.--wide[type=text], button.--wide, a.--wide.button, .home ul.lob-history li a.--wide, input.--wide[type=submit] {
+  .button-base.__wide, input.__wide[type=text], button.__wide, a.__wide.button, .home ul.lob-history li a.__wide, input.__wide[type=submit] {
     width: 443px;
     margin: 0 auto; }
   @media screen and (max-width: 1000px) {
@@ -110,7 +110,7 @@ a {
       margin: 0 auto 20px auto;
       display: block;
       clear: both; }
-      .button-base.--wide, input.--wide[type=text], button.--wide, a.--wide.button, .home ul.lob-history li a.--wide, input.--wide[type=submit] {
+      .button-base.__wide, input.__wide[type=text], button.__wide, a.__wide.button, .home ul.lob-history li a.__wide, input.__wide[type=submit] {
         width: 100%; } }
 
 input[type=text] {
@@ -149,7 +149,7 @@ button, button[type=submit], a.button, .home ul.lob-history li a, input[type=sub
   button[disabled], button[type=submit][disabled], a[disabled].button, .home ul.lob-history li a[disabled], input[type=submit][disabled] {
     background-color: #CCC;
     color: #888; }
-  button.--important, button[type=submit].--important, a.--important.button, .home ul.lob-history li a.--important, input[type=submit].--important {
+  button.__important, button[type=submit].__important, a.__important.button, .home ul.lob-history li a.__important, input[type=submit].__important {
     background-color: #A3323B;
     color: white; }
 
@@ -476,19 +476,19 @@ ul.leader-nav {
       right: calc(20% - 80px);
       top: 350px;
       transform: rotate(17deg); }
-      .background .floating-phones img.phone-samsung.--low {
+      .background .floating-phones img.phone-samsung.__low {
         top: 2300px; }
     .background .floating-phones img.phone-iphone {
       left: calc(20% - 80px);
       top: 875px;
       transform: rotate(-17deg); }
-      .background .floating-phones img.phone-iphone.--low {
+      .background .floating-phones img.phone-iphone.__low {
         top: 2825px; }
     .background .floating-phones img.phone-android {
       top: 1550px;
       transform: rotate(17deg);
       left: calc(50% - 80px); }
-      .background .floating-phones img.phone-android.--low {
+      .background .floating-phones img.phone-android.__low {
         top: 3500px; }
     body.no-phones .background .floating-phones {
       display: none; }

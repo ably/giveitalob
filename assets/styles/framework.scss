@@ -52,7 +52,7 @@ a {
   height: 40px;
   margin: 0 20px 20px 0;
 
-  &.--wide {
+  &.__wide {
     width: $narrow-centre-column-width;
     margin: 0 auto;
   }
@@ -64,7 +64,7 @@ a {
     display: block;
     clear: both;
 
-    &.--wide {
+    &.__wide {
       width: 100%;
     }
   }
@@ -111,7 +111,7 @@ button, button[type=submit], input[type=submit] {
     color: #888;
   }
 
-  &.--important {
+  &.__important {
     background-color: $link-color;
     color: white;
   }
