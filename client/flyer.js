@@ -20,7 +20,7 @@ var Thresholds = {
 var lastDebugArgs;
 
 function debug() {
-  if (Config.Debug) {
+  if (Config.debug) {
     var argsString = Array.prototype.join.call(arguments, ",");
     if (lastDebugArgs === argsString) {
       return;
@@ -116,6 +116,141 @@ PeakOrTrough.prototype.asJson = function() {
   };
 };
 
+/* Detect spins and show a warning to the user that spinning whilst lobbing is disallowed
+   as it adversely effects the readings */
+function SpinDetector() {
+  this.READINGS_FREQUENCY = 25; /* max readings stored per ms */
+  this.READINGS_MAX_AGE = 2000; /* truncate if older than this in ms */
+  this.RECENT_SPIN_CALLBACK_RATE = 500; /* don't trigger recently spun checks more than X milliseconds */
+  this.ROTATIONS_ALLOWED_PER_SECOND = 0.75; /* full rotations allowed per second */
+  this.MAX_READING_JUMP = 150; /* prevent readings such as 0 to 359 being seen as a rotation of 359 forwards instead of 1 degree back */
+
+  this.readings = []
+  this.readingsQueued = false;
+}
+
+/* private */
+SpinDetector.prototype._pushReading = function(orientation) {
+  this.readings.push({
+    time: new Date().getTime(),
+    alpha: orientation.alpha,
+    beta: orientation.beta,
+    gamma: orientation.gamma
+  });
+}
+
+SpinDetector.prototype._truncateReadings = function(truncateAll) {
+  var now = new Date().getTime();
+
+  if (truncateAll) {
+    this.readings = [];
+    return;
+  }
+
+  while (this.readings.length && (this.readings[0].time < (now - this.READINGS_MAX_AGE))) {
+    this.readings.shift();
+  }
+}
+
+SpinDetector.prototype.addReading = function(orientation) {
+  var that = this;
+
+  if (this.readingsQueued) {
+    this.nextReading = orientation;
+  } else {
+    this._pushReading(orientation);
+    this.readingsQueued = true;
+
+    setTimeout(function() {
+      if (this.nextReading) {
+        this._pushReading(orientation);
+        this.nextReading = null;
+      }
+      that.readingsQueued = false;
+    }, this.READINGS_FREQUENCY);
+
+    this._truncateReadings();
+  }
+}
+
+SpinDetector.prototype.recentlySpun = function(callback) {
+  var readings = this.readings,
+      now = new Date().getTime(),
+      rotationsAllowedPerSecond = this.ROTATIONS_ALLOWED_PER_SECOND,
+      that = this;
+
+  if (this.lastSpunCheck && (this.lastSpunCheck > new Date().getTime() - this.RECENT_SPIN_CALLBACK_RATE)) {
+    return;
+  }
+  this.lastSpunCheck = now;
+
+  this._truncateReadings();
+
+  'alpha beta gamma'.split(' ').forEach(function(axes) {
+    var posChange = [], posLastVal = null,
+        negChange = [], negLastVal = null,
+        spinTotal,
+        reading, readingIndex,
+        MAX_READING_JUMP = that.MAX_READING_JUMP;
+
+
+    for (readingIndex = 0; readingIndex < readings.length; readingIndex++) {
+      var reading = readings[readingIndex],
+          absReading = Math.abs(reading[axes]) % 360;
+
+      if ((posLastVal === null) || (negLastVal === null)) {
+        posLastVal = absReading;
+        negLastVal = absReading;
+      } else {
+        /* Truncate movement readings from before threshold */
+        [posChange, negChange].forEach(function(changeHistory) {
+          while (changeHistory.length && (changeHistory[0].time < now - (1000 / rotationsAllowedPerSecond))) {
+            changeHistory.shift();
+          }
+        });
+
+        /* track positive movement on the axis */
+        if ((absReading > posLastVal) && (absReading < posLastVal + MAX_READING_JUMP)) {
+          posChange.push(absReading - posLastVal);
+          posLastVal = absReading;
+        } else if ( (posLastVal > (360-MAX_READING_JUMP/2)) && (absReading < (MAX_READING_JUMP/2)) ) { /* wrapped past 360 such as 340 -> 20 */
+          posChange.push(360-posLastVal + absReading);
+          posLastVal = absReading;
+        }
+        spinTotal = posChange.reduce(function(a,b) { return a+b; }, 0);
+        if (spinTotal >= 180) {
+          debug("Pos spin", axes, spinTotal, readings);
+        }
+        if (spinTotal >= 360) {
+          debug("SpinDetector.recentlySpun: detected positive spin on axes " + axes + ": " + spinTotal);
+          that._truncateReadings(true);
+          callback();
+          return;
+        }
+
+        /* track negative movement on the axis represented as a positive value */
+        if ((absReading < negLastVal) && (absReading > negLastVal - MAX_READING_JUMP)) {
+          negChange.push(negLastVal - absReading);
+          negLastVal = absReading;
+        } else if ( (negLastVal < (MAX_READING_JUMP/2)) && (absReading > (360-MAX_READING_JUMP/2)) ) { /* wrapped past 360 such as 20 -> 340 */
+          negChange.push(negLastVal + 360-absReading);
+          negLastVal = absReading;
+        }
+        spinTotal = negChange.reduce(function(a,b) { return a+b; }, 0);
+        if (spinTotal >= 180) {
+          debug("Neg spin", axes, spinTotal, readings);
+        }
+        if (spinTotal >= 360) {
+          debug("SpinDetector.recentlySpun: detected negative spin on axes " + axes + ": " + spinTotal);
+          that._truncateReadings(true);
+          callback();
+          return;
+        }
+      }
+    }
+  });
+}
+
 export default function Flyer(state) {
   if ( !(this instanceof Flyer) ) { return new Flyer(state); }
 
@@ -124,6 +259,8 @@ export default function Flyer(state) {
   var peakOrTroughHistory = [];
   var currentFlightReadings = [];
   var lastThrowCompleted;
+  var spinDetector = new SpinDetector();
+  var spinAlertInterval;
 
   state = FlyerState(state || {});
   flyer.state = state;
@@ -167,6 +304,16 @@ export default function Flyer(state) {
     orientation.orientation = window.orientation;
 
     transmitReadingAndOrientation(reading, orientation);
+    spinDetector.addReading(orientation);
+
+    spinDetector.recentlySpun(function() {
+      if (spinAlertInterval) { clearInterval(spinAlertInterval); }
+      console.warn("Stop spinning that phone, you're gonna break it");
+      $('.spin-warning').show();
+      spinAlertInterval = setTimeout(function() {
+        $('.spin-warning').hide();
+      }, 6000);
+    });
 
     this.trackThrows(reading, function(currentFlight, peakOrTroughHistory) {
       var state = flyer.state.set("latestReading", reading);

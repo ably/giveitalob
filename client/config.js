@@ -4,5 +4,5 @@ export var Config = {
   trackingGraphTimePeriod: 8000, // ms - time to keep points in visible graph
   gravityMagnitudeConstant: 10, // default gravity magnitude value from accelerometer
   broadcastNewChannelName: 'broadcast:channel', /* replicated in app.rb */
-  debug: true /* Will output debugging info and send detailed flight metrics when true */
+  debug: false /* Will output debugging info and send detailed flight metrics when true */
 };
