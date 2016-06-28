@@ -20,6 +20,14 @@ export default function FlyerUplink(options, logger) {
   var broadcastChannelName = Config.broadcastNewChannelName;
   var broadcastChannel = client.channels.get(broadcastChannelName);
 
+  /* Debug flight info channel when enabled in the publisher phone */
+  if (Config.debug) {
+    console.warn("Running in debug mode - detailed flight metrics being published");
+    var debugChannel = client.channels.get("debug:" + channelName);
+    var debugFlightMetrics = [];
+    debugChannel.attach();
+  }
+
   var deviceType = new Device().deviceDescription();
 
   var noop = function() {};
@@ -56,15 +64,32 @@ export default function FlyerUplink(options, logger) {
       }
     });
 
+    if (Config.debug) {
+      if (debugFlightMetrics.length) {
+        debugChannel.publish("metrics", debugFlightMetrics);
+        debugFlightMetrics = [];
+      }
+    }
+
     setTimeout(startTransmissionTimer, nextFireDelay);
   }
 
   function transmitReadingAndOrientation(reading, orientation) {
     lastReading = reading;
     lastOrientation = orientation;
+
     if (!intervalTransmissionSetup) {
       startTransmissionTimer();
       intervalTransmissionSetup = true;
+    }
+
+    if (Config.debug) {
+      debugFlightMetrics.push({
+        time: new Date().getTime(),
+        timeHuman: new Date().toString(),
+        reading: reading,
+        orientation: orientation
+      });
     }
   }
 

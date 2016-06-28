@@ -91,6 +91,7 @@ class LobApp < Sinatra::Base
         '*' => ['subscribe', 'history'],
         channel_name => ['subscribe', 'publish', 'history', 'presence'],
         "flights:#{channel_name}" => ['subscribe', 'publish', 'history'],
+        "debug:#{channel_name}" => ['publish'],
         "broadcast:channel" => ['subscribe', 'publish', 'history'] # channel name replicated in config.js
       }
       client.auth.create_token_request(client_id: channel_name, capability: capability).to_json

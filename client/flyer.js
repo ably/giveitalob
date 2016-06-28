@@ -4,6 +4,7 @@ import Projection from "./flyer/projection";
 import Reading from "./lib/reading";
 import Audio from "./lib/Audio";
 import FlyerState from './flyer/state'
+import { Config } from './config'
 
 var Thresholds = {
   peak: 18,
@@ -16,11 +17,10 @@ var Thresholds = {
   minFlightTime: 150 /* min flight time to be a viable throw */
 }
 
-var DebugThrows = false; /* Will output debugging info when true */
 var lastDebugArgs;
 
 function debug() {
-  if (DebugThrows) {
+  if (Config.Debug) {
     var argsString = Array.prototype.join.call(arguments, ",");
     if (lastDebugArgs === argsString) {
       return;
