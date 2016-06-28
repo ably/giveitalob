@@ -660,6 +660,13 @@ footer {
       margin: 0;
       font-size: 80%;
       color: #4A3B00; }
+  .flyer .spin-warning {
+    display: none;
+    background-color: #ffb300;
+    padding: 10px;
+    font-size: 1.2em;
+    border-radius: 10px;
+    margin: -12px -12px 10px -12px; }
   .flyer .connecting-loader {
     padding-top: 2em; }
     .flyer .connecting-loader .loader {

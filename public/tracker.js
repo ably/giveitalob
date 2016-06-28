@@ -5,7 +5,8 @@ var Lob = (function () { 'use strict';
     flightPublishLimit: 1000, // ms
     trackingGraphTimePeriod: 8000, // ms - time to keep points in visible graph
     gravityMagnitudeConstant: 10, // default gravity magnitude value from accelerometer
-    broadcastNewChannelName: 'broadcast:channel' /* replicated in app.rb */
+    broadcastNewChannelName: 'broadcast:channel', /* replicated in app.rb */
+    debug: false /* Will output debugging info and send detailed flight metrics when true */
   };
 
   /* jshint esnext: true */
@@ -306,6 +307,15 @@ var Lob = (function () { 'use strict';
     }
   }
 
+  var Config$1 = {
+    readingPublishLimit: 200, // ms
+    flightPublishLimit: 1000, // ms
+    trackingGraphTimePeriod: 8000, // ms - time to keep points in visible graph
+    gravityMagnitudeConstant: 10, // default gravity magnitude value from accelerometer
+    broadcastNewChannelName: 'broadcast:channel', /* replicated in app.rb */
+    debug: false /* Will output debugging info and send detailed flight metrics when true */
+  };
+
   /* jshint esnext: true */
   function UplinkController(options, tracker){
     var realtime = new Ably.Realtime({ authUrl: '/token' });
@@ -363,9 +373,51 @@ var Lob = (function () { 'use strict';
               tracker.newFlight(historicalFlights[i].data, false);
             }
           }
-        })
+        });
       }
     });
+
+    if (Config$1.debug) {
+      /* Debug flight info channel when enabled in the publisher phone */
+      var debugChannel = realtime.channels.get("debug:" + channelName);
+      console.warn("Running in debug mode - this mode may consume a lot of memory for flight data stored in window.debugFlightMetrics");
+      console.warn("Calling dumpFlightMetrics(clear: bool) will export flightMetricsData as a CSV, or copyFlightMetrics(clear: bool) to copy to clipboard");
+
+      debugChannel.subscribe(function(flightMetricsMsg) {
+        if (!window.debugFlightMetrics) { window.debugFlightMetrics = [] }
+        flightMetricsMsg.data.forEach(function(flightMetric) {
+          window.debugFlightMetrics.push(flightMetric);
+        });
+      });
+
+      function flightMetricsCsv() {
+        var outputs = ["time,timeHuman,readingX,readingY,readingZ,orientationAlpha,orientationBeta,orientationGamma"];
+
+        window.debugFlightMetrics.forEach(function(flightMetric) {
+          outputs.push([flightMetric.time, flightMetric.timeHuman,
+                       flightMetric.reading.x, flightMetric.reading.y, flightMetric.reading.z,
+                       flightMetric.orientation.alpha, flightMetric.orientation.beta, flightMetric.orientation.gamma].join(","));
+        });
+
+        return outputs.join("\n");
+      }
+
+      function clearMetrics() {
+        window.debugFlightMetrics = [];
+        console.warn("Metrics truncated");
+      }
+
+      window.dumpFlightMetrics = function(clear) {
+        console.log(flightMetricsCsv());
+        if (clear) { clearMetrics(); }
+      }
+
+      window.copyFlightMetrics = function(clear) {
+        copy(flightMetricsCsv());
+        console.log("Flight metrics copied to clipboard");
+        if (clear) { clearMetrics(); }
+      }
+    }
   }
 
   /* jshint esnext: true */
