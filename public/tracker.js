@@ -336,6 +336,23 @@ var Lob = (function () { 'use strict';
       });
     }
 
+    function flightMetricsCsv() {
+      var outputs = ["time,timeHuman,readingX,readingY,readingZ,orientationAlpha,orientationBeta,orientationGamma"];
+
+      window.debugFlightMetrics.forEach(function(flightMetric) {
+        outputs.push([flightMetric.time, flightMetric.timeHuman,
+                     flightMetric.reading.x, flightMetric.reading.y, flightMetric.reading.z,
+                     flightMetric.orientation.alpha, flightMetric.orientation.beta, flightMetric.orientation.gamma].join(","));
+      });
+
+      return outputs.join("\n");
+    }
+
+    function clearMetrics() {
+      window.debugFlightMetrics = [];
+      console.warn("Metrics truncated");
+    }
+
     realtime.connection.on("connected", function(err) {
       // If we keep explicitly passing channel data to the controller we should pass it to the main app here
       tracker.uplinkAvailable(channelName);
@@ -389,23 +406,6 @@ var Lob = (function () { 'use strict';
           window.debugFlightMetrics.push(flightMetric);
         });
       });
-
-      function flightMetricsCsv() {
-        var outputs = ["time,timeHuman,readingX,readingY,readingZ,orientationAlpha,orientationBeta,orientationGamma"];
-
-        window.debugFlightMetrics.forEach(function(flightMetric) {
-          outputs.push([flightMetric.time, flightMetric.timeHuman,
-                       flightMetric.reading.x, flightMetric.reading.y, flightMetric.reading.z,
-                       flightMetric.orientation.alpha, flightMetric.orientation.beta, flightMetric.orientation.gamma].join(","));
-        });
-
-        return outputs.join("\n");
-      }
-
-      function clearMetrics() {
-        window.debugFlightMetrics = [];
-        console.warn("Metrics truncated");
-      }
 
       window.dumpFlightMetrics = function(clear) {
         console.log(flightMetricsCsv());
