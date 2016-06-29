@@ -41,7 +41,7 @@ $(function() {
 
     activeChannelMessages.
       sort(function(a, b) { return b.timestamp - a.timestamp; }).
-      slice(0,15).
+      slice(0,14).
       forEach(function(message) {
         activeChannelIDs[message.data.channel] = true;
         var link = $('<a>').text(message.data.channel).attr('href', '/track/' + message.data.channel);
