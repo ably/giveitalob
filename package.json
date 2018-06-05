@@ -2,6 +2,7 @@
   "name": "lob",
   "version": "0.9.0",
   "description": "Demonstrating realtime connection between web browsers. Powered by ably.io",
+  "engines" : { "node" : ">=6.9.0 <=7.0.0" },
   "main": "index.js",
   "scripts": {
     "test": "karma start",
