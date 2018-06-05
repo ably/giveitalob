@@ -1,6 +1,6 @@
 /* jshint esnext: true*/
 import commonjs from 'rollup-plugin-commonjs';
-import npm from 'rollup-plugin-npm';
+import resolve from 'rollup-plugin-node-resolve';
 
 export default {
   entry: 'client/boot.js',
@@ -9,7 +9,7 @@ export default {
   dest: "public/lob.js",
   sourceMap: true,
   plugins: [
-    npm({ jsnext: true, main: true }),
+    resolve({ jsnext: true, main: true }),
     commonjs()
   ]
 };
