@@ -1,4 +1,5 @@
-(function () { 'use strict';
+(function () {
+  'use strict';
 
   var Config = {
     readingPublishLimit: 200, // ms
@@ -33,11 +34,11 @@
       }
     });
 
-    var ably = new Ably.Realtime({ authUrl: '/token' }),
+    var ably = new Ably.Realtime({ authUrl: '/token', environment: 'eu-west-1-a' }),
         broadcastChannel = ably.channels.get(Config.broadcastNewChannelName),
         $recentLobs = $('div.recent-lobs'),
         $lobHistory = $('ul.lob-history'),
-        recentChannels = {}
+        recentChannels = {};
 
     function pruneAndPresentChannelData() {
       var activeChannelMessages = [],
@@ -45,7 +46,7 @@
           $channelList = $('<ul>');
 
       for (var channel in recentChannels) {
-        activeChannelMessages.push(recentChannels[channel])
+        activeChannelMessages.push(recentChannels[channel]);
       }
 
       activeChannelMessages.
@@ -94,5 +95,5 @@
     });
   });
 
-})();
+}());
 //# sourceMappingURL=home.js.map

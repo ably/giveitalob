@@ -1,296 +1,37 @@
-var Lob = (function () { 'use strict';
+var Lob = (function () {
+  'use strict';
 
-  /* jshint esnext: true */
-
-  // Router makes use of current location
-  // Router should always return some value of state it does not have the knowledge to regard it as invalid
-  // Router is currently untested
-  // Router does not follow modifications to the application location.
-  // Router is generic for tracker and flyer at the moment
-  // location is a size cause and might make sense to be lazily applied
-  function Router(location) {
-    if ( !(this instanceof Router) ) { return new Router(location); }
-    var router = this;
-    router.location = location;
-
-    function getState(){
-      return {
-        channelName: $("head").data('channel-name')
-      };
-    }
-
-    Object.defineProperty(router, 'state', {
-      get: getState
-    });
-  }
-
-  var Config = {
-    readingPublishLimit: 200, // ms
-    flightPublishLimit: 1000, // ms
-    trackingGraphTimePeriod: 8000, // ms - time to keep points in visible graph
-    gravityMagnitudeConstant: 10, // default gravity magnitude value from accelerometer
-    broadcastNewChannelName: 'broadcast:channel', /* replicated in app.rb */
-    debug: false /* Will output debugging info and send detailed flight metrics when true */
-  };
-
-  function Device() {
-    if ( !(this instanceof Device) ) { return new Device(); }
-
-    var mobileDetect = new MobileDetect(window.navigator.userAgent);
-    var browser = platform;
-
-    function mobileDescription() {
-      if (mobileDetect.phone() && (mobileDetect.phone() !== 'UnknownPhone')) {
-        return mobileDetect.phone()
-      } else if (mobileDetect.tablet() && (mobileDetect.tablet() !== 'UnknownTablet')) {
-        return mobileDetect.tablet();
-      } else {
-        return platform.os.family;
-      }
-    }
-
-    function desktopDescription() {
-      return browser.os.family.replace(/Windows.*/,"Windows") + " desktop";
-    }
-
-    this.deviceDescription = function() {
-      if (mobileDetect.mobile()) {
-        return mobileDescription();
-      } else {
-        return desktopDescription();
-      }
-    }
-  }
-
-  function FlyerUplink(options, logger) {
-    if ( !(this instanceof FlyerUplink) ) { return new FlyerUplink(options, logger); }
-
-    logger.info('Starting uplink', options);
-
-    var uplink = this;
-    var channelName = options.channelName.toString();
-
-    // TODO: Remove clientId when https://github.com/ably/ably-js/issues/252 resolved
-    var client = new Ably.Realtime({ authUrl: '/lob/' + channelName + '/token', clientId: channelName.toString() });
-    var channel = client.channels.get(channelName);
-
-    /* Flights namespace is configured to persist messages */
-    var flightRecorderChannelName = "flights:" + options.channelName;
-    var flightRecorderChannel = client.channels.get(flightRecorderChannelName);
-
-    var broadcastChannelName = Config.broadcastNewChannelName;
-    var broadcastChannel = client.channels.get(broadcastChannelName);
-
-    /* Debug flight info channel when enabled in the publisher phone */
-    if (Config.debug) {
-      console.warn("Running in debug mode - detailed flight metrics being published");
-      var debugChannel = client.channels.get("debug:" + channelName);
-      var debugFlightMetrics = [];
-      debugChannel.attach();
-    }
-
-    var deviceType = new Device().deviceDescription();
-
-    var noop = function() {};
-
-    var intervalTransmissionSetup,
-        lastTransmissionTargetTimestamp,
-        lastReading,
-        lastOrientation;
-
-    function startTransmissionTimer() {
-      var timestamp = Date.now(),
-          nextFireDelay
-
-      if (lastTransmissionTargetTimestamp) {
-        lastReading.timestamp = lastTransmissionTargetTimestamp;
-        lastOrientation.timestamp = lastTransmissionTargetTimestamp;
-      }
-
-      if (lastTransmissionTargetTimestamp) {
-        /* Adjust next transmission based on the delay of this transmission */
-        nextFireDelay = lastTransmissionTargetTimestamp - timestamp + Config.readingPublishLimit;
-        lastTransmissionTargetTimestamp = timestamp + nextFireDelay;
-      } else {
-        /* Fire exatly on the interval intended i.e. 0.0, 0.2, 0.4 if 200ms intervals */
-        nextFireDelay = Config.readingPublishLimit - (timestamp % Config.readingPublishLimit);
-        lastTransmissionTargetTimestamp = timestamp + nextFireDelay;
-        setTimeout(startTransmissionTimer, nextFireDelay);
-        return;
-      }
-
-      channel.publish("reading", { reading: lastReading, orientation: lastOrientation }, function(err) {
-        if (err) {
-          logger.warn("Unable to send new reading; err = " + err.message);
+  if (!Object.assign) {
+    Object.defineProperty(Object, 'assign', {
+      enumerable: false,
+      configurable: true,
+      writable: true,
+      value: function(target) {
+        if (target === undefined || target === null) {
+          throw new TypeError('Cannot convert first argument to object');
         }
-      });
 
-      if (Config.debug) {
-        if (debugFlightMetrics.length) {
-          debugChannel.publish("metrics", debugFlightMetrics);
-          debugFlightMetrics = [];
+        var to = Object(target);
+        for (var i = 1; i < arguments.length; i++) {
+          var nextSource = arguments[i];
+          if (nextSource === undefined || nextSource === null) {
+            continue;
+          }
+          nextSource = Object(nextSource);
+
+          var keysArray = Object.keys(nextSource);
+          for (var nextIndex = 0, len = keysArray.length; nextIndex < len; nextIndex++) {
+            var nextKey = keysArray[nextIndex];
+            var desc = Object.getOwnPropertyDescriptor(nextSource, nextKey);
+            if (desc !== undefined && desc.enumerable) {
+              to[nextKey] = nextSource[nextKey];
+            }
+          }
         }
-      }
-
-      setTimeout(startTransmissionTimer, nextFireDelay);
-    }
-
-    function transmitReadingAndOrientation(reading, orientation) {
-      lastReading = reading;
-      lastOrientation = orientation;
-
-      if (!intervalTransmissionSetup) {
-        startTransmissionTimer();
-        intervalTransmissionSetup = true;
-      }
-
-      if (Config.debug) {
-        debugFlightMetrics.push({
-          time: new Date().getTime(),
-          timeHuman: new Date().toString(),
-          reading: reading,
-          orientation: orientation
-        });
-      }
-    }
-
-    function transmitFlightData(flightData){
-      flightRecorderChannel.publish("flight", flightData, function(err) {
-        if (err) {
-          logger.warn("Unable to send new fligth data; err = " + err.message);
-        }
-      })
-    }
-
-    function broadcastNewChannel() {
-      broadcastChannel.publish("new", { channel: channelName, device: deviceType });
-    }
-
-    client.connection.on("connected", function(err) {
-      uplink.onconnected();
-    });
-
-    client.connection.on("disconnected", function(err) {
-      logger.warn("Uplink is disconnected", err);
-      uplink.onconnectionDisconnected(err);
-    });
-
-    client.connection.on("failed", function(err) {
-      console.error("Connection failed", err);
-      uplink.onconnectionFailed(err);
-    });
-
-    /* Be present on the channel so that subscribers know a publisher is here */
-    channel.presence.enter({ device: deviceType }, function(err) {
-      if (err) {
-        logger.error("Could not enter presence", err);
-        uplink.onconnectionFailed(err);
-      } else {
-        logger.info("Present on channel", channelName, ", device:", deviceType);
-        broadcastNewChannel();
+        return to;
       }
     });
-
-    flightRecorderChannel.attach(function(err) {
-      if (err) {
-        logger.error("Could not attach to flight recorder channel", flightRecorderChannelName);
-      } else {
-        logger.info("Attached to flight recorder channel", flightRecorderChannelName);
-      }
-    });
-
-    /* Register leave events quickly so that Ably knows the client is gone intentionally
-       as opposed to disconnected abruptly */
-    window.onunload = window.onbeforeunload = function () {
-      client.connection.close();
-    };
-
-    this.channelName = channelName;
-
-    /* These callbacks events are specified by the creator of this object */
-    this.onconnected = noop;
-    this.onconnectionFailed = noop;
-    this.onconnectionDisconnected = noop;
-
-    this.transmitReadingAndOrientation = transmitReadingAndOrientation;
-    this.transmitFlightData = transmitFlightData;
   }
-
-  /* jshint esnext: true */
-
-  function KeyError(key) {
-    this.name = "KeyError";
-    this.message = "key \"" + key + "\" not found";
-    this.stack = (new Error()).stack;
-  }
-  KeyError.prototype = Object.create(Error.prototype);
-  KeyError.prototype.constructor = KeyError;
-
-  function Struct(defaults, source){
-    "use strict";
-    if ( !(this instanceof Struct) ) { return new Struct(defaults, source); }
-
-    Object.assign(this, defaults);
-    for (var key in source) {
-      if (source.hasOwnProperty(key)) {
-        if (!this.hasOwnProperty(key)) {
-          throw new KeyError(key);
-        }
-        this[key] = source[key];
-      }
-    }
-    Object.freeze(this);
-  }
-
-  Struct.prototype.hasKey = function (key) {
-    return Object.keys(this).indexOf(key) !== -1;
-  };
-
-  Struct.prototype.fetch = function (key) {
-    if (this.hasKey(key)) {
-      return this[key];
-    } else {
-      throw new KeyError(key);
-    }
-  };
-
-  Struct.prototype.set = function (key, value) {
-    if (this[key] === value) {
-      return this;
-    }
-    var tmp = {};
-    tmp[key] = value;
-    return this.merge(tmp);
-  };
-
-  Struct.prototype.update = function (key, operation) {
-    return this.set(key, operation(this[key]));
-  };
-
-  Struct.prototype.merge = function (other) {
-    return Struct(this, other);
-  };
-
-  var FLYER_STATE_DEFAULTS = {
-    uplinkStatus: "CONNECTING",
-    uplinkDetails: {},
-    latestReading: null, // DEBT best place a null object here
-    currentFlight: [],
-    flightHistory: [],
-    alert: ""
-  };
-
-  // DEBT not quite sure why this can't just be named state;
-  function FlyerState(raw){
-    if ( !(this instanceof FlyerState) ) { return new FlyerState(raw); }
-
-    // DEBT with return statement is not an instance of FlyerState.
-    // without return statement does not work at all.
-    return Struct.call(this, FLYER_STATE_DEFAULTS, raw);
-  }
-
-  FlyerState.prototype = Object.create(Struct.prototype);
-  FlyerState.prototype.constructor = FlyerState;
 
   /* jshint esnext: true */
 
@@ -474,8 +215,96 @@ var Lob = (function () { 'use strict';
 
     this.playDropSound = function() {
       ion.sound.play("pop_cork");
-    }
+    };
   }
+
+  /* jshint esnext: true */
+
+  function KeyError(key) {
+    this.name = "KeyError";
+    this.message = "key \"" + key + "\" not found";
+    this.stack = (new Error()).stack;
+  }
+  KeyError.prototype = Object.create(Error.prototype);
+  KeyError.prototype.constructor = KeyError;
+
+  /* jshint esnext: true */
+
+  function Struct(defaults, source){
+    if ( !(this instanceof Struct) ) { return new Struct(defaults, source); }
+
+    Object.assign(this, defaults);
+    for (var key in source) {
+      if (source.hasOwnProperty(key)) {
+        if (!this.hasOwnProperty(key)) {
+          throw new KeyError(key);
+        }
+        this[key] = source[key];
+      }
+    }
+    Object.freeze(this);
+  }
+
+  Struct.prototype.hasKey = function (key) {
+    return Object.keys(this).indexOf(key) !== -1;
+  };
+
+  Struct.prototype.fetch = function (key) {
+    if (this.hasKey(key)) {
+      return this[key];
+    } else {
+      throw new KeyError(key);
+    }
+  };
+
+  Struct.prototype.set = function (key, value) {
+    if (this[key] === value) {
+      return this;
+    }
+    var tmp = {};
+    tmp[key] = value;
+    return this.merge(tmp);
+  };
+
+  Struct.prototype.update = function (key, operation) {
+    return this.set(key, operation(this[key]));
+  };
+
+  Struct.prototype.merge = function (other) {
+    return Struct(this, other);
+  };
+
+  var FLYER_STATE_DEFAULTS = {
+    uplinkStatus: "CONNECTING",
+    uplinkDetails: {},
+    latestReading: null, // DEBT best place a null object here
+    currentFlight: [],
+    flightHistory: [],
+    alert: ""
+  };
+
+  // DEBT not quite sure why this can't just be named state;
+  function FlyerState(raw){
+    if ( !(this instanceof FlyerState) ) { return new FlyerState(raw); }
+
+    // DEBT with return statement is not an instance of FlyerState.
+    // without return statement does not work at all.
+    return Struct.call(this, FLYER_STATE_DEFAULTS, raw);
+  }
+
+  FlyerState.prototype = Object.create(Struct.prototype);
+  FlyerState.prototype.constructor = FlyerState;
+
+  var Config = {
+    readingPublishLimit: 200, // ms
+    flightPublishLimit: 1000, // ms
+    trackingGraphTimePeriod: 8000, // ms - time to keep points in visible graph
+    gravityMagnitudeConstant: 10, // default gravity magnitude value from accelerometer
+    broadcastNewChannelName: 'broadcast:channel', /* replicated in app.rb */
+    debug: false /* Will output debugging info and send detailed flight metrics when true */
+  };
+
+  /* jshint esnext: true */
 
   var Thresholds = {
     peak: 18,
@@ -486,20 +315,9 @@ var Lob = (function () { 'use strict';
     peakTroughMinTime: 400, /* Min time we expect from the throw peak to the drop trough to consider this a valid throw */
     crossZeroPointBuffer: 40, /* Ignore some noise when falling / climbing for a few milliseconds that could cause it jump above & below zero point briefly */
     minFlightTime: 150 /* min flight time to be a viable throw */
-  }
-
-  var lastDebugArgs;
+  };
 
   function debug() {
-    if (Config.debug) {
-      var argsString = Array.prototype.join.call(arguments, ",");
-      if (lastDebugArgs === argsString) {
-        return;
-      }
-      lastDebugArgs = argsString;
-
-      console.debug.apply(console, arguments);
-    }
   }
 
   /* Class that wraps a reading but has logic
@@ -517,11 +335,11 @@ var Lob = (function () { 'use strict';
 
   PeakOrTrough.prototype.isPeak = function() {
     return this.magnitude > 10;
-  }
+  };
 
   PeakOrTrough.prototype.type = function() {
     return this.isPeak() ? 'peak' : 'trough';
-  }
+  };
 
   /* If we sample the last X seconds of the readings,
      we expect to see reasonable movement in magnitude in one direction
@@ -545,10 +363,8 @@ var Lob = (function () { 'use strict';
     var max = Math.max.apply(null, magnitudes),
         min = Math.min.apply(null, magnitudes);
 
-    debug("isStagnant:", Math.abs(max - min) < Thresholds.stagnantMovementAmount, min, max);
-
     return Math.abs(max - min) < Thresholds.stagnantMovementAmount;
-  }
+  };
 
   /* A trough of 3 is less than a trough  of 2
      and a peak of 19 is less than a peak of 22 */
@@ -596,7 +412,7 @@ var Lob = (function () { 'use strict';
     this.ROTATIONS_ALLOWED_PER_SECOND = 0.75; /* full rotations allowed per second */
     this.MAX_READING_JUMP = 150; /* prevent readings such as 0 to 359 being seen as a rotation of 359 forwards instead of 1 degree back */
 
-    this.readings = []
+    this.readings = [];
     this.readingsQueued = false;
   }
 
@@ -608,7 +424,7 @@ var Lob = (function () { 'use strict';
       beta: orientation.beta,
       gamma: orientation.gamma
     });
-  }
+  };
 
   SpinDetector.prototype._truncateReadings = function(truncateAll) {
     var now = new Date().getTime();
@@ -621,7 +437,7 @@ var Lob = (function () { 'use strict';
     while (this.readings.length && (this.readings[0].time < (now - this.READINGS_MAX_AGE))) {
       this.readings.shift();
     }
-  }
+  };
 
   SpinDetector.prototype.addReading = function(orientation) {
     var that = this;
@@ -642,7 +458,7 @@ var Lob = (function () { 'use strict';
 
       this._truncateReadings();
     }
-  }
+  };
 
   SpinDetector.prototype.recentlySpun = function(callback) {
     var readings = this.readings,
@@ -689,11 +505,7 @@ var Lob = (function () { 'use strict';
             posLastVal = absReading;
           }
           spinTotal = posChange.reduce(function(a,b) { return a+b; }, 0);
-          if (spinTotal >= 180) {
-            debug("Pos spin", axes, spinTotal, readings);
-          }
           if (spinTotal >= 360) {
-            debug("SpinDetector.recentlySpun: detected positive spin on axes " + axes + ": " + spinTotal);
             that._truncateReadings(true);
             callback();
             return;
@@ -708,11 +520,7 @@ var Lob = (function () { 'use strict';
             negLastVal = absReading;
           }
           spinTotal = negChange.reduce(function(a,b) { return a+b; }, 0);
-          if (spinTotal >= 180) {
-            debug("Neg spin", axes, spinTotal, readings);
-          }
           if (spinTotal >= 360) {
-            debug("SpinDetector.recentlySpun: detected negative spin on axes " + axes + ": " + spinTotal);
             that._truncateReadings(true);
             callback();
             return;
@@ -720,7 +528,7 @@ var Lob = (function () { 'use strict';
         }
       }
     });
-  }
+  };
 
   function Flyer(state) {
     if ( !(this instanceof Flyer) ) { return new Flyer(state); }
@@ -827,7 +635,6 @@ var Lob = (function () { 'use strict';
 
       /* Prevent detection sometimes on bounce / catch */
       if (lastThrowCompleted && (lastThrowCompleted > Date.now() - Thresholds.flightPause)) {
-        debug('Ignoring throw data due to previous throw', lastThrowCompleted);
         return;
       }
 
@@ -853,7 +660,6 @@ var Lob = (function () { 'use strict';
             peakOrTroughHistory.push(currentPeakOrTrough);
             debug('New ' + currentPeakOrTrough.type() + ' detected. Now', peakOrTroughHistory.length, 'peaks or troughs.', reading.asJson());
             while (peakOrTroughHistory.length > 3) {
-              debug('Truncating first peak and trough as new peaks and troughs detected');
               dropFirstPeakAndTrough();
             }
           }
@@ -868,7 +674,6 @@ var Lob = (function () { 'use strict';
             /* The current position is of the same type as the previous peak/trough yet it has crozzed the zero point
                and has now come back without crossing a threshold. This is just noise or someone waving it up and down */
             if (lastPeakOrTrough.hasRecentlyCossedZeroPoint()) {
-              debug('Last peak or trough has recently crossed zero point and has come back the other way now. Discarding everything', currentPeakOrTrough, lastPeakOrTrough, peakOrTroughHistory);
               /* This is not a valid throw, clear all history */
               peakOrTroughHistory = [];
               currentFlightReadings = [];
@@ -884,7 +689,6 @@ var Lob = (function () { 'use strict';
 
           var peakToTroughDuration = peakOrTroughHistory[2].timestampEnd - peakOrTroughHistory[0].timestampStart;
           if (peakToTroughDuration < Thresholds.peakTroughMinTime) {
-            debug('Peak to peak duration too low so skipping that peak & trough', peakToTroughDuration, peakOrTroughHistory);
             /*
               The peak and trough are too close togeher, person is probably just waving phone up and down.
               Lets keep this current peak and drop previous peak & trough
@@ -896,12 +700,9 @@ var Lob = (function () { 'use strict';
             /* Only keep the flight data for the freefall, see Projection
                for a better explanation of why we only use freefall data */
             freefallData = filterFreefallData(currentFlightReadings);
-            debug("Free fall data", freefallData);
 
             var flightTime = freefallData[freefallData.length - 1].timestamp - freefallData[0].timestamp;
-            if (flightTime < Thresholds.minFlightTime) {
-              debug("Flight too short", flightTime, "discarding");
-            } else {
+            if (flightTime < Thresholds.minFlightTime) ; else {
               callback(freefallData, peakOrTroughHistory);
             }
 
@@ -914,7 +715,6 @@ var Lob = (function () { 'use strict';
 
       if (lastPeakOrTrough) {
         if (lastPeakOrTrough.isStagnant()) {
-          debug('Last peak or trough stagnant. Discarding everything', lastPeakOrTrough, peakOrTroughHistory);
           /* This is not a valid throw, clear all history */
           peakOrTroughHistory = [];
           currentFlightReadings = [];
@@ -922,7 +722,7 @@ var Lob = (function () { 'use strict';
           currentFlightReadings.push(reading);
         }
       }
-    }
+    };
 
     flyer.accelerometerNotSupported = function() {
       flyer.state = flyer.state.merge({
@@ -930,7 +730,7 @@ var Lob = (function () { 'use strict';
         "uplinkStatus": "INCOMPATIBLE"
       });
       showcase(flyer.state);
-    }
+    };
 
     function dropFirstPeakAndTrough() {
       peakOrTroughHistory.splice(0,2);
@@ -996,6 +796,32 @@ var Lob = (function () { 'use strict';
     flyer.clock = window.Date;
   }
   Flyer.State = FlyerState;
+
+  /* jshint esnext: true */
+
+  // Router makes use of current location
+  // Router should always return some value of state it does not have the knowledge to regard it as invalid
+  // Router is currently untested
+  // Router does not follow modifications to the application location.
+  // Router is generic for tracker and flyer at the moment
+  // location is a size cause and might make sense to be lazily applied
+  function Router(location) {
+    if ( !(this instanceof Router) ) { return new Router(location); }
+    var router = this;
+    router.location = location;
+
+    function getState(){
+      return {
+        channelName: $("head").data('channel-name')
+      };
+    }
+
+    Object.defineProperty(router, 'state', {
+      get: getState
+    });
+  }
+
+  /* jshint esnext: true */
 
   function Presenter(projection){
 
@@ -1070,6 +896,37 @@ var Lob = (function () { 'use strict';
     return new Presenter(app);
   }
 
+  function Device() {
+    if ( !(this instanceof Device) ) { return new Device(); }
+
+    var mobileDetect = new MobileDetect(window.navigator.userAgent);
+    var browser = platform;
+
+    function mobileDescription() {
+      if (mobileDetect.phone() && (mobileDetect.phone() !== 'UnknownPhone')) {
+        return mobileDetect.phone()
+      } else if (mobileDetect.tablet() && (mobileDetect.tablet() !== 'UnknownTablet')) {
+        return mobileDetect.tablet();
+      } else {
+        return platform.os.family;
+      }
+    }
+
+    function desktopDescription() {
+      return browser.os.family.replace(/Windows.*/,"Windows") + " desktop";
+    }
+
+    this.deviceDescription = function() {
+      if (mobileDetect.mobile()) {
+        return mobileDescription();
+      } else {
+        return desktopDescription();
+      }
+    };
+  }
+
+  /* jshint esnext: true */
+
   /* This function class contains the logic for the presentation
      messaging in the view based on the state, but is weirdly not a
      view itself as their is a view, a projection, and a presenter? */
@@ -1129,7 +986,7 @@ var Lob = (function () { 'use strict';
             alert("Oops, something went wrong submitting your lob to the leaderboard. Please try again");
           }).always(function() {
             $leaderboardForm.find('submit').removeAttr('disabled');
-          })
+          });
       });
     }
 
@@ -1223,10 +1080,12 @@ var Lob = (function () { 'use strict';
       } else {
         renderMultipleThrows(presentation);
       }
-    }
+    };
 
     init();
   }
+
+  /* jshint esnext: true */
 
   function FlyerView() {
     var memoized = {};
@@ -1237,48 +1096,147 @@ var Lob = (function () { 'use strict';
         memoized.display = new Display($flyer);
       }
       return memoized.display;
-    }
+    };
 
     this.render = function(projection) {
       var presentation = present(projection);
       var display = getDisplay();
 
       display.render(presentation);
-    }
+    };
   }
 
-  if (!Object.assign) {
-    Object.defineProperty(Object, 'assign', {
-      enumerable: false,
-      configurable: true,
-      writable: true,
-      value: function(target) {
-        'use strict';
-        if (target === undefined || target === null) {
-          throw new TypeError('Cannot convert first argument to object');
-        }
+  function FlyerUplink(options, logger) {
+    if ( !(this instanceof FlyerUplink) ) { return new FlyerUplink(options, logger); }
 
-        var to = Object(target);
-        for (var i = 1; i < arguments.length; i++) {
-          var nextSource = arguments[i];
-          if (nextSource === undefined || nextSource === null) {
-            continue;
-          }
-          nextSource = Object(nextSource);
+    logger.info('Starting uplink', options);
 
-          var keysArray = Object.keys(nextSource);
-          for (var nextIndex = 0, len = keysArray.length; nextIndex < len; nextIndex++) {
-            var nextKey = keysArray[nextIndex];
-            var desc = Object.getOwnPropertyDescriptor(nextSource, nextKey);
-            if (desc !== undefined && desc.enumerable) {
-              to[nextKey] = nextSource[nextKey];
-            }
-          }
+    var uplink = this;
+    var channelName = options.channelName.toString();
+
+    // TODO: Remove clientId when https://github.com/ably/ably-js/issues/252 resolved
+    var client = new Ably.Realtime({ authUrl: '/lob/' + channelName + '/token', clientId: channelName.toString(), environment: 'eu-west-1-a' });
+    var channel = client.channels.get(channelName);
+
+    /* Flights namespace is configured to persist messages */
+    var flightRecorderChannelName = "flights:" + options.channelName;
+    var flightRecorderChannel = client.channels.get(flightRecorderChannelName);
+
+    var broadcastChannelName = Config.broadcastNewChannelName;
+    var broadcastChannel = client.channels.get(broadcastChannelName);
+
+    var deviceType = new Device().deviceDescription();
+
+    var noop = function() {};
+
+    var intervalTransmissionSetup,
+        lastTransmissionTargetTimestamp,
+        lastReading,
+        lastOrientation;
+
+    function startTransmissionTimer() {
+      var timestamp = Date.now(),
+          nextFireDelay;
+
+      if (lastTransmissionTargetTimestamp) {
+        lastReading.timestamp = lastTransmissionTargetTimestamp;
+        lastOrientation.timestamp = lastTransmissionTargetTimestamp;
+      }
+
+      if (lastTransmissionTargetTimestamp) {
+        /* Adjust next transmission based on the delay of this transmission */
+        nextFireDelay = lastTransmissionTargetTimestamp - timestamp + Config.readingPublishLimit;
+        lastTransmissionTargetTimestamp = timestamp + nextFireDelay;
+      } else {
+        /* Fire exatly on the interval intended i.e. 0.0, 0.2, 0.4 if 200ms intervals */
+        nextFireDelay = Config.readingPublishLimit - (timestamp % Config.readingPublishLimit);
+        lastTransmissionTargetTimestamp = timestamp + nextFireDelay;
+        setTimeout(startTransmissionTimer, nextFireDelay);
+        return;
+      }
+
+      channel.publish("reading", { reading: lastReading, orientation: lastOrientation }, function(err) {
+        if (err) {
+          logger.warn("Unable to send new reading; err = " + err.message);
         }
-        return to;
+      });
+
+      setTimeout(startTransmissionTimer, nextFireDelay);
+    }
+
+    function transmitReadingAndOrientation(reading, orientation) {
+      lastReading = reading;
+      lastOrientation = orientation;
+
+      if (!intervalTransmissionSetup) {
+        startTransmissionTimer();
+        intervalTransmissionSetup = true;
+      }
+    }
+
+    function transmitFlightData(flightData){
+      flightRecorderChannel.publish("flight", flightData, function(err) {
+        if (err) {
+          logger.warn("Unable to send new fligth data; err = " + err.message);
+        }
+      });
+    }
+
+    function broadcastNewChannel() {
+      broadcastChannel.publish("new", { channel: channelName, device: deviceType });
+    }
+
+    client.connection.on("connected", function(err) {
+      uplink.onconnected();
+    });
+
+    client.connection.on("disconnected", function(err) {
+      logger.warn("Uplink is disconnected", err);
+      uplink.onconnectionDisconnected(err);
+    });
+
+    client.connection.on("failed", function(err) {
+      console.error("Connection failed", err);
+      uplink.onconnectionFailed(err);
+    });
+
+    /* Be present on the channel so that subscribers know a publisher is here */
+    channel.presence.enter({ device: deviceType }, function(err) {
+      if (err) {
+        logger.error("Could not enter presence", err);
+        uplink.onconnectionFailed(err);
+      } else {
+        logger.info("Present on channel", channelName, ", device:", deviceType);
+        broadcastNewChannel();
       }
     });
+
+    flightRecorderChannel.attach(function(err) {
+      if (err) {
+        logger.error("Could not attach to flight recorder channel", flightRecorderChannelName);
+      } else {
+        logger.info("Attached to flight recorder channel", flightRecorderChannelName);
+      }
+    });
+
+    /* Register leave events quickly so that Ably knows the client is gone intentionally
+       as opposed to disconnected abruptly */
+    window.onunload = window.onbeforeunload = function () {
+      client.connection.close();
+    };
+
+    this.channelName = channelName;
+
+    /* These callbacks events are specified by the creator of this object */
+    this.onconnected = noop;
+    this.onconnectionFailed = noop;
+    this.onconnectionDisconnected = noop;
+
+    this.transmitReadingAndOrientation = transmitReadingAndOrientation;
+    this.transmitFlightData = transmitFlightData;
   }
+
+  /* jshint esnext: true */
 
   var router = Router(window.location);
 
@@ -1289,14 +1247,14 @@ var Lob = (function () { 'use strict';
   var flyer = Flyer();
 
   flyer.logger = window.console;
-  flyer.view = new FlyerView
+  flyer.view = new FlyerView;
   flyer.uplink = uplink;
 
   function AccelerometerController(global, flyer){
     var gn = new GyroNorm();
     var logger = function(data) {
       console.warn("Gyro log:", data);
-    }
+    };
     gn.init({ frequency: 10, decimalCounts: 3, logger: logger }).then(function() {
       if (gn.isAvailable(GyroNorm.DEVICE_ORIENTATION) || gn.isAvailable(GyroNorm.ACCELERATION_INCLUDING_GRAVITY)) {
         gn.start(function(data) {
@@ -1316,17 +1274,17 @@ var Lob = (function () { 'use strict';
   function UplinkController(uplink, application){
     uplink.onconnected = function(){
       application.uplinkAvailable({ channelName: uplink.channelName });
-    }
+    };
     uplink.onconnectionFailed = function(){
       application.uplinkFailed();
-    }
+    };
     uplink.onconnectionDisconnected = function(){
       application.uplinkDisconnected({ channelName: uplink.channelName });
-    }
+    };
   }
   var uplinkController = new UplinkController(uplink, flyer);
 
   return flyer;
 
-})();
+}());
 //# sourceMappingURL=flyer.js.map

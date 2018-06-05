@@ -1,4 +1,37 @@
-var Lob = (function () { 'use strict';
+var Lob = (function () {
+  'use strict';
+
+  if (!Object.assign) {
+    Object.defineProperty(Object, 'assign', {
+      enumerable: false,
+      configurable: true,
+      writable: true,
+      value: function(target) {
+        if (target === undefined || target === null) {
+          throw new TypeError('Cannot convert first argument to object');
+        }
+
+        var to = Object(target);
+        for (var i = 1; i < arguments.length; i++) {
+          var nextSource = arguments[i];
+          if (nextSource === undefined || nextSource === null) {
+            continue;
+          }
+          nextSource = Object(nextSource);
+
+          var keysArray = Object.keys(nextSource);
+          for (var nextIndex = 0, len = keysArray.length; nextIndex < len; nextIndex++) {
+            var nextKey = keysArray[nextIndex];
+            var desc = Object.getOwnPropertyDescriptor(nextSource, nextKey);
+            if (desc !== undefined && desc.enumerable) {
+              to[nextKey] = nextSource[nextKey];
+            }
+          }
+        }
+        return to;
+      }
+    });
+  }
 
   var Config = {
     readingPublishLimit: 200, // ms
@@ -19,8 +52,9 @@ var Lob = (function () { 'use strict';
   KeyError.prototype = Object.create(Error.prototype);
   KeyError.prototype.constructor = KeyError;
 
+  /* jshint esnext: true */
+
   function Struct(defaults, source){
-    "use strict";
     if ( !(this instanceof Struct) ) { return new Struct(defaults, source); }
 
     Object.assign(this, defaults);
@@ -64,6 +98,8 @@ var Lob = (function () { 'use strict';
     return Struct(this, other);
   };
 
+  /* jshint esnext: true */
+
   var STATE_DEFAULTS = {
     uplinkStatus: "UNKNOWN",
     uplinkChannelName: "UNKNOWN",
@@ -93,8 +129,10 @@ var Lob = (function () { 'use strict';
 
     this.playDropSound = function() {
       ion.sound.play("pop_cork");
-    }
+    };
   }
+
+  /* jshint esnext: true */
 
   var TRACKER_INVALID_STATE_MESSAGE = "Tracker did not receive valid initial state";
 
@@ -119,7 +157,7 @@ var Lob = (function () { 'use strict';
     tracker.state = state;
     // DEBT return to external assignment
     world = world || {};
-    tracker.logger = world.logger // Or error causing of silent version;
+    tracker.logger = world.logger; // Or error causing of silent version;
 
     tracker.audio = new Audio();
 
@@ -174,8 +212,7 @@ var Lob = (function () { 'use strict';
 
     tracker.newFlight = function(flightData, live) {
       this.showcase.addFlight(flightData, live);
-      if (live) { this.audio.playDropSound(); };
-    }
+      if (live) { this.audio.playDropSound(); }  };
 
     tracker.newOrientation = function(position){
       tracker.showcase.orientatePhones(position);
@@ -184,6 +221,30 @@ var Lob = (function () { 'use strict';
     function showcase(state) {
       tracker.showcase.update(state);
     }
+  }
+
+  /* jshint esnext: true */
+
+  // Router makes use of current location
+  // Router should always return some value of state it does not have the knowledge to regard it as invalid
+  // Router is currently untested
+  // Router does not follow modifications to the application location.
+  // Router is generic for tracker and flyer at the moment
+  // location is a size cause and might make sense to be lazily applied
+  function Router(location) {
+    if ( !(this instanceof Router) ) { return new Router(location); }
+    var router = this;
+    router.location = location;
+
+    function getState(){
+      return {
+        channelName: $("head").data('channel-name')
+      };
+    }
+
+    Object.defineProperty(router, 'state', {
+      get: getState
+    });
   }
 
   /* jshint esnext: true */
@@ -231,94 +292,11 @@ var Lob = (function () { 'use strict';
     }
   };
 
-  /* jshint esnext: true */
-
-  // Router makes use of current location
-  // Router should always return some value of state it does not have the knowledge to regard it as invalid
-  // Router is currently untested
-  // Router does not follow modifications to the application location.
-  // Router is generic for tracker and flyer at the moment
-  // location is a size cause and might make sense to be lazily applied
-  function Router(location) {
-    if ( !(this instanceof Router) ) { return new Router(location); }
-    var router = this;
-    router.location = location;
-
-    function getState(){
-      return {
-        channelName: $("head").data('channel-name')
-      };
-    }
-
-    Object.defineProperty(router, 'state', {
-      get: getState
-    });
-  }
-
-  function TrackerShowcase(window){
-    if ( !(this instanceof TrackerShowcase) ) { return new TrackerShowcase(window); }
-    var showcase = this;
-    var views = [];
-    var phones = [];
-
-    this.update = function(projection){
-      // Values needed in display
-      // isLive
-      // readings
-      // isLockedToLiveReadings
-      // graph lines
-      // uplink statuses
-      // TODO should be projection not this
-      showcase.projection = this;
-      views.forEach(function(view){
-        view.render(projection);
-      });
-    };
-
-    this.addView = function(view){
-      if (showcase.projection) {
-        view.render(showcase.projection);
-      }
-      views.push(view);
-    };
-
-    this.addPhone = function(phone) {
-      phones.push(phone);
-    }
-
-    this.addReading = function(newReading){
-      views.forEach(function(view){
-        view.addReading(newReading);
-      });
-    }
-
-    this.addFlight = function(newFlightData, live) {
-      views.forEach(function(view){
-        view.addFlight(newFlightData, live);
-      });
-    }
-
-    this.orientatePhones = function(position) {
-      phones.forEach(function(phone){
-        if (phone.setOrientation) {
-          phone.setOrientation(position);
-        }
-      });
-    }
-  }
-
-  var Config$1 = {
-    readingPublishLimit: 200, // ms
-    flightPublishLimit: 1000, // ms
-    trackingGraphTimePeriod: 8000, // ms - time to keep points in visible graph
-    gravityMagnitudeConstant: 10, // default gravity magnitude value from accelerometer
-    broadcastNewChannelName: 'broadcast:channel', /* replicated in app.rb */
-    debug: false /* Will output debugging info and send detailed flight metrics when true */
-  };
+  // RESPONSIBILITY - Drive the tracker application in response to messages from the Ably uplink
 
   /* jshint esnext: true */
   function UplinkController(options, tracker){
-    var realtime = new Ably.Realtime({ authUrl: '/token' });
+    var realtime = new Ably.Realtime({ authUrl: '/token', environment: 'eu-west-1-a' });
     var channelName = options.channelName;
     var channel = realtime.channels.get(channelName);
 
@@ -334,23 +312,6 @@ var Lob = (function () { 'use strict';
           tracker.uplinkPresent(channelName, members);
         }
       });
-    }
-
-    function flightMetricsCsv() {
-      var outputs = ["time,timeHuman,readingX,readingY,readingZ,orientationAlpha,orientationBeta,orientationGamma"];
-
-      window.debugFlightMetrics.forEach(function(flightMetric) {
-        outputs.push([flightMetric.time, flightMetric.timeHuman,
-                     flightMetric.reading.x, flightMetric.reading.y, flightMetric.reading.z,
-                     flightMetric.orientation.alpha, flightMetric.orientation.beta, flightMetric.orientation.gamma].join(","));
-      });
-
-      return outputs.join("\n");
-    }
-
-    function clearMetrics() {
-      window.debugFlightMetrics = [];
-      console.warn("Metrics truncated");
     }
 
     realtime.connection.on("connected", function(err) {
@@ -393,74 +354,62 @@ var Lob = (function () { 'use strict';
         });
       }
     });
-
-    if (Config$1.debug) {
-      /* Debug flight info channel when enabled in the publisher phone */
-      var debugChannel = realtime.channels.get("debug:" + channelName);
-      console.warn("Running in debug mode - this mode may consume a lot of memory for flight data stored in window.debugFlightMetrics");
-      console.warn("Calling dumpFlightMetrics(clear: bool) will export flightMetricsData as a CSV, or copyFlightMetrics(clear: bool) to copy to clipboard");
-
-      debugChannel.subscribe(function(flightMetricsMsg) {
-        if (!window.debugFlightMetrics) { window.debugFlightMetrics = [] }
-        flightMetricsMsg.data.forEach(function(flightMetric) {
-          window.debugFlightMetrics.push(flightMetric);
-        });
-      });
-
-      window.dumpFlightMetrics = function(clear) {
-        console.log(flightMetricsCsv());
-        if (clear) { clearMetrics(); }
-      }
-
-      window.copyFlightMetrics = function(clear) {
-        copy(flightMetricsCsv());
-        console.log("Flight metrics copied to clipboard");
-        if (clear) { clearMetrics(); }
-      }
-    }
   }
 
   /* jshint esnext: true */
 
-  function ready(fn) {
-    if (document.readyState !== "loading"){
-      fn();
-    } else {
-      document.addEventListener("DOMContentLoaded", fn);
-    }
-  }
+  /* jshint esnext: true */
 
-  if (!Object.assign) {
-    Object.defineProperty(Object, 'assign', {
-      enumerable: false,
-      configurable: true,
-      writable: true,
-      value: function(target) {
-        'use strict';
-        if (target === undefined || target === null) {
-          throw new TypeError('Cannot convert first argument to object');
-        }
+  function TrackerShowcase(window){
+    if ( !(this instanceof TrackerShowcase) ) { return new TrackerShowcase(window); }
+    var showcase = this;
+    var views = [];
+    var phones = [];
 
-        var to = Object(target);
-        for (var i = 1; i < arguments.length; i++) {
-          var nextSource = arguments[i];
-          if (nextSource === undefined || nextSource === null) {
-            continue;
-          }
-          nextSource = Object(nextSource);
+    this.update = function(projection){
+      // Values needed in display
+      // isLive
+      // readings
+      // isLockedToLiveReadings
+      // graph lines
+      // uplink statuses
+      // TODO should be projection not this
+      showcase.projection = this;
+      views.forEach(function(view){
+        view.render(projection);
+      });
+    };
 
-          var keysArray = Object.keys(nextSource);
-          for (var nextIndex = 0, len = keysArray.length; nextIndex < len; nextIndex++) {
-            var nextKey = keysArray[nextIndex];
-            var desc = Object.getOwnPropertyDescriptor(nextSource, nextKey);
-            if (desc !== undefined && desc.enumerable) {
-              to[nextKey] = nextSource[nextKey];
-            }
-          }
-        }
-        return to;
+    this.addView = function(view){
+      if (showcase.projection) {
+        view.render(showcase.projection);
       }
-    });
+      views.push(view);
+    };
+
+    this.addPhone = function(phone) {
+      phones.push(phone);
+    };
+
+    this.addReading = function(newReading){
+      views.forEach(function(view){
+        view.addReading(newReading);
+      });
+    };
+
+    this.addFlight = function(newFlightData, live) {
+      views.forEach(function(view){
+        view.addFlight(newFlightData, live);
+      });
+    };
+
+    this.orientatePhones = function(position) {
+      phones.forEach(function(phone){
+        if (phone.setOrientation) {
+          phone.setOrientation(position);
+        }
+      });
+    };
   }
 
   function Phone() {
@@ -488,7 +437,7 @@ var Lob = (function () { 'use strict';
       }
 
       $phone.style.cssText = cssText;
-    }
+    };
   }
 
   function GraphDisplay(trackDivId) {
@@ -650,7 +599,7 @@ var Lob = (function () { 'use strict';
         value: lobForce
       });
       prepareAndTruncateData();
-    }
+    };
 
     this.addFlight = function(flightData) {
       var start = flightData.peakInfo[0].timestampStart;
@@ -680,8 +629,20 @@ var Lob = (function () { 'use strict';
       });
 
       prepareAndTruncateData();
+    };
+  }
+
+  /* jshint esnext: true */
+
+  function ready(fn) {
+    if (document.readyState !== "loading"){
+      fn();
+    } else {
+      document.addEventListener("DOMContentLoaded", fn);
     }
   }
+
+  /* jshint esnext: true */
 
   // GENERAL CONFIGURATION
   window.Tracker = Tracker;
@@ -790,5 +751,5 @@ var Lob = (function () { 'use strict';
 
   return tracker;
 
-})();
+}());
 //# sourceMappingURL=tracker.js.map
