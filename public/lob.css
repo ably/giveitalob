@@ -57,7 +57,8 @@ footer {
 /* Shortcuts for vendor prefixes */
 /* Our CSS files */
 /* Base element styling */
-html, body {
+html,
+body {
   margin: 0;
   font-size: 15px;
   font-weight: 400;
@@ -146,7 +147,7 @@ button, button[type=submit], a.button, .home ul.lob-history li a, input[type=sub
   position: relative; }
   button a, button[type=submit] a, a.button a, .home ul.lob-history li a a, input[type=submit] a {
     color: white; }
-  button[disabled], button[type=submit][disabled], a[disabled].button, .home ul.lob-history li a[disabled], input[type=submit][disabled] {
+  button[disabled], button[type=submit][disabled], a.button[disabled], .home ul.lob-history li a[disabled], input[type=submit][disabled] {
     background-color: #CCC;
     color: #888; }
   button.__important, button[type=submit].__important, a.__important.button, .home ul.lob-history li a.__important, input[type=submit].__important {
@@ -407,6 +408,10 @@ ul.leader-nav {
   left: 50%;
   margin-left: -2.25px;
   top: 50%; }
+
+@-moz-document url-prefix() {
+  .play:after {
+    margin-left: -1.25px; } }
 
 .play:hover:after {
   background: transparent;
@@ -829,4 +834,3 @@ main.tracker {
 
 .mobile-not-ready {
   display: hidden; }
-
