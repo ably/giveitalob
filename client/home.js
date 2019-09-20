@@ -24,7 +24,7 @@ $(function() {
     }
   });
 
-  var ably = new Ably.Realtime({ authUrl: '/token', environment: 'eu-west-1-a' }),
+  var ably = new Ably.Realtime({ authUrl: '/token' }),
       broadcastChannel = ably.channels.get(Config.broadcastNewChannelName),
       $recentLobs = $('div.recent-lobs'),
       $lobHistory = $('ul.lob-history'),
