@@ -296,7 +296,7 @@ var Lob = (function () {
 
   /* jshint esnext: true */
   function UplinkController(options, tracker){
-    var realtime = new Ably.Realtime({ authUrl: '/token', environment: 'eu-west-1-a' });
+    var realtime = new Ably.Realtime({ authUrl: '/token' });
     var channelName = options.channelName;
     var channel = realtime.channels.get(channelName);
 
