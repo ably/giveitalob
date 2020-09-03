@@ -43,7 +43,7 @@
     "karma-notify-reporter": "~0.1.1",
     "karma-phantomjs-launcher": "~0.2.1",
     "karma-rollup-preprocessor": "^2.0.0",
-    "node-sass": "~4.9.0",
+    "node-sass": "~4.14.1",
     "phantomjs": "~1.9.18",
     "rollup": "^0.20.5",
     "rollup-plugin-commonjs": "^9.1.3",
