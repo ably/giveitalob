@@ -2,17 +2,16 @@
 
 Demo: <a href="https://giveitalob.com">giveitalob.com</a>
 
-Demonstrating realtime connection between web browsers. Powered by [Ably, simply better realtime messaging](https://www.ably.com)
+Demonstrating realtime connection between web browsers. Powered by [Ably, simply better realtime messaging](https://www.ably.io)
 
 ### Installation
 
 Requires Ruby, RubyGems, Node.js and Npm to be installed.
 
-1. Clone source from [github](https://github.com/ably/giveitalob).
+1. Clone source from [github](https://github.com/CrowdHailer/lob).
 
 ```
-).
-git clone https://github.com/ably/giveitalob
+git clone git@github.com:CrowdHailer/lob.git
 cd lob
 ```
 
@@ -31,7 +30,7 @@ createdb lob_development
 rake db:migrate:up
 ```
 
-4. Obtain an [Ably API key](https://www.ably.com) and add to [.env](.env). See [.env.example](.env.example) for an example of how to configure this file.
+4. Obtain an [Ably API key](https://www.ably.io) and add to [.env](.env). See [.env.example](.env.example) for an example of how to configure this file.
 
 5. Build your assets. `npm run build` to build and copy assets. If you want the app to rebuild assets automatically, try `rerun -d assets,client npm run build`.
 
