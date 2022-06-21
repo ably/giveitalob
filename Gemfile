@@ -7,7 +7,7 @@ gem 'sinatra'
 gem 'sinatra-contrib'
 gem 'erubis'
 gem 'ably'
-gem 'pg'
+gem 'pg', '~> 1.2', '>= 1.2.3'
 gem 'sequel'
 gem 'puma'
 
